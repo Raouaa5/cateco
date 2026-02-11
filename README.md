@@ -94,10 +94,20 @@ If you want to keep up with the updates, [follow the official Sylius account on 
 ## Bug Tracking
 
 If you want to report a bug or suggest an idea, please use [GitHub issues](https://github.com/Sylius/Sylius/issues).
+## 🚀 Cateco E-Commerce Empire (Custom)
+
+### 🎯 Quick Start Cateco (5min)
+```bash
+git clone https://github.com/VOTRE-USERNAME/cateco-sylius.git
+cd cateco-sylius
+docker compose up -d
+
+
 
 ## Community Support
 
 Get Sylius support on [Slack](https://sylius.com/slack), [Forum](https://forum.sylius.com/) or [Stack Overflow](https://stackoverflow.com/questions/tagged/sylius).
+
 
 ## MIT License
 
