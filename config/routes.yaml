@@ -1,0 +1,14 @@
+# config/routes.yaml
+sylius_shop_homepage:
+    path: /{_locale}/
+    methods: [GET]
+    controller: App\Controller\HomepageController::index
+    requirements:
+        _locale: ^[A-Za-z]{2,4}(_([A-Za-z]{4}|[0-9]{3}))?(_([A-Za-z]{2}|[0-9]{3}))?$
+
+app_club_cateco_index:
+    path: /{_locale}/club-cateco
+    methods: [GET]
+    controller: App\Controller\ClubCatecoController::index
+    requirements:
+        _locale: ^[A-Za-z]{2,4}(_([A-Za-z]{4}|[0-9]{3}))?(_([A-Za-z]{2}|[0-9]{3}))?$

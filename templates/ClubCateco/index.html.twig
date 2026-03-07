@@ -1,0 +1,369 @@
+{% extends '@SyliusShop/shared/layout/base.html.twig' %}
+
+{% block title %}Club Catéco - Avantages et Fidélité | {{ parent() }}{% endblock %}
+
+{% block content %}
+<div class="club-cateco-page">
+    {# Hero Section #}
+    <section class="club-hero" style="background: white; padding: 2rem 0; color: white; position: relative; overflow: hidden; min-height: 500px; display: flex; align-items: center;">
+        {# Slanted Background - Logic: Parallel upward slant, cropped to let card sit on white at the bottom #}
+        <div class="hero-slant-bg" style="position: absolute; top: 0; left: 0; width: 78%; height: 100%; background: #f97316; clip-path: polygon(0 15%, 100% 0, 88% 82%, 0 100%); z-index: 1;"></div>
+        
+        {# Main Container - Using standard container for better safe margins - Grid 1.1fr 0.9fr #}
+        <div class="container mx-auto px-8 md:px-12" style="position: relative; z-index: 10; width: 100%; max-width: 1400px; display: grid; grid-template-columns: 1.1fr 0.9fr; align-items: center; min-height: 500px;">
+            
+            {# Left Column: Text Content #}
+            <div style="padding-right: 2rem; position: relative; margin-top: 0.5rem;">
+                <h1 style="font-size: clamp(1.8rem, 4.2vw, 4rem); font-weight: 900; line-height: 1.05; margin-bottom: 2rem; letter-spacing: -0.02em; color: white;">
+                    Rejoignez dès<br>maintenant le Club<br>Catéco
+                </h1>
+                <div style="display: flex; flex-direction: column; gap: 1rem; margin-bottom: 2rem;">
+                    <div style="display: flex; align-items: flex-start; gap: 0.75rem; font-size: 1.1rem; font-weight: 500; color: white;">
+                        <svg style="width: 22px; height: 22px; flex-shrink: 0; margin-top: 3px; color: #17716c;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="4" d="M5 13l4 4L19 7"/></svg>
+                        <span>Profitez de nombreux avantages et de prix club tout au long de l’année en créant votre compte web</span>
+                    </div>
+                    <div style="display: flex; align-items: flex-start; gap: 0.75rem; font-size: 1.1rem; font-weight: 500; color: white;">
+                        <svg style="width: 22px; height: 22px; flex-shrink: 0; margin-top: 3px; color: #17716c;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="4" d="M5 13l4 4L19 7"/></svg>
+                        <span>Carte de fidélité GRATUITE valable dans tous les magasins Catéco et sur le site web </span>
+                    </div>
+                </div>
+                <a href="{{ path('sylius_shop_register') }}" class="btn-club-primary" style="display: inline-block; background: #17716c; color: white; padding: 0.9rem 2.2rem; border-radius: 40px; font-weight: 800; font-size: 1.15rem; text-decoration: none; box-shadow: 0 10px 25px rgba(0,0,0,0.15); transition: all 0.2s;">
+                    Je crée mon compte
+                </a>
+            </div>
+
+            {# Right Column: Loyalty Card - Larger based on user manual edit #}
+            <div style="display: flex; justify-content: flex-end; align-items: center; position: relative;">
+                <div style="width: 155%; max-width: 8000px; transform: rotate(-1deg) translateX(-5%) translateY(-3%); filter: drop-shadow(0 30px 60px rgba(0,0,0,0.35));">
+                    <img src="{{ asset('assets/shop/images/carte de fidelite.png') }}" alt="Carte Fidelite Catéco" style="width: 100%; height: auto; display: block;">
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    {# Pourquoi Section - Bulletproof 2-column horizontal alignment #}
+    <section class="py-24 bg-white" style="overflow: hidden;">
+        <div class="container mx-auto px-4" style="display: flex; flex-direction: row; flex-wrap: wrap; align-items: flex-start; gap: 4rem; justify-content: center; width: 100%; max-width: 1400px;">
+            {# Left Column: Image with decoration #}
+            <div style="flex: 1; min-width: 320px; max-width: 650px; position: relative; padding-top: 120px; padding-right: 40px;">
+                {# Decorative orange box #}
+                <div style="position: absolute; top: 80px; right: 0; width: 85%; height: 85%; background: #f97316; border-radius: 40px; z-index: 1;"></div>
+                {# Image #}
+                <img src="{{ asset('assets/shop/images/rejoignez-club.jpg') }}" alt="Shopping" style="width: 100%; border-radius: 30px; box-shadow: 0 20px 50px rgba(0,0,0,0.15); position: relative; z-index: 2;">
+            </div>
+            
+            {# Right Column: Text - Perfectly aligned top with image #}
+            <div style="flex: 1; min-width: 320px; padding-top: 40px;"> 
+                <h2 style="font-size: 3.2rem; font-weight: 900; color: #111827; margin-bottom: 2rem; line-height: 1.1; margin-top: 0;">Pourquoi rejoindre le Club ?</h2>
+                <div style="font-size: 1.1rem; color: #374151; line-height: 1.5; display: flex; flex-direction: column; gap: 0;">
+                    <p style="font-weight: 800; margin-bottom: 0;">En devenant membre, bénéficiez des Prix Club tout au long de l’année.</p>
+                    <p style="margin-bottom: 0;">Votre fidélité est précieuse pour nous, c’est pourquoi nous vous proposons des offres exclusives qui vous permettront de maximiser votre pouvoir d’achat. Vous accédez à des réductions régulières, des offres spéciales, des avant-premières et bien plus encore.</p>
+                    <p style="margin-bottom: 0;">Rejoindre le Club Catéco, c’est non seulement faire des économies sur tous vos achats, mais aussi profiter de promotions qui ne sont réservées qu’aux membres de notre programme de fidélité.</p>
+                    <p style="margin-bottom: 1.5rem;">L'adhésion au programme Catéco est simple, rapide et surtout GRATUITE. Il vous suffit de vous inscrire sur notre site internet pour commencer à profiter de ses nombreux avantages. À chaque achat, vous cumulez des points convertibles en bons d’achat.</p>
+                </div>
+                
+                {# Button - Resized even smaller #}
+                <a href="{{ path('sylius_shop_register') }}" style="display: inline-block; background: #f8a436ff; color: white; padding: 0.7rem 1.8rem; border-radius: 20px; font-weight: 600; font-size: 1.05rem; text-decoration: none; box-shadow: 0 5px 15px rgba(248,164,54,0.3); transition: all 0.2s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
+                    J’en profite !
+                </a>
+            </div>
+        </div>
+    </section>
+
+    {# White Spacer #}
+    <div style="height: 5rem; background: white;"></div>
+
+    {# Advantages Section - Refined Fonts and Margins #}
+    <section style="padding: 8rem 0 6rem 0; background-color: #fce7d2;">
+        <div class="container mx-auto px-4 text-center">
+            <h2 style="font-size: 2.75rem; font-weight: 900; color: #111827; margin-bottom: 2rem;">Vos avantages</h2>
+            <p style="font-size: 1.15rem; color: #374151; margin-bottom: 2.5rem;">En devenant membre du Club Catéco, vous bénéficiez d’avantages exclusifs.</p>
+            
+            {# Moved Button - Resized smaller #}
+            <div style="margin-bottom: 4rem;">
+                <a href="{{ path('sylius_shop_register') }}" style="display: inline-block; background: #f8a436ff; color: white; padding: 0.75rem 2.2rem; border-radius: 999px; font-weight: 800; text-decoration: none; font-size: 1.15rem; box-shadow: 0 8px 20px rgba(249,115,22,0.2);">J’adhère</a>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; margin-bottom: 4rem;">
+                {# Card 1 #}
+                <div class="advantage-card" style="background: white; padding: 2.5rem 1.5rem; border-radius: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); display: flex; flex-direction: column; align-items: center; text-align: center;">
+                    <img src="{{ asset('assets/shop/images/prix_club_icon.svg') }}" style="width: 70px; height: 70px; margin-bottom: 1.5rem;">
+                    <h3 style="font-size: 1.4rem; font-weight: 800; margin-bottom: 1rem; line-height: 1.2;">Des prix club<br>toute l’année</h3>
+                    <p style="color: #4b5563; line-height: 1.5; font-size: 0.95rem;">Accédez à des prix réduits exclusifs, disponibles tout au long de l’année dans tous les magasins Catéco ainsi que sur notre site internet. Grâce au Club Catéco, vous faites vos achats à des tarifs préférentiels, que vous ayez besoin de produits pour la maison, le jardin, le bricolage ou les loisirs.</p>
+                </div>
+                {# Card 2 #}
+                <div class="advantage-card" style="background: white; padding: 2.5rem 1.5rem; border-radius: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); display: flex; flex-direction: column; align-items: center; text-align: center;">
+                    <img src="{{ asset('assets/shop/images/cochon_icon.svg') }}" style="width: 70px; height: 70px; margin-bottom: 1.5rem;">
+                    <h3 style="font-size: 1.4rem; font-weight: 800; margin-bottom: 1rem; line-height: 1.2;">Fidélité récompensée<br>1€ dépensé = 1 point</h3>
+                    <p style="color: #4b5563; line-height: 1.5; font-size: 0.95rem;">Le système est simple : chaque euro dépensé dans nos magasins ou sur notre site internet vous permet d’accumuler des points fidélité. Ces points sont cumulables sur tous les produits, même ceux en promotion. Les points se transforment ensuite en bons de réduction pour économiser toujours plus !</p>
+                </div>
+                {# Card 3 #}
+                <div class="advantage-card" style="background: white; padding: 2.5rem 1.5rem; border-radius: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); display: flex; flex-direction: column; align-items: center; text-align: center;">
+                    <img src="{{ asset('assets/shop/images/vip_icon.svg') }}" style="width: 70px; height: 70px; margin-bottom: 1.5rem;">
+                    <h3 style="font-size: 1.4rem; font-weight: 800; margin-bottom: 1rem; line-height: 1.2;">Journée VIP<br>-10% sur la journée<br>de votre choix</h3>
+                    <p style="color: #4b5563; line-height: 1.5; font-size: 0.95rem;">En tant que membre du Club Catéco, vous avez la possibilité de choisir une journée dans l’année où vous bénéficiez de 10 % de réduction sur l’ensemble de vos achats*, en magasin ou en ligne. Cette offre spéciale vous permet de réaliser un maximum d’économies pendant votre journée shopping privilégiée.</p>
+                </div>
+                {# Card 4 #}
+                <div class="advantage-card" style="background: white; padding: 2.5rem 1.5rem; border-radius: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); display: flex; flex-direction: column; align-items: center; text-align: center;">
+                    <div style="font-size: 4rem; margin-bottom: 1rem;">🎂</div>
+                    <h3 style="font-size: 1.4rem; font-weight: 800; margin-bottom: 1rem; line-height: 1.2;">Anniversaire<br>-10% pour le célébrer</h3>
+                    <p style="color: #4b5563; line-height: 1.5; font-size: 0.95rem;">Pour votre anniversaire, nous vous offrons une remise de 10 % à valoir sur tous vos achats, en magasin ou sur notre site internet*, de quoi vous faire plaisir tout en économisant. Une attention valable une seule fois, à utiliser dans les 30 jours qui suivent votre date d’anniversaire.</p>
+                </div>
+            </div>
+
+            <p style="font-size: 1rem; color: #4b5563; font-style: italic; margin-bottom: 0;">
+                *Hors journées promo et produits en promotion non cumulables avec les bons d'achat
+            </p>
+        </div>
+    </section>
+    <div style="height: 5rem; background: white;"></div>
+    {# Section: Comment ça fonctionne ? #}
+    <section class="py-32 bg-white">
+        <div class="container mx-auto px-4 text-center">
+            <h2 style="font-size: 2.5rem; font-weight: 900; margin-bottom: 4rem;">Comment ça fonctionne ?</h2>
+            
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; max-width: 1000px; margin: 0 auto;">
+                {# Step 1 #}
+                <div style="background: white; border-radius: 30px; overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.08); display: flex; flex-direction: column; height: 100%;">
+                    <div style="background-image: url('{{ asset('assets/shop/images/panier.png') }}'); background-size: cover; background-position: center; height: 18rem; padding: 1rem; color: white; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.5rem; position: relative;">
+                        <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(249,115,22,0.4); z-index: 1;"></div>
+                        <span style="font-size: 1.8rem; font-weight: 900; position: relative; z-index: 2;">JE</span>
+                        <span style="font-size: 1.8rem; font-weight: 900; position: relative; z-index: 2;">CAGNOTE</span>
+                    </div>
+                    <div style="padding: 2rem; flex: 1;">
+                        <p style="color: #4b5563; line-height: 1.6; font-size: 1.05rem;">Chaque commande en ligne ou achat en magasin vous fait cumuler des points et seront convertis en bons d’achats.</p>
+                    </div>
+                </div>
+                {# Step 2 #}
+                <div style="background: white; border-radius: 30px; overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.08); display: flex; flex-direction: column; height: 100%;">
+                    <div style="background-image: url('{{ asset('assets/shop/images/pig.png') }}'); background-size: cover; background-position: center; height: 18rem; padding: 1rem; color: white; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.2rem; position: relative;">
+                        <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(249,115,22,0.4); z-index: 1;"></div>
+                        <span style="font-size: 2.2rem; font-weight: 900; position: relative; z-index: 2;">1€</span>
+                        <span style="font-size: 1.5rem; font-weight: 800; position: relative; z-index: 2;">=</span>
+                        <span style="font-size: 1.8rem; font-weight: 900; position: relative; z-index: 2;">1 POINT</span>
+                    </div>
+                    <div style="padding: 2rem; flex: 1;">
+                        <p style="color: #4b5563; line-height: 1.6; font-size: 1.05rem;">Pour 1 € dépensé dans nos magasins ou sur notre site, vous recevez 1 point de fidélité. Vous pouvez consulter le solde de vos points de fidélité depuis votre compte client sur le site internet ou sur la carte de fidélité dans le Wallet.</p>
+                    </div>
+                </div>
+                {# Step 3 #}
+                <div style="background: white; border-radius: 30px; overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.08); display: flex; flex-direction: column; height: 100%;">
+                    <div style="background-image: url('{{ asset('assets/shop/images/panier.png') }}'); background-size: cover; background-position: center; height: 18rem; padding: 1rem; color: white; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.2rem; position: relative;">
+                        <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(249,115,22,0.4); z-index: 1;"></div>
+                        <span style="font-size: 1.8rem; font-weight: 900; position: relative; z-index: 2;">100 POINT</span>
+                        <span style="font-size: 1.5rem; font-weight: 800; position: relative; z-index: 2;">=</span>
+                        <span style="font-size: 1.8rem; font-weight: 900; position: relative; z-index: 2;">5€</span>
+                    </div>
+                    <div style="padding: 2rem; flex: 1;">
+                        <p style="color: #4b5563; line-height: 1.6; font-size: 1.05rem;">Tous les 100 points, vous recevez un bon d’achat de 5 € à utiliser dans les 12 mois suivants. Il vous suffit de présenter votre carte lors de votre prochain passage en caisse ou d’activité votre bon fidélité directement depuis votre compte web.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div style="height: 5rem; background: white;"></div>
+    {# Section: Votre carte personnelle et dématérialisée #}
+    <section class="py-32" style="background-color: #ffffffff; overflow: hidden;">
+        <div class="container mx-auto px-4">
+            <div style="display: flex; flex-direction: row; flex-wrap: wrap; align-items: center; gap: 4rem;">
+                {# Left Column: Text #}
+                <div style="flex: 1; min-width: 320px;">
+                    <h2 style="font-size: 3.5rem; font-weight: 900; color: #111827; margin-bottom: 2rem; line-height: 1.1;">Votre carte personnelle et dématérialisée</h2>
+                    
+                    <div style="font-size: 1.15rem; color: #374151; line-height: 1.6; margin-bottom: 3rem;">
+                        <p style="margin-bottom: 2rem;">La carte du Club Catéco est immédiatement active en caisse ou en ligne dès que vous créez votre compte ! Vous n’avez pas besoin de garder sur vous une carte physique puisqu’il s’agit d’une carte dématérialisée. Retrouvez-la dans votre application Wallet sur votre téléphone. Cette carte nouvelle génération vous permet de gagner et d’utiliser vos points de manière simple et rapide, directement depuis votre smartphone.</p>
+                        
+                        <p>En plus, vous recevrez des notifications personnalisées pour bénéficier des dernières promotions, réductions et bons plans du Club Catéco. Ces alertes vous aideront à ne jamais manquer une occasion de profiter de nos offres exclusives ; n’oubliez pas de donner votre consentement pour les recevoir.</p>
+                    </div>
+                    
+                    <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                        <a href="{{ path('sylius_shop_register') }}" style="background: #f8a436ff; color: white; padding: 0.75rem 1.8rem; border-radius: 999px; font-weight: 800; text-decoration: none; font-size: 1rem; box-shadow: 0 8px 15px rgba(248,164,54,0.2);">Je crée mon compte</a>
+                        <a href="{{ path('sylius_shop_login') }}" style="background: transparent; border: 2px solid #f8a436ff; color: #f8a436ff; padding: 0.75rem 1.8rem; border-radius: 999px; font-weight: 800; text-decoration: none; font-size: 1rem;">Je me connecte</a>
+                    </div>
+                </div>
+                
+                {# Right Column: Image with decoration #}
+                <div style="flex: 1; min-width: 320px; position: relative; padding: 60px;">
+                    {# Decorative orange box #}
+                    <div style="position: absolute; top: 0; right: 0; width: 80%; height: 90%; background: #f8a436ff; border-radius: 40px; z-index: 1;"></div>
+                    {# Image #}
+                    <img src="{{ asset('assets/shop/images/fidelite_mobile_app_img.png') }}" alt="Catéco Wallet" style="max-width: 100%; height: auto; position: relative; z-index: 2; filter: drop-shadow(0 20px 40px rgba(0,0,0,0.15));">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div style="height: 5rem; background: white;"></div>
+    {# FAQ Section - Full Accordion Implementation #}
+    <section class="py-24" style="background-color: #f9fafb;">
+        <div class="container mx-auto px-4 max-w-4xl">
+            <h2 style="font-size: 3rem; font-weight: 900; color: #111827; text-align: center; margin-bottom: 4rem;">FAQ Club Catéco</h2>
+            
+            <div style="display: flex; flex-direction: column; gap: 1rem;">
+                {# FAQ Item 1 #}
+                <div class="faq-item" style="background: white; border-radius: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.02); overflow: hidden;">
+                    <button onclick="toggleFaq(this)" style="width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 1.5rem 2rem; background: none; border: none; cursor: pointer; text-align: left; transition: all 0.3s;">
+                        <span style="font-size: 1.25rem; font-weight: 800; color: #111827;">Comment rejoindre le Club ?</span>
+                        <div class="faq-icon" style="width: 24px; height: 24px; background: #f97316; border-radius: 50%; color: white; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; font-weight: 900; flex-shrink: 0; transition: transform 0.3s;">+</div>
+                    </button>
+                    <div class="faq-content" style="max-height: 0; opacity: 0; transition: all 0.4s ease-out; overflow: hidden; background: #fff;">
+                        <div style="padding: 0 2rem 2rem 2rem; color: #4b5563; line-height: 1.6; font-size: 1.1rem;">
+                            <p style="margin-bottom: 1rem;">Le programme de Fidélité Club Catéco est accessible :</p>
+                            <ul style="list-style-type: disc; margin-left: 1.5rem; margin-bottom: 1rem;">
+                                <li>En magasin sur simple demande en caisse en communiquant votre numéro de téléphone mobile. Vous recevez un SMS qui vous donne accès à un formulaire en ligne à compléter.</li>
+                                <li>Via un QR code présent sur les supports papier en magasin que vous scannez pour accéder au formulaire en ligne.</li>
+                                <li>Sur le site cateco.fr en créant un compte client web.</li>
+                            </ul>
+                            <p>Pour rejoindre le programme, il faut être majeur et renseigner les informations suivantes : coordonnées, adresse email, numéro de téléphone mobile, date de naissance, consentement pour recevoir les communications Catéco. Une fois inscrit, vous êtes immédiatement membre et vous pouvez commencer à accumuler des points.</p>
+                        </div>
+                    </div>
+                </div>
+
+                {# FAQ Item 2 #}
+                <div class="faq-item" style="background: white; border-radius: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.02); overflow: hidden;">
+                    <button onclick="toggleFaq(this)" style="width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 1.5rem 2rem; background: none; border: none; cursor: pointer; text-align: left; transition: all 0.3s;">
+                        <span style="font-size: 1.25rem; font-weight: 800; color: #111827;">Comment j’utilise mes points ?</span>
+                        <div class="faq-icon" style="width: 24px; height: 24px; background: #f97316; border-radius: 50%; color: white; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; font-weight: 900; flex-shrink: 0; transition: transform 0.3s;">+</div>
+                    </button>
+                    <div class="faq-content" style="max-height: 0; opacity: 0; transition: all 0.4s ease-out; overflow: hidden; background: #fff;">
+                        <div style="padding: 0 2rem 2rem 2rem; color: #4b5563; line-height: 1.6; font-size: 1.1rem;">
+                            <p style="margin-bottom: 1.5rem;">Le programme vous permet de cumuler des points fidélité lors de chaque achat de produit réalisé dans nos magasins ou sur le site internet. Chaque euro dépensé vous donne droit à un point de fidélité. Vos points peuvent être utilisés dès que vous avez accumulé 100 points, sous la forme d’une remise de fidélité à valoir sur vos prochains achats en magasin ou sur le site internet.</p>
+                            <p>La remise est utilisable en une fois, cumulable avec une autre remise fidélité, mais elle n’est pas cumulable avec toute autre offre promotionnelle en cours, ni avec tout autre avantage du programme.</p>
+                        </div>
+                    </div>
+                </div>
+
+                {# FAQ Item 3 #}
+                <div class="faq-item" style="background: white; border-radius: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.02); overflow: hidden;">
+                    <button onclick="toggleFaq(this)" style="width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 1.5rem 2rem; background: none; border: none; cursor: pointer; text-align: left; transition: all 0.3s;">
+                        <span style="font-size: 1.25rem; font-weight: 800; color: #111827;">Est-ce que mes points expirent ?</span>
+                        <div class="faq-icon" style="width: 24px; height: 24px; background: #f97316; border-radius: 50%; color: white; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; font-weight: 900; flex-shrink: 0; transition: transform 0.3s;">+</div>
+                    </button>
+                    <div class="faq-content" style="max-height: 0; opacity: 0; transition: all 0.4s ease-out; overflow: hidden; background: #fff;">
+                        <div style="padding: 0 2rem 2rem 2rem; color: #4b5563; line-height: 1.6; font-size: 1.1rem;">
+                            <p style="margin-bottom: 1.5rem;">Les points fidélité sont valables pendant 12 mois à compter de la date du premier achat ayant généré des points. Au-delà de ce délai, les points non utilisés seront automatiquement expirés et ne pourront plus être utilisés. Il appartient au client de convertir ses points avant leur date d'expiration.</p>
+                            <p>Si le compte est inactif durant cette période de 12 mois, le compteur sera remis à 0, la perte des points sera automatique.</p>
+                        </div>
+                    </div>
+                </div>
+
+                {# FAQ Item 4 #}
+                <div class="faq-item" style="background: white; border-radius: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.02); overflow: hidden;">
+                    <button onclick="toggleFaq(this)" style="width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 1.5rem 2rem; background: none; border: none; cursor: pointer; text-align: left; transition: all 0.3s;">
+                        <span style="font-size: 1.25rem; font-weight: 800; color: #111827;">Puis-je transférer mes points ?</span>
+                        <div class="faq-icon" style="width: 24px; height: 24px; background: #f97316; border-radius: 50%; color: white; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; font-weight: 900; flex-shrink: 0; transition: transform 0.3s;">+</div>
+                    </button>
+                    <div class="faq-content" style="max-height: 0; opacity: 0; transition: all 0.4s ease-out; overflow: hidden; background: #fff;">
+                        <div style="padding: 0 2rem 2rem 2rem; color: #4b5563; line-height: 1.6; font-size: 1.1rem;">
+                            <p style="margin-bottom: 1.5rem;">Les points fidélité n’ont aucune valeur marchande. Ils ne peuvent être ni repris, ni échangés contre de l’argent ou leur valeur en espèces.</p>
+                            <p>Vous ne pouvez pas transférer vos points à un autre membre. Chaque membre du Club Catéco bénéficie de ses propres points accumulés lors de ses achats personnels.</p>
+                        </div>
+                    </div>
+                </div>
+
+                {# FAQ Item 5 #}
+                <div class="faq-item" style="background: white; border-radius: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.02); overflow: hidden;">
+                    <button onclick="toggleFaq(this)" style="width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 1.5rem 2rem; background: none; border: none; cursor: pointer; text-align: left; transition: all 0.3s;">
+                        <span style="font-size: 1.25rem; font-weight: 800; color: #111827;">Y a-t-il une limite de points ?</span>
+                        <div class="faq-icon" style="width: 24px; height: 24px; background: #f97316; border-radius: 50%; color: white; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; font-weight: 900; flex-shrink: 0; transition: transform 0.3s;">+</div>
+                    </button>
+                    <div class="faq-content" style="max-height: 0; opacity: 0; transition: all 0.4s ease-out; overflow: hidden; background: #fff;">
+                        <div style="padding: 0 2rem 2rem 2rem; color: #4b5563; line-height: 1.6; font-size: 1.1rem;">
+                            <p>La bonne nouvelle ! Aucune limite de point. Plus vous achetez, plus vous gagnez de points, et plus vous bénéficiez d’avantages. Le programme est conçu pour récompenser les clients fidèles, vous pouvez accumuler un nombre illimité de points au fil du temps.</p>
+                        </div>
+                    </div>
+                </div>
+
+                {# FAQ Item 6 #}
+                <div class="faq-item" style="background: white; border-radius: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.02); overflow: hidden;">
+                    <button onclick="toggleFaq(this)" style="width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 1.5rem 2rem; background: none; border: none; cursor: pointer; text-align: left; transition: all 0.3s;">
+                        <span style="font-size: 1.25rem; font-weight: 800; color: #111827;">L’adhésion au Club Catéco est-elle gratuite ?</span>
+                        <div class="faq-icon" style="width: 24px; height: 24px; background: #f97316; border-radius: 50%; color: white; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; font-weight: 900; flex-shrink: 0; transition: transform 0.3s;">+</div>
+                    </button>
+                    <div class="faq-content" style="max-height: 0; opacity: 0; transition: all 0.4s ease-out; overflow: hidden; background: #fff;">
+                        <div style="padding: 0 2rem 2rem 2rem; color: #4b5563; line-height: 1.6; font-size: 1.1rem;">
+                            <p style="margin-bottom: 1.5rem;">Oui, l’adhésion au Club Catéco est entièrement gratuite. Vous n’avez qu’à créer un compte sur notre site web ou en magasin pour devenir membre et commencer à cumuler des points.</p>
+                            <p>Vous pouvez consulter votre solde de points à tout moment en vous connectant à votre compte client sur le site internet, en magasin ou directement sur votre carte de fidélité numérique dans l’application Wallet de votre téléphone.</p>
+                        </div>
+                    </div>
+                </div>
+
+                {# FAQ Item 7 #}
+                <div class="faq-item" style="background: white; border-radius: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.02); overflow: hidden;">
+                    <button onclick="toggleFaq(this)" style="width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 1.5rem 2rem; background: none; border: none; cursor: pointer; text-align: left; transition: all 0.3s;">
+                        <span style="font-size: 1.25rem; font-weight: 800; color: #111827;">Comment retrouver ma carte de fidélité dans mon Wallet ?</span>
+                        <div class="faq-icon" style="width: 24px; height: 24px; background: #f97316; border-radius: 50%; color: white; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; font-weight: 900; flex-shrink: 0; transition: transform 0.3s;">+</div>
+                    </button>
+                    <div class="faq-content" style="max-height: 0; opacity: 0; transition: all 0.4s ease-out; overflow: hidden; background: #fff;">
+                        <div style="padding: 0 2rem 2rem 2rem; color: #4b5563; line-height: 1.6; font-size: 1.1rem;">
+                            <p style="font-weight: 800; margin-bottom: 1rem;">Sur iPhone (Apple Wallet) OU Android (Google Wallet) :</p>
+                            <ul style="list-style-type: disc; margin-left: 1.5rem; margin-bottom: 1.5rem;">
+                                <li><strong>IPhone</strong> : Ouvrez l’application Wallet depuis l’écran d’accueil</li>
+                                <li><strong>Android</strong> : Ouvrez l’application Google Wallet</li>
+                                <li>Faites défiler les cartes si besoin : la carte Catéco peut se trouver plus bas dans la liste.</li>
+                                <li>Utilisez la barre de recherche en haut de l’écran pour taper “Catéco”.</li>
+                            </ul>
+                            <p style="font-weight: 800; margin-bottom: 0.5rem;">Je ne la trouve toujours pas ?</p>
+                            <p>Pas d’inquiétude ! Contactez notre service client : <a href="mailto:contact@cateco.fr" style="color: #f97316; font-weight: 700;">contact@cateco.fr</a> ou directement en magasin.</p>
+                        </div>
+                    </div>
+                </div>
+                {# Legal Mentions Link #}
+                <div style="text-align: center; margin-top: 0.5rem;">
+                    <a href="https://stlaurent.cateco.fr/img/cms/CGU_PROGRAMM2.pdf" target="_blank" class="faq-legal-link" style="color: #f97316; font-weight: 700; text-decoration: none; font-size: 1.1rem;">Retrouvez les détails et mentions légales ici</a>
+                </div>
+
+            </div>
+        </div>
+    </section>
+</div>
+
+<script>
+    function toggleFaq(button) {
+        const item = button.parentElement;
+        const content = item.querySelector('.faq-content');
+        const icon = button.querySelector('.faq-icon');
+        const allItems = document.querySelectorAll('.faq-item');
+        
+        // Close others
+        allItems.forEach(otherItem => {
+            if (otherItem !== item) {
+                const otherContent = otherItem.querySelector('.faq-content');
+                const otherIcon = otherItem.querySelector('.faq-icon');
+                otherContent.style.maxHeight = '0';
+                otherContent.style.opacity = '0';
+                otherIcon.textContent = '+';
+                otherIcon.style.transform = 'rotate(0deg)';
+                otherItem.style.boxShadow = '0 4px 6px rgba(0,0,0,0.02)';
+            }
+        });
+
+        // Toggle current
+        if (content.style.maxHeight === '0px' || content.style.maxHeight === '') {
+            content.style.maxHeight = content.scrollHeight + 'px';
+            content.style.opacity = '1';
+            icon.textContent = '-';
+            icon.style.transform = 'rotate(180deg)';
+            item.style.boxShadow = '0 10px 25px rgba(0,0,0,0.08)';
+        } else {
+            content.style.maxHeight = '0';
+            content.style.opacity = '0';
+            icon.textContent = '+';
+            icon.style.transform = 'rotate(0deg)';
+            item.style.boxShadow = '0 4px 6px rgba(0,0,0,0.02)';
+        }
+    }
+</script>
+
+<style>
+    .club-cateco-page { font-family: 'Outfit', sans-serif; }
+    .btn-club-primary:hover { transform: translateY(-3px); filter: brightness(1.1); }
+    .btn-club-outline:hover { background: #f97316; color: white; }
+    .advantage-card { transition: transform 0.3s ease; }
+    .advantage-card:hover { transform: translateY(-10px); }
+    .faq-item:hover { transform: translateY(-2px); transition: all 0.3s ease; }
+    .faq-legal-link:hover { color: #111827 !important; transition: color 0.3s ease; }
+</style>
+{% endblock %}

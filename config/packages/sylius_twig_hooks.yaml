@@ -1,0 +1,18 @@
+sylius_twig_hooks:
+    hooks:
+        # Navbar hook
+        'sylius_shop.base.header.navbar':
+            cateco_navbar:
+                template: '@SyliusShop/shared/layout/base/header/cateco_navbar.html.twig'
+                priority: 100
+        # Homepage products hook
+        'sylius.shop.homepage.products':
+            default:
+                template: '@SyliusShop/Homepage/_product_card.html.twig'
+                priority: 100
+        # Forcibly disable the parts causing white space above the navbar
+        'sylius_shop.base.header':
+            top_bar:
+                enabled: false
+            content:
+                enabled: false

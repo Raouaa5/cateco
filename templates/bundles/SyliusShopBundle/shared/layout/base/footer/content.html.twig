@@ -1,0 +1,95 @@
+{#
+    Custom Cateco Footer overriding the default Sylius Shop footer
+    - Real logo photo (logo2.png)
+    - All content in one compact row
+    - Legal links in same row
+#}
+
+<footer style="background-color: #17716c; color: #ffffff; padding: 2.5rem 0 0; overflow: hidden;">
+    <div class="container mx-auto px-4 lg:px-8">
+        
+        {# Single row: Logo+Socials | Catégories | Catégories2 | En savoir plus | Légal #}
+        <div style="display: flex; flex-wrap: wrap; gap: 2rem; align-items: flex-start; justify-content: flex-start; margin-bottom: 2rem;">
+            
+            {# Column 1: Real Logo & Socials #}
+            <div style="flex: 0 0 auto; min-width: 140px; max-width: 180px;">
+                <a href="{{ path('sylius_shop_homepage') }}" style="display: block; margin-bottom: 1rem;">
+                    <img src="{{ asset('assets/shop/images/logo2.png') }}" alt="Catéco" style="max-width: 150px; height: auto; display: block;">
+                </a>
+                <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                    <a href="#" style="color: #ffffff; text-decoration: none; font-weight: 600; font-size: 0.9rem; border-bottom: 1px solid #f97316; width: fit-content;" onmouseover="this.style.color='#f97316'" onmouseout="this.style.color='#ffffff'">Facebook</a>
+                    <a href="#" style="color: #ffffff; text-decoration: none; font-weight: 600; font-size: 0.9rem; border-bottom: 1px solid #f97316; width: fit-content;" onmouseover="this.style.color='#f97316'" onmouseout="this.style.color='#ffffff'">Instagram</a>
+                </div>
+            </div>
+
+            {# Column 2: Catégories Part 1 #}
+            <div style="flex: 0 0 auto; min-width: 130px;">
+                <h4 style="font-size: 1rem; font-weight: 700; margin-bottom: 1rem; color: #ffffff;">Catégories</h4>
+                <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.75rem;">
+                    <li><a href="#" style="color: #ffffff; font-size: 0.875rem; font-weight: 500; text-decoration: none;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">Jardin</a></li>
+                    <li><a href="#" style="color: #ffffff; font-size: 0.875rem; font-weight: 500; text-decoration: none;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">Plein air</a></li>
+                    <li><a href="#" style="color: #ffffff; font-size: 0.875rem; font-weight: 500; text-decoration: none;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">Tentes & bâches</a></li>
+                    <li><a href="#" style="color: #ffffff; font-size: 0.875rem; font-weight: 500; text-decoration: none;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">Anti insectes</a></li>
+                </ul>
+            </div>
+
+            {# Column 3: Catégories Part 2 #}
+            <div style="flex: 0 0 auto; min-width: 160px; padding-top: 2rem;">
+                <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.75rem;">
+                    <li><a href="#" style="color: #ffffff; font-size: 0.875rem; font-weight: 500; text-decoration: none;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">Maison</a></li>
+                    <li><a href="#" style="color: #ffffff; font-size: 0.875rem; font-weight: 500; text-decoration: none;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">Bricolage, automobile, 2 roues</a></li>
+                    <li><a href="#" style="color: #ffffff; font-size: 0.875rem; font-weight: 500; text-decoration: none;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">Sport & bien-être</a></li>
+                </ul>
+            </div>
+
+            {# Column 4: En savoir plus #}
+            <div style="flex: 0 0 auto; min-width: 150px;">
+                <h4 style="font-size: 1rem; font-weight: 700; margin-bottom: 1rem; color: #ffffff;">En savoir plus</h4>
+                <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.75rem;">
+                    <li><a href="/qui-sommes-nous" style="color: #ffffff; font-size: 0.875rem; font-weight: 500; text-decoration: none;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">Qui sommes-nous ?</a></li>
+                    <li><a href="#" style="color: #ffffff; font-size: 0.875rem; font-weight: 500; text-decoration: none;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">Nos magasins</a></li>
+                    <li><a href="#" style="color: #ffffff; font-size: 0.875rem; font-weight: 500; text-decoration: none;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">Programme de fidélité</a></li>
+                    <li><a href="#" style="color: #ffffff; font-size: 0.875rem; font-weight: 500; text-decoration: none;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">Prendre contact</a></li>
+                    <li><a href="#" style="color: #ffffff; font-size: 0.875rem; font-weight: 500; text-decoration: none;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">Plan du site</a></li>
+                </ul>
+            </div>
+
+            {# Column 5: Légal - in same row #}
+            <div style="flex: 0 0 auto; min-width: 170px; padding-top: 2rem;">
+                <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.75rem;">
+                    <li><a href="#" style="color: #ffffff; font-size: 0.875rem; font-weight: 500; text-decoration: none;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">Politique de confidentialité</a></li>
+                    <li><a href="#" style="color: #ffffff; font-size: 0.875rem; font-weight: 500; text-decoration: none;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">Mentions légales</a></li>
+                    <li><a href="#" style="color: #ffffff; font-size: 0.875rem; font-weight: 500; text-decoration: none;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">CGV</a></li>
+                </ul>
+            </div>
+
+        </div>
+
+        {# Bottom Copyright Bar #}
+        <div style="border-top: 1px solid rgba(255,255,255,0.1); padding: 1.25rem 0; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem;">
+            
+            <button style="background-color: #f97316; color: white; border: none; padding: 0.4rem 1rem; border-radius: 9999px; font-weight: 700; font-size: 0.8rem; cursor: pointer;" onmouseover="this.style.backgroundColor='#ea580c'" onmouseout="this.style.backgroundColor='#f97316'">
+                Paramètres des cookies
+            </button>
+
+            <p style="color: #ffffff; font-size: 0.8rem; font-weight: 500; margin: 0; text-align: center; flex: 1;">
+                © Copyright Catéco {{ 'now'|date('Y') }}, Tous droits réservés | Développé par l'agence web Kwantic
+            </p>
+
+            <div style="background-color: white; padding: 0.25rem 0.5rem; border-radius: 4px; display: flex; flex-direction: column; align-items: flex-end;">
+                <div style="display: flex; align-items: center; gap: 0.5rem; color: #0d47a1; font-weight: 700; font-size: 0.75rem;">
+                    <svg style="width:14px;height:14px;" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                    Avis Vérifiés
+                    <span style="color:#0d47a1; font-size: 0.9rem;">4.5/5</span>
+                </div>
+                <div style="display: flex; gap: 1px; margin-top: 2px;">
+                    {% for i in 1..5 %}
+                    <div style="background:#0d47a1;color:white;padding:1px 3px;"><svg style="width:10px;height:10px" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg></div>
+                    {% endfor %}
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</footer>

@@ -28,6 +28,7 @@
         "sylius/mollie-plugin": "^3.0",
         "sylius/paypal-plugin": "^2.0",
         "sylius/sylius": "^2.1",
+        "sylius/twig-hooks": "*",
         "symfony/dotenv": "^6.4 || ^7.2",
         "symfony/flex": "^2.7",
         "symfony/runtime": "^6.4 || ^7.2"

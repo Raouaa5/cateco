@@ -94,14 +94,6 @@ If you want to keep up with the updates, [follow the official Sylius account on 
 ## Bug Tracking
 
 If you want to report a bug or suggest an idea, please use [GitHub issues](https://github.com/Sylius/Sylius/issues).
-## 🚀 Cateco E-Commerce Empire (Custom)
-
-### 🎯 Quick Start Cateco (5min)
-```bash
-git clone https://github.com/VOTRE-USERNAME/cateco-sylius.git
-cd cateco-sylius
-docker compose up -d
-
 
 
 ## Community Support
@@ -117,3 +109,18 @@ Sylius is completely free and released under the [MIT License](https://github.co
 
 Sylius was originally created by [Paweł Jędrzejewski](http://pjedrzejewski.com).
 See the list of [contributors from our awesome community](https://github.com/Sylius/Sylius/contributors).
+
+
+# 🚀 Cateco - Installation (2min)
+
+## Prérequis
+- Docker + Docker Compose
+- 6GB RAM libre
+
+## Lancer
+```bash
+git clone https://github.com/Raouaa5/cateco.git 
+cd cateco
+docker compose up -d --build
+docker compose exec app bin/console doctrine:migrations:migrate -n
+# Attendez 90s → http://localhost:8080

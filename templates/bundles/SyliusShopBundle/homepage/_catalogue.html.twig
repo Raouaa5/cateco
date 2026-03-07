@@ -1,0 +1,73 @@
+{#
+    Catalogue Section — White bg, title left, teal card right with small tilted floating image
+    Uses inline styles for rotation/sizing to avoid Tailwind purge issues
+#}
+
+<section class="py-20 bg-white">
+    <div class="container mx-auto px-6 lg:px-12" style="max-width: 1280px; margin: 0 auto; padding-left: 1.5rem; padding-right: 1.5rem;">
+        <div style="display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:2.5rem; width: 100%;">
+
+            {# ── Left: Bold title ── #}
+            <div style="flex:1; min-width:260px; max-width:420px;">
+                <h2 style="font-size:clamp(2rem,4vw,3.2rem); font-weight:800; color:#111827; line-height:1.2; margin:0;">
+                    Feuilletez les derniers catalogues Catéco en ligne&nbsp;!
+                </h2>
+            </div>
+
+            {# ── Right: wrapper that reserves room above the card ── #}
+            <div style="flex:1; min-width:260px; max-width:340px; display:flex; justify-content:center;">
+                <div style="position:relative; padding-top:80px; width:280px;">
+
+                    {# Floating tilted catalogue — positioned higher and more left #}
+                    <div style="
+                        position:absolute;
+                        top:-30px;
+                        left:30%;
+                        transform: translateX(-50%) rotate(-10deg);
+                        width:160px;
+                        height:190px;
+                        z-index:10;
+                        filter: drop-shadow(0 15px 25px rgba(0,0,0,0.4));
+                    ">
+                    <a href="https://www.calameo.com/read/007260152f5b472bbd8b8" target="_blank" 
+                    onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='0 20px 40px rgba(0,0,0,0.2)'"
+                    onmouseout="this.style.transform=''; this.style.boxShadow='0 10px 30px rgba(0,0,0,0.15)'">
+                        <img src="{{ asset('assets/shop/images/catalogue.png') }}"
+                             alt="Catalogue Catéco"
+                             style="width:100%; height:100%; object-fit:contain; display:block;">
+                    </a>
+                    </div>
+
+                    {# Teal card #}
+                    <a href="https://www.calameo.com/read/007260152f5b472bbd8b8"
+                       target="_blank"
+                       style="
+                           display:block;
+                           background-color:#17716c;
+                           border-radius:1.5rem;
+                           width:100%;
+                           padding:3.5rem 2rem 2rem;
+                           text-align:center;
+                           text-decoration:none;
+                           box-shadow:0 10px 30px rgba(0,0,0,0.15);
+                           transition:transform 0.3s ease, box-shadow 0.3s ease;
+                       "
+                       onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='0 20px 40px rgba(0,0,0,0.2)'"
+                       onmouseout="this.style.transform=''; this.style.boxShadow='0 10px 30px rgba(0,0,0,0.15)'">
+
+                        <p style="color:#fff; font-size:1.25rem; font-weight:700; margin:0 0 0.5rem;">Catalogue 88 pages</p>
+                        <div style="display:flex; align-items:center; justify-content:center; gap:0.25rem;">
+                            <span style="color:#fff; font-weight:600; font-size:0.9rem;">Consulter</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" style="width:16px;height:16px;color:#fff;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/>
+                            </svg>
+                        </div>
+                        <div style="width:40px; height:2px; background:#f97316; margin:0.5rem auto 0;"></div>
+                    </a>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>

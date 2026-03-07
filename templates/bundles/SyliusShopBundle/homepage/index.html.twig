@@ -1,0 +1,24 @@
+﻿{#
+    Homepage Template
+    Extends the Sylius Shop base layout
+#}
+
+{% extends '@SyliusShop/shared/layout/base.html.twig' %}
+
+{% block content %}
+    {# Hero Banner Section #}
+    {% include '@SyliusShop/homepage/_hero.html.twig' %}
+    
+    {# Latest Products Section (Nouveautés) #}
+    {% include '@SyliusShop/homepage/_products.html.twig' %}
+
+    {# Catalogue Section #}
+    {% include '@SyliusShop/homepage/_catalogue.html.twig' %}
+
+    {# Categories Section (TEAL Masonry) #}
+    {% include '@SyliusShop/homepage/_categories.html.twig' %}
+
+    {# Qui Sommes-Nous Section #}
+    {% include '@SyliusShop/homepage/_about.html.twig' %}
+
+{% endblock %}

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+
+<html lang="{{ app.request.locale|slice(0, 2) }}">
+        <head>
+                <meta charset="utf-8">
+                <meta http-equiv="X-UA-Compatible" content="IE=edge">
+                <meta content="width=device-width, initial-scale=1, maximum-scale=5" name="viewport">
+
+                <title>
+                        {% block title %}
+                                {{ sylius.channel.name }}
+                        {% endblock %}
+                </title>
+
+                <link rel="preconnect" href="https://fonts.googleapis.com">
+                <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+                <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+                <style>
+                        /* Forcibly hide any top containers or newsletters from base themes */
+                        header + div, #sylius-top-bar, .container.py-4, nav.bg-primary { display: none !important; }
+                        
+                        /* Snap everything to the top */
+                        html, body { 
+                                margin: 0 !important; 
+                                padding: 0 !important; 
+                                scroll-padding-top: 144px; /* Space for both navbars */
+                                font-family: 'Outfit', sans-serif !important;
+                                background-color: #f9fafb !important;
+                        }
+
+                        /* Emergency Utility Fallbacks */
+                        .sr-only { position: absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); border-width:0; }
+                        .container { max-width: 1280px; margin-left: auto; margin-right: auto; padding-left: 1.5rem; padding-right: 1.5rem; }
+                        .flex { display: flex; }
+                        .flex-col { flex-direction: column; }
+                        .min-h-screen { min-height: 100vh; }
+                        .bg-gray-50 { background-color: #F9FAFB; }
+                        .mx-auto { margin-left: auto; margin-right: auto; }
+                        .px-6 { padding-left: 1.5rem; padding-right: 1.5rem; }
+                        .lg\:px-12 { padding-left: 3rem; padding-right: 3rem; }
+                        
+                        /* Cateco Brand Styles */
+                        .main-header, .header-main {
+                          background: linear-gradient(to right, #1F2937, #1F2937, #F97316) !important;
+                          box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+                        }
+                        .site-name a {
+                          background: linear-gradient(to right, #F97316, #F59E0B);
+                          -webkit-background-clip: text;
+                          background-clip: text;
+                          color: transparent;
+                          font-weight: 900;
+                          font-size: 1.75rem;
+                          text-decoration: none;
+                        }
+                        .btn-primary {
+                          background: linear-gradient(to right, #F97316, #F59E0B);
+                          color: white !important;
+                          border: none;
+                          padding: 0.5rem 1.5rem;
+                          border-radius: 0.375rem;
+                          font-weight: 600;
+                          transition: opacity 0.2s;
+                        }
+                        
+                        /* Simple Category Menu Fallback */
+                        .category-menu-container {
+                            background: white;
+                            border-bottom: 1px solid #e5e7eb;
+                            position: sticky;
+                            top: 0;
+                            z-index: 40;
+                        }
+                </style>
+
+        {% block metatags %}
+            <meta name="description" content="Cateco - Équipements pour la maison">
+            <meta name="keywords" content="Cateco, Équipements, Maison">
+        {% endblock %}
+
+                {% block stylesheets %}
+                        {% hook 'sylius.shop.layout.stylesheets' %}
+                        {{ encore_entry_link_tags('shop-entry', null, 'shop') }}
+                        {{ encore_entry_link_tags('app-shop-entry', null, 'app.shop') }}
+                {% endblock %}
+
+                {% hook 'sylius.shop.layout.head' %}
+        </head>
+
+        <body class="flex flex-col min-h-screen bg-gray-50" data-route="{{ app.request.get('_route') }}">
+                <a class="sr-only focus:not-sr-only focus-visible:not-sr-only !absolute !top-2 !left-2" href="#main">Skip to content</a>
+
+                {% hook 'sylius.shop.layout.before_body' %}
+
+                {% block header %}
+                        {% include '@SyliusShop/shared/layout/base/header/cateco_navbar.html.twig' %}
+                        {# Render global category menu via controller so it has data on every page #}
+                        {{ render(controller('App\\Controller\\MenuController::renderMenu')) }}
+                {% endblock %}
+
+                <div class="min-h-[50vh] flex-1 pb-16 w-full" id="main">
+                        {% include '@SyliusShop/shared/layout/base/header/flashes.html.twig' %}
+
+                        {% hook 'sylius.shop.layout.before_content' %}
+
+                        {% block content %}{% endblock %}
+
+                        {% hook 'sylius.shop.layout.after_content' %}
+                </div>
+
+                {% block footer %}
+                        {% include '@SyliusShop/homepage/_trust_indicators.html.twig' %}
+                        {% include '@SyliusShop/shared/layout/base/footer/content.html.twig' %}
+                {% endblock %}
+
+                {% block javascripts %}
+                        {% hook 'sylius.shop.layout.javascripts' %}
+                        {{ encore_entry_script_tags('shop-entry', null, 'shop') }}
+                        {{ encore_entry_script_tags('app-shop-entry', null, 'app.shop') }}
+                {% endblock %}
+
+                {% hook 'sylius.shop.layout.after_body' %}
+
+        </body>
+</html>

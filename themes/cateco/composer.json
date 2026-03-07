@@ -1,0 +1,11 @@
+{
+    "name": "cateco/theme",
+    "type": "sylius-theme",
+    "description": "Cateco Theme Root",
+    "extra": {
+        "sylius-theme": {
+            "title": "Cateco",
+            "path": "."
+        }
+    }
+}

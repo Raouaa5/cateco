@@ -87,6 +87,8 @@ dependencies:
 runtime:
     extensions:
         - sodium
+    config:
+        max_execution_time: 120
 
 crons:
     sylius-cancel-unpaid-orders:

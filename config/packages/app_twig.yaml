@@ -1,0 +1,6 @@
+services:
+    App\Twig\ProductsExtension:
+        autowire: true
+        autoconfigure: true
+        tags:
+            - { name: twig.extension }

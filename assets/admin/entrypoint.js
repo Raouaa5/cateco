@@ -1,4 +1,4 @@
-import '@vendor/sylius/mollie-plugin/assets/admin/entrypoint';
+// import '@vendor/sylius/mollie-plugin/assets/admin/entrypoint';
 import './bootstrap.js';
 
 // In this file you can import assets like images or stylesheets

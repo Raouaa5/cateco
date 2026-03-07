@@ -1,0 +1,48 @@
+{#
+    Hero Section - Inclined background with Typography and CTA
+#}
+
+<section style="position: relative; width: 100%; min-height: 550px; display: flex; align-items: center; overflow: hidden; background-color: #ffffff;">
+    
+    <!-- Inclined Background Wrapper (Teal overlay and precise clipping) -->
+    <div style="position: absolute; left: 0; top: 0; width: 80%; height: 100%; z-index: 1; clip-path: polygon(0 0, 100% 0, 85% 100%, 0 92%); background-color: #17716c;">
+        
+        <!-- Hero Background Image -->
+        <img src="{{ asset('assets/shop/images/hero-bg.png') }}?v={{ date().timestamp }}"
+             alt="Hero Background"
+             style="width: 100%; height: 100%; object-fit: cover; object-position: left center;"
+             onerror="this.src='{{ asset('images/hero-background.jpg') }}'">
+        
+    </div>
+
+    <!-- Content Front -->
+    <div style="position: relative; z-index: 10; width: 100%; max-width: 1500px; margin: 0 auto; display: flex; align-items: center; justify-content: flex-start; padding: 2rem 4rem;">
+        
+        <!-- Left empty space to show the background illustrations (tools, plants, chair) -->
+        <div style="width: 35%; flex-shrink: 0;"></div>
+        
+        <!-- Text Column (Middle/Right over the empty teal space) -->
+        <div style="width: 45%; padding-right: 2rem; display: flex; flex-direction: column; align-items: center; text-align: center;">
+            
+            <h1 style="color: white; font-family: 'Outfit', 'Inter', sans-serif; line-height: 1.2; margin-bottom: 2.5rem; text-shadow: 0 4px 10px rgba(0,0,0,0.15);">
+                <span style="display: block; font-weight: 800; font-size: 3.5rem; letter-spacing: -0.02em;">Catéco le magasin</span>
+                <span style="display: block; font-weight: 400; font-size: 3rem; margin: 0.2rem 0;">qui fait scandale</span>
+                <span style="display: block; font-weight: 800; font-size: 3.5rem; letter-spacing: -0.02em;">sur les prix</span>
+            </h1>
+            
+            <a href="{{ path('sylius_shop_product_index', {'slug': 'nouveautes', '_locale': sylius.localeCode}) }}" 
+               style="display: inline-block; background-color: #ea580c; color: white; padding: 1.25rem 2.5rem; border-radius: 9999px; font-weight: 800; font-size: 1.1rem; text-decoration: none; box-shadow: 0 8px 25px rgba(234, 88, 12, 0.4); transition: transform 0.2s, box-shadow 0.2s; margin: 0 auto;"
+               onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 12px 30px rgba(234, 88, 12, 0.6)';"
+               onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 8px 25px rgba(234, 88, 12, 0.4)';">
+                Commencer mon shopping
+            </a>
+
+        </div>
+
+        <!-- Carousel Placeholder Column -->
+        <div style="width: 20%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+            <!-- Placeholder for future product carousel -->
+        </div>
+        
+    </div>
+</section>

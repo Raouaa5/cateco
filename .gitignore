@@ -61,3 +61,39 @@ phpstan.neon
 ###> liip/imagine-bundle ###
 /public/media/cache/
 ###< liip/imagine-bundle ###
+# Logs and temp files
+*.log
+*.txt
+strace*
+build.log
+nginx.log
+php.log
+php.txt
+nginx_logs.txt
+prod*.txt
+tmp*.html
+
+# Debug scripts in bin/
+bin/debug*
+bin/check*
+bin/fix*
+bin/list*
+bin/manual_*
+bin/sync_*
+
+# Public debug/test files
+public/test*.php
+public/debug*.php
+public/check*.php
+public/dbtest.php
+
+# CSVs (if not needed)
+*.csv
+# Debug scripts
+bin/*
+public/test*.php
+public/debug*.php
+*.html
+
+# Secret keys
+config/encryption/*.key
