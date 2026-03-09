@@ -1,0 +1,21 @@
+{% set product = hookable_metadata.context.product %}
+
+{% if product.images.first %}
+    {% set source_path = product.images.first.path %}
+    {# Fix for absolute URLs from CSV import #}
+    {% if source_path[0:4] == 'http' %}
+        {% set original_path = source_path %}
+        {% set path = source_path %}
+    {% else %}
+        {% set original_path = source_path|imagine_filter('sylius_shop_product_original') %}
+        {% set path = source_path|imagine_filter(filter|default('sylius_shop_product_large_thumbnail')) %}
+    {% endif %}
+{% else %}
+    {% set original_path = asset('assets/shop/images/no-image.png') %}
+    {% set path = original_path %}
+{% endif %}
+
+<div class="row spotlight-group mb-5" {{ stimulus_controller('product-show-images') }}>
+    <div data-product-image="{{ path }}" data-product-link="{{ original_path }}"></div>
+    {% hook 'images' with { original_path, path } %}
+</div>

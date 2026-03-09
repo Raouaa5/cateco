@@ -1,0 +1,19 @@
+{% set product = hookable_metadata.context.product %}
+{% set image = hookable_metadata.context.image %}
+{% set path = hookable_metadata.context.path %}
+
+{# Handle absolute URLs for spotlight original link #}
+{% if image.path[0:4] == 'http' %}
+    {% set original_link = image.path %}
+    {% set large_thumbnail = image.path %}
+{% else %}
+    {% set original_link = image.path|imagine_filter('sylius_shop_product_original') %}
+    {% set large_thumbnail = image.path|imagine_filter('sylius_shop_product_large_thumbnail') %}
+{% endif %}
+
+<a href="{{ original_link }}" class="d-block overflow-auto bg-light rounded-3 spotlight">
+    <img src="{{ path }}"
+         data-large-thumbnail="{{ large_thumbnail }}"
+         alt="{{ product.name }}" {{ sylius_test_html_attribute('thumbnail-image', image.type) }}
+         class="img-fluid w-100 h-100 object-fit-cover" />
+</a>

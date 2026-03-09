@@ -1,0 +1,19 @@
+{% set product = hookable_metadata.context.product %}
+
+{% if product.images|length > 1 %}
+    <div class="col-12 col-sm-3 mb-3">
+        <div class="d-flex flex-column gap-3 gap-xxl-4" {{ sylius_test_html_attribute('thumbnails') }}>
+            {% for image in product.images %}
+                {# Fix for absolute URLs from CSV import #}
+                {% if image.path and image.path[0:4] == 'http' %}
+                    {% set path = image.path %}
+                {% else %}
+                    {% set path = image.path is not null ? image.path|imagine_filter('sylius_shop_product_small_thumbnail') : asset('assets/shop/images/no-image.png') %}
+                {% endif %}
+                <div>
+                    {% hook 'thumbnails' with {image, path} %}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endif %}

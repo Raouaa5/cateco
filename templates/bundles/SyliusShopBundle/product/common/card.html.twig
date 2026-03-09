@@ -1,0 +1,86 @@
+{#
+    Redesigned Product Card for Cateco
+#}
+
+{# In this context, product is passed directly #}
+{% set cheapest_variant = product|sylius_resolve_variant %}
+{% set price = 0 %}
+{% set original_price = 0 %}
+{% set has_discount = false %}
+
+{% if cheapest_variant is not null %}
+    {% set price = cheapest_variant|sylius_calculate_price({'channel': sylius.channel}) %}
+    {% set original_price = cheapest_variant|sylius_calculate_original_price({'channel': sylius.channel}) %}
+    {% set has_discount = original_price > price %}
+{% endif %}
+
+<div class="cateco-product-card" {{ sylius_test_html_attribute('product', product.code) }}>
+    {# Image & Wishlist #}
+    <div class="product-image-wrapper">
+        <a href="{{ path('sylius_shop_product_show', {'slug': product.slug, '_locale': sylius.localeCode}) }}" style="display:block;width:100%;height:100%;">
+            {% if product.images is not empty %}
+                {% set img = product.images.first %}
+                {% set img_src = img.path[0:4] == 'http' ? img.path : img.path|imagine_filter('sylius_shop_product_thumbnail') %}
+                <img src="{{ img_src }}"
+                     alt="{{ product.name }}"
+                     style="width:100%;height:100%;object-fit:cover;display:block;"
+                     onerror="this.style.display='none';this.parentNode.parentNode.querySelector('.no-img-placeholder').style.display='flex';">
+            {% else %}
+                <div class="no-img-placeholder" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:#f5f5f5;color:#d1d5db;">
+                    <svg xmlns="http://www.w3.org/2000/svg" style="width:48px;height:48px;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                </div>
+            {% endif %}
+        </a>
+        
+        <button type="button" 
+                class="wishlist-heart-btn {{ app.user ? 'logged-in' : 'logged-out' }}" 
+                onclick="{{ app.user ? '' : 'showLoginModal()' }}"
+                aria-label="Ajouter aux favoris">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M11.645 20.91l-.007-.003-.022-.012a15.247 15.247 0 01-.383-.218 25.18 25.18 0 01-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0112 5.052 5.5 5.5 0 0116.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 01-4.244 3.17 15.247 15.247 0 01-.383.219l-.022.012-.007.004-.003.001a.752.752 0 01-.704 0l-.003-.001z" />
+            </svg>
+        </button>
+    </div>
+
+    {# Content #}
+    <div class="product-content">
+        <h3 class="product-title">
+            <a href="{{ path('sylius_shop_product_show', {'slug': product.slug, '_locale': sylius.localeCode}) }}">
+                {{ product.name }}
+            </a>
+        </h3>
+        
+        <div class="product-extract">
+            {{ product.shortDescription|default('')|u.truncate(80, '...') }}
+        </div>
+
+        <div class="product-price-section">
+            <div class="price-labels">
+                {% if cheapest_variant is not null %}
+                    {% if has_discount %}
+                        <span class="original-price">{{ original_price|sylius_format_money(sylius.currencyCode) }}</span>
+                    {% endif %}
+                    <div class="club-price-info">
+                        {# Prix Club SVG icon #}
+                        <img src="{{ asset('assets/shop/images/prix_club_icon.svg') }}"
+                             alt="Prix Club"
+                             class="club-badge-svg"
+                             style="height:32px;width:auto;display:block;flex-shrink:0;">
+                        <span class="final-price">{{ price|sylius_format_money(sylius.currencyCode) }}</span>
+                    </div>
+                {% else %}
+                    <span class="final-price" style="font-size: 1.1rem; color: #9ca3af;">Indisponible</span>
+                {% endif %}
+            </div>
+            
+            {% if cheapest_variant is not null %}
+                {# Rendering the official Sylius 2 AddToCart Live Component with our lightweight custom template #}
+                {{ component('sylius_shop:product:add_to_cart_form', {
+                    'product': product,
+                    'variant': cheapest_variant,
+                    'template': '@SyliusShop/product/common/add_to_cart_form.html.twig'
+                }) }}
+            {% endif %}
+        </div>
+    </div>
+</div>

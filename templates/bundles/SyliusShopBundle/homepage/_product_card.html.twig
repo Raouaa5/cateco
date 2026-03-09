@@ -10,7 +10,7 @@
             {% if product.images|length > 0 %}
                 {% set image = product.images.first %}
                 <img 
-                    src="{{ image.path|imagine_filter('sylius_medium') }}" 
+                    src="{{ image.path[0:4] == 'http' ? image.path : image.path|imagine_filter('sylius_medium') }}" 
                     alt="{{ product.name }}"
                     class="w-full h-full object-cover"
                 />

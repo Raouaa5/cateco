@@ -1,0 +1,20 @@
+{% if product.imagesByType('thumbnail') is not empty %}
+    {% set image = product.imagesByType('thumbnail').first %}
+{% elseif product.images.first %}
+    {% set image = product.images.first %}
+{% else %}
+    {% set image = null %}
+{% endif %}
+
+{% if image %}
+    {# Fix for absolute URLs from CSV import #}
+    {% if image.path[0:4] == 'http' %}
+        {% set path = image.path %}
+    {% else %}
+        {% set path = image.path|imagine_filter(filter|default('sylius_shop_product_thumbnail')) %}
+    {% endif %}
+{% else %}
+    {% set path = asset('assets/shop/images/no-image.png') %}
+{% endif %}
+
+<img {{ attributes.defaults({ class: 'img-fluid' }) }} src="{{ path }}" {{ sylius_test_html_attribute('main-image') }} alt="{{ 'sylius.ui.product'|trans }} {{ product.name }} {{ 'sylius.ui.image'|trans }}" />

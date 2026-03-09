@@ -10,6 +10,8 @@
 }
 
 /* Styles Cateco */
+@import "components/product-card.css";
+
 .main-header,
 .header-main {
   background: linear-gradient(to right, #1F2937, #1F2937, #F97316);

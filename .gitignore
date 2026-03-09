@@ -18,6 +18,7 @@
 
 ###> symfony/framework-bundle ###
 /composer.lock
+/.env
 /.env.*.local
 /.env.local
 /.env.local.php
@@ -97,3 +98,5 @@ public/debug*.php
 
 # Secret keys
 config/encryption/*.key
+
+/node_modules/
