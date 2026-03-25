@@ -108,13 +108,13 @@ jobs:
                     cp .env.test .env
 
             -   name: "Validate Twig templates"
-                run: bin/console lint:twig src
+                run: APP_ENV=dev bin/console lint:twig src
 
             -   name: "Validate Container"
-                run: bin/console lint:container
+                run: APP_ENV=dev bin/console lint:container
 
             -   name: Validate Yaml files
-                run: bin/console lint:yaml src
+                run: APP_ENV=dev bin/console lint:yaml src
 
             -   name: Run PHPStan
                 run: vendor/bin/phpstan analyse
