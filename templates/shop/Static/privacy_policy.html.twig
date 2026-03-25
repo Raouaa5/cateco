@@ -1,0 +1,130 @@
+{% extends '@SyliusShop/shared/layout/base.html.twig' %}
+
+{% block title %}Politique de confidentialité | {{ parent() }}{% endblock %}
+
+{% block content %}
+<div style="background: white; min-height: 80vh; font-family: 'Outfit', sans-serif;">
+    {# Legend/Header Section - Light Gray Theme #}
+    <div style="background: linear-gradient(135deg, #d1d5db 0%, #9ca3af 100%); padding: 4rem 0; color: #111827; position: relative; overflow: hidden; border-radius: 0 0 3rem 3rem; margin-bottom: 3rem;">
+        {# Photo on the right (Reflet en couleur avec masque fluide) #}
+        <div style="position: absolute; top: 0; right: 0; height: 100%; width: 55%; z-index: 1; -webkit-mask-image: linear-gradient(to right, transparent 0%, black 35%); mask-image: linear-gradient(to right, transparent 0%, black 35%); opacity: 0.6;">
+            <img src="{{ asset('assets/shop/images/rejoignez-club.jpg') }}" alt="" style="width: 100%; height: 100%; object-fit: cover; object-position: right 35%; display: block; filter: grayscale(20%);">
+        </div>
+
+        <div class="container mx-auto px-6 lg:px-12 relative" style="z-index: 2;">
+            {# Breadcrumbs #}
+            <nav style="margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.5rem; font-size: 0.9rem;">
+                <a href="{{ path('sylius_shop_homepage') }}" style="color: #4b5563; text-decoration: none;">Accueil</a>
+                <span style="opacity: 0.6; color: #9ca3af;">/</span>
+                <span style="font-weight: 600; color: #111827;">Politique de confidentialité</span>
+            </nav>
+            
+            <h1 style="font-size: clamp(1.8rem, 4vw, 2.5rem); font-weight: 800; line-height: 1.1; margin: 0; letter-spacing: -0.02em;">
+                Politique de confidentialité
+            </h1>
+        </div>
+    </div>
+
+    {# Main Content #}
+    <div class="container mx-auto px-6 lg:px-12" style="padding-bottom: 6rem;">
+        <div style="max-width: 1200px; margin: 0 auto; color: #4b5563; font-size: 1.15rem; line-height: 2.0; text-align: justify;">
+            <p style="margin-bottom: 2rem;">
+                Le Règlement Général de Protection des données (RGPD) entrant en vigueur le 25 mai 2018, définit les principes à respecter lors de la collecte, du traitement et de la conservation de données personnelles. Ils garantissent aussi les droits pour les personnes concernées.
+            </p>
+            <p style="margin-bottom: 2rem;">
+                Notre site propose plusieurs formulaires afin de collecter les données d’un visiteur ou d’un candidat.
+            </p>
+
+            <h2 style="font-size: 1.8rem; font-weight: 700; color: #111827; margin: 3rem 0 1.5rem; font-family: 'Outfit', sans-serif;">Objectif</h2>
+            <p style="margin-bottom: 1.5rem;">
+                Le recueil des données sur le site <a href="https://cateco.fr" style="color: #40bdb8; text-decoration: none; font-weight: 600;">cateco.fr</a> a pour objectif de constituer un fichier de gestion des prospects et clients ou candidats de notre société. Notre fichier est utilisé et optimisé à des fins statistiques, pour contacter et/ou proposer des contenus pertinents et de qualité aux personnes qui le désirent. Nos formulaires ont pour objectif soit une demande de contact, soit une demande de ressources (livre blanc, infographie, …) soit une inscription à un événement ou à notre newsletter.
+            </p>
+            <p style="margin-bottom: 1.5rem;">
+                Si vous communiquez un CV ou une candidature spontanée en ligne, nous utiliserons vos données personnelles pour des utilisations relatives au recrutement.
+            </p>
+
+            <h2 style="font-size: 1.8rem; font-weight: 700; color: #111827; margin: 3rem 0 1.5rem; font-family: 'Outfit', sans-serif;">Pertinence des données</h2>
+            <p style="margin-bottom: 1.5rem;">
+                Afin de suivre au mieux l’intérêt porté par les prospects et clients et candidats du site «cateco.fr», le fichier recueille toutes informations des visiteurs du site <a href="https://www.cateco.fr" style="color: #40bdb8; text-decoration: none; font-weight: 600;">https://www.cateco.fr</a> relatives à l’identité, informations professionnelles et son activité sur le site. Conformément à la loi informatique et libertés, les informations relevant des origines raciales ou ethniques, des opinions politiques, philosophiques ou religieuses, de l’appartenance syndicale, de la santé ou de la vie sexuelle d’une personne ne sont pas collectées et sont interdites (données sensibles).
+            </p>
+
+            <h2 style="font-size: 1.8rem; font-weight: 700; color: #111827; margin: 3rem 0 1.5rem; font-family: 'Outfit', sans-serif;">Licéité du traitement et conditions applicables au consentement (art 6 et 7 du RGPD)</h2>
+            <p style="margin-bottom: 1.5rem;">
+                Le consentement du traitement de données à caractère personnelle d’un visiteur est systématiquement obtenu pour une ou plusieurs finalités spécifiques. Par exemple, lors de la saisie d’un formulaire d’inscription à la newsletter ou de téléchargement d’une livre blanc ou d’une infographie, l’obtention de l’adresse email du visiteur a pour but de lui adresser une notification lors de nouvelles publications ou de lui proposer des ressources susceptibles de l’intéresser. Lors du dépôt d’une candidature, l’obtention de l’adresse postale, du téléphone et de l’adresse email du candidat a pour but de prendre contact soit par courrier électronique, par téléphone ou par courrier postal.
+            </p>
+
+            <h2 style="font-size: 1.8rem; font-weight: 700; color: #111827; margin: 3rem 0 1.5rem; font-family: 'Outfit', sans-serif;">Conservation des données</h2>
+            <p style="margin-bottom: 1.5rem;">
+                Les données recueillies sur le site <a href="https://www.cateco.fr" style="color: #40bdb8; text-decoration: none; font-weight: 600;">https://www.cateco.fr</a> sont conservées pour une durée maximale de 12 mois pour les contacts anonymes, après la dernière activité sur le site web par la personne. En revanche, pour les contacts identifiés hors recrutement, les données recueillies sur le site sont conservées pour une durée maximale de 36 mois. À l’issue de ces périodes, toutes les données relatives à la personne seront automatiquement supprimées.
+            </p>
+            <p style="margin-bottom: 1.5rem;">
+                En matière de recrutement sauf demande contraire de votre part, **CATECO CAY** pourra conserver pendant un certain temps vos données personnelles dans ses dossiers pour éventuellement vous contacter dans le futur pour d’autres opportunités d’emploi de CATECO CAY.
+            </p>
+
+            <h2 style="font-size: 1.8rem; font-weight: 700; color: #111827; margin: 3rem 0 1.5rem; font-family: 'Outfit', sans-serif;">Droit des personnes</h2>
+            <p style="margin-bottom: 1.5rem;">
+                Conformément à la loi informatique et libertés et au RGPD, toute personne peut exercer son droit d’accès, de rectification, d’opposition, à la limitation des traitements, à la suppression et la portabilité des données le concernant en faisant la demande par courrier signé et accompagné de la copie d’une pièce d’identité à l’adresse du siège social de la **SAS CATECO CAY**. L’agence Kwantic effectuera une réponse au plus tard dans le mois suivant la demande d’accès ou de rectification.
+            </p>
+
+            <h2 style="font-size: 1.8rem; font-weight: 700; color: #111827; margin: 3rem 0 1.5rem; font-family: 'Outfit', sans-serif;">Sécurité des données et traitements (Art 32 du RGPD)</h2>
+            <p style="margin-bottom: 1.5rem;">
+                La SAS CATECO CAY s’engage à assurer la confidentialité des données collectées, et à mettre en œuvre toutes les mesures techniques et organisationnelles adaptées pour préserver leur sécurité et leur intégrité, notamment contre la perte accidentelle, l’altération, la diffusion ou l’accès non autorisé.
+            </p>
+            <p style="margin-bottom: 1.5rem;">
+                D’une façon générale, La SAS CATECO CAY s’engage à utiliser les données collectées dans le strict respect de la législation en vigueur, et notamment de Règlement (UE) 2016/679 du Parlement européen et du Conseil du 27 avril 2016 relatif à la protection des personnes physiques à l’égard du traitement des données à caractère personnel et à la libre circulation de ces données, dit RGPD.
+            </p>
+            <p style="margin-bottom: 1.5rem;">
+                Les données recueillies sur le site ainsi qu’au travers de nos prestataires Mailchimp, XL Soft et les traitements associés, sont hébergées par les sociétés Mailchimp, XL Soft. Seules les personnes liées au service technique, marketing, communication, commercial et RH de la SAS CATECO CAY et ses prestataires ont accès aux informations recueillies sur le site via un identifiant personnel et unique à la plateforme.
+            </p>
+
+            <h2 style="font-size: 1.8rem; font-weight: 700; color: #111827; margin: 3rem 0 1.5rem; font-family: 'Outfit', sans-serif;">Atteinte aux données et communication sous 72h (art 33 et 34 du RGPD)</h2>
+            <p style="margin-bottom: 1.5rem;">
+                En cas de violation ou suspicion de violation de données à caractère personnel, La SAS CATECO CAY notifiera la CNIL, 72h au plus tard, après en avoir pris connaissance.
+            </p>
+
+            <h2 style="font-size: 2.2rem; font-weight: 800; color: #111827; margin: 4rem 0 2rem; font-family: 'Outfit', sans-serif; letter-spacing: -0.02em; border-left: 6px solid #40bdb8; padding-left: 1.5rem;">Politique de gestion des cookies</h2>
+            <p style="margin-bottom: 1.5rem;">
+                Cette rubrique « COOKIES » vous permet d’en savoir plus sur l’origine et l’usage des informations de navigation traitées à l’occasion de votre consultation de notre site et sur vos droits.
+            </p>
+            <p style="margin-bottom: 1.5rem;">
+                Ainsi, lors de la consultation de notre site, des informations relatives à votre navigation sont susceptibles d’être enregistrées dans des fichiers « Cookies » installés sur votre terminal (ordinateur, tablette, smartphone, etc.).
+            </p>
+            <p style="margin-bottom: 1.5rem;">
+                Ces cookies sont émis par nous-mêmes dans le but de faciliter votre navigation sur notre site. Ils peuvent être émis par des partenaires afin de personnaliser l’offre publicitaire qui vous est adressée en dehors de notre site.
+            </p>
+
+            <h3 style="font-size: 1.4rem; font-weight: 700; color: #111827; margin: 2.5rem 0 1rem; font-family: 'Outfit', sans-serif;">8.1. Les cookies que nous émettons</h3>
+            <p style="margin-bottom: 1rem;">Les cookies que nous installons permettent de :</p>
+            <ul style="margin-bottom: 1.5rem; padding-left: 1.5rem;">
+                <li>Établir des statistiques de fréquentation (visites, pages vues, abandons...)</li>
+                <li>Adapter la présentation du site aux préférences de votre terminal</li>
+                <li>Mémoriser des informations saisies dans nos formulaires (compte, commande)</li>
+                <li>Fournir du contenu en rapport avec vos centres d'intérêts</li>
+            </ul>
+
+            <h3 style="font-size: 1.4rem; font-weight: 700; color: #111827; margin: 2.5rem 0 1rem; font-family: 'Outfit', sans-serif;">8.2 Les Cookies tiers</h3>
+            <p style="margin-bottom: 1.5rem;">
+                L’émission et l’utilisation de cookies par des tiers sont soumises aux politiques de protection de la vie privée de ces tiers. Nous veillons à ce que les sociétés partenaires traitent les informations exclusivement pour les besoins de notre site.
+            </p>
+
+            <h3 style="font-size: 1.4rem; font-weight: 700; color: #111827; margin: 2.5rem 0 1rem; font-family: 'Outfit', sans-serif;">8.3 Vos choix concernant les cookies</h3>
+            <p style="margin-bottom: 1.5rem;">
+                Vous pouvez configurer votre logiciel de navigation pour accepter ou rejeter les cookies. Notez que le refus des cookies peut limiter certaines fonctionnalités.
+            </p>
+
+            <h3 style="font-size: 1.4rem; font-weight: 700; color: #111827; margin: 2.5rem 0 1rem; font-family: 'Outfit', sans-serif;">Liens de paramétrage :</h3>
+            <ul style="margin-bottom: 1.5rem; padding-left: 1.5rem;">
+                <li><a href="https://support.google.com/chrome/answer/95647?hl=fr" target="_blank" style="color: #40bdb8;">Chrome</a></li>
+                <li><a href="https://support.mozilla.org/fr/kb/cookies-informations-sites-enregistrent" target="_blank" style="color: #40bdb8;">Firefox</a></li>
+                <li><a href="https://windows.microsoft.com/fr-FR/windows-vista/Block-or-allow-Cookies" target="_blank" style="color: #40bdb8;">Internet Explorer</a></li>
+                <li><a href="http://help.opera.com/Windows/10.20/fr/cookies.html" target="_blank" style="color: #40bdb8;">Opera</a></li>
+            </ul>
+
+            <h2 style="font-size: 1.8rem; font-weight: 700; color: #111827; margin: 3rem 0 1.5rem; font-family: 'Outfit', sans-serif;">Liens externes</h2>
+            <p style="margin-bottom: 1.5rem;">
+                Le site <a href="https://www.cateco.fr" style="color: #40bdb8; text-decoration: none; font-weight: 600;">www.cateco.fr</a> pointe vers de nombreux autres sites web. La SAS CATECO CAY ne peut en aucun cas être tenu pour responsable des contenus et politique de confidentialité de ces sites.
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}

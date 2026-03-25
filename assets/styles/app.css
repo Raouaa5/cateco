@@ -1,16 +1,9 @@
-﻿@import "tailwindcss";
-
-@source "../../templates/**/*.twig";
-@source "../../themes/**/*.twig";
-
-@theme {
-  --color-cateco-orange: #F97316;
-  --color-cateco-dark: #1F2937;
-  --color-cateco-gold: #F59E0B;
-}
+﻿@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 /* Styles Cateco */
-@import "components/product-card.css";
+@import "./components/product-card.css";
 
 .main-header,
 .header-main {

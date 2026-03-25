@@ -41,27 +41,29 @@
 
             {# Price #}
             <div class="mb-3">
-                {% if product.cheapestPrice %}
+                {% set cheapest_variant = product|sylius_resolve_variant %}
+                {% if cheapest_variant is null and product.variants is not empty %}
+                    {% set cheapest_variant = product.variants.first %}
+                {% endif %}
+
+                {% if cheapest_variant is not null %}
+                    {% set price = cheapest_variant|sylius_calculate_price({'channel': sylius.channel}) %}
                     <span class="text-lg font-bold text-orange-500">
-                        {{ product.cheapestPrice|sylius_format_money(product.cheapestPrice.currencyCode) }}
+                        {{ price|sylius_format_money(sylius.currencyCode) }}
                     </span>
-                {% elseif product.price %}
-                    <span class="text-lg font-bold text-orange-500">
-                        {{ product.price|sylius_format_money(product.currencyCode) }}
-                    </span>
+                {% else %}
+                    <span class="text-sm text-gray-500 italic">Prix indisponible</span>
                 {% endif %}
             </div>
 
             {# Add to Cart #}
-            <form method="post" action="{{ path('sylius_shop_cart_item_add', {'productId': product.id}) }}">
-                <input type="hidden" name="sylius_cart_item[quantity]" value="1">
-                <button 
-                    type="submit"
-                    class="w-full py-2 bg-gray-800 hover:bg-orange-500 text-white font-medium rounded transition-colors"
-                >
-                    Ajouter au panier
-                </button>
-            </form>
+            {% if cheapest_variant is not null %}
+                {{ component('sylius_shop:product:add_to_cart_form', {
+                    'product': product,
+                    'variant': cheapest_variant,
+                    'template': '@SyliusShop/product/common/add_to_cart_form.html.twig'
+                }) }}
+            {% endif %}
         </div>
     </div>
 {% endif %}

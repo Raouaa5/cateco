@@ -2,7 +2,10 @@
   content: [
     './templates/**/*.twig',
     './themes/**/*.twig',
-    './assets/**/*.js'
+    './assets/**/*.js',
+    './vendor/sylius/sylius/src/Sylius/Bundle/UiBundle/Resources/views/**/*.twig',
+    './vendor/sylius/sylius/src/Sylius/Bundle/CoreBundle/Resources/views/**/*.twig',
+    './vendor/sylius/sylius/src/Sylius/Bundle/ShopBundle/Resources/views/**/*.twig'
   ],
   theme: {
     extend: {

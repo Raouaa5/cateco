@@ -1,0 +1,109 @@
+{% extends '@SyliusShop/shared/layout/base.html.twig' %}
+
+{% block title %}{{ post.title }} | Blog CATECO{% endblock %}
+
+{% block content %}
+<div style="background: white; min-height: 80vh; font-family: 'Outfit', sans-serif;">
+
+    {# --- Main Content --- #}
+    <div class="container mx-auto px-6 lg:px-12" style="padding-top: 2rem; padding-bottom: 5rem; max-width: 1200px;">
+        
+        {# Breadcrumbs #}
+        <nav style="margin-bottom: 1.5rem; font-size: 1rem; color: #6b7280;">
+            <a href="{{ path('sylius_shop_homepage') }}" style="color: #374151; text-decoration: none; font-weight: 500;">Accueil</a>
+            <span style="opacity: 0.6; margin: 0 0.5rem;">/</span>
+            <a href="{{ path('app_blog_index') }}" style="color: #6b7280; text-decoration: none;">blog</a>
+        </nav>
+
+        <article>
+            {# Image #}
+            {% if post.image %}
+                <div style="margin-bottom: 4rem; width: 100%;">
+                    <img src="{{ asset(post.image) }}"
+                         alt="{{ post.title }}"
+                         style="width: 100%; height: 350px; object-fit: cover; display: block; border-radius: 1rem;"
+                         onerror="this.style.display='none'">
+                </div>
+            {% endif %}
+
+            {# Header Information (Title & Date) #}
+            <div style="margin-bottom: 3.5rem;">
+                <h1 style="font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 800; color: #111827; line-height: 1.2; margin-bottom: 0.75rem; font-family: 'Outfit', sans-serif;">
+                    {{ post.title }}
+                </h1>
+                <p style="font-size: 1.1rem; color: #6b7280;">Publié le {{ post.createdAt|date('d/m/Y') }}</p>
+            </div>
+
+            {# Excerpt (Optional) #}
+            {% if post.excerpt %}
+                <p style="font-size: 1.35rem; font-weight: 500; color: #374151; line-height: 1.8; margin-bottom: 2.5rem; padding-left: 1.5rem; border-left: 4px solid #f59e0b;">
+                    {{ post.excerpt }}
+                </p>
+            {% endif %}
+
+            {# Content #}
+            <div class="blog-content">
+                {{ post.content|raw }}
+            </div>
+        </article>
+
+        {# Back to blog #}
+        <div style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid #e5e7eb;">
+            <a href="{{ path('app_blog_index') }}" style="display: inline-flex; align-items: center; gap: 0.5rem; color: #2c8a86; font-weight: 700; text-decoration: none; font-size: 1.1rem; transition: gap 0.2s;" onmouseover="this.style.gap='0.9rem'" onmouseout="this.style.gap='0.5rem'">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M7 16l-4-4m0 0l4-4m-4 4h18" />
+                </svg>
+                Retour au blog
+            </a>
+        </div>
+    </div>
+</div>
+
+<style>
+    .blog-content {
+        color: #374151;
+        font-size: 1.15rem;
+        line-height: 2.0;
+    }
+
+    .blog-content p {
+        margin-bottom: 1.75rem;
+    }
+
+    .blog-content h2 {
+        font-size: 1.85rem;
+        font-weight: 800;
+        color: #111827;
+        margin-top: 3rem;
+        margin-bottom: 1.25rem;
+        font-family: 'Outfit', sans-serif;
+    }
+
+    .blog-content h3 {
+        font-size: 1.45rem;
+        font-weight: 700;
+        color: #111827;
+        margin-top: 2.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .blog-content ul, .blog-content ol {
+        padding-left: 1.5rem;
+        margin-bottom: 1.75rem;
+    }
+
+    .blog-content li {
+        margin-bottom: 0.75rem;
+    }
+
+    .blog-content a {
+        color: #f59e0b;
+        text-decoration: underline;
+    }
+
+    .blog-content strong {
+        font-weight: 700;
+        color: #111827;
+    }
+</style>
+{% endblock %}

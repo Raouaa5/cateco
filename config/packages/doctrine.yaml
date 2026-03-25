@@ -8,6 +8,7 @@ parameters:
 doctrine:
     dbal:
         url: '%env(resolve:DATABASE_URL)%'
+        server_version: "8.0.45"
     orm:
         auto_generate_proxy_classes: true
         auto_mapping: true

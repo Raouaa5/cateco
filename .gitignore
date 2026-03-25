@@ -64,39 +64,81 @@ phpstan.neon
 ###< liip/imagine-bundle ###
 # Logs and temp files
 *.log
-*.txt
-strace*
-build.log
-nginx.log
-php.log
+strace_*.txt
+strace_*.log
+nginx*.txt
 php.txt
-nginx_logs.txt
-prod*.txt
-tmp*.html
+prod_*.txt
+build_*.log
 
-# Debug scripts in bin/
-bin/debug*
-bin/check*
-bin/fix*
-bin/list*
-bin/manual_*
-bin/sync_*
+# HTML debug dumps
+tmp_*.html
+maison.html
+login_page.html
+
+# Debug/test PHP scripts in root
+debug_*.php
+check_*.php
+test_*.php
+find_*.php
+get_*.php
+gen_*.php
+dump_*.php
+reflect_*.php
+inspect_*.php
+extract_*.php
+search_*.php
+count_*.php
+fast_*.php
+slug_*.php
+gd_sigs*.php
+compare_sigs.php
+parent_repo.php
+taxon_report.php
+tmp_check_marker.php
+
+# Debug scripts in bin/ (keep bin/console and data import scripts)
+bin/debug_*.php
+bin/check_*.php
+bin/list_*.php
+bin/schema_check.php
+
+# Output text dumps
+diff_output*.txt
+full_router.txt
+routes*.txt
+services_list.txt
+project_structure.txt
+sigs*.txt
+main_taxons.txt
+twig_*.txt
+footer_paths.txt
+flashes_paths.txt
+cart_templates.txt
+ps_out*.txt
 
 # Public debug/test files
 public/test*.php
+public/test*.html
 public/debug*.php
 public/check*.php
 public/dbtest.php
 
-# CSVs (if not needed)
+# Data/CSV files
 *.csv
-# Debug scripts
-bin/*
-public/test*.php
-public/debug*.php
-*.html
 
 # Secret keys
 config/encryption/*.key
 
-/node_modules/
+# SQL dump files
+*.sql
+
+# IDE files
+.idea/
+.vscode/
+*.iml
+
+# OS junk
+.DS_Store
+Thumbs.db
+desktop.ini

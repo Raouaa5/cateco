@@ -1,0 +1,68 @@
+<div class="container mb-6" role="region" aria-labelledby="related-products-heading">
+    <div style="margin-bottom: 2.5rem; display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 1.5rem;">
+        <h2 id="related-products-heading" style="font-size: 2rem; font-weight: 700; color: #111827;">Articles similaires</h2>
+        
+        {# Carousel Navigation Arrows #}
+        {% if related_products is not empty and related_products|length > 1 %}
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+                {# Left Arrow #}
+                <button type="button" onclick="document.getElementById('related-products-carousel').scrollBy({left: -320, behavior: 'smooth'})" style="background: white; border: 1px solid #e5e7eb; cursor: pointer; color: #17716c; width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); transition: all 0.2s;" onmouseover="this.style.borderColor='#f97316'; this.style.color='#f97316'" onmouseout="this.style.borderColor='#e5e7eb'; this.style.color='#17716c'">
+                    <svg xmlns="http://www.w3.org/2000/svg" style="width: 24px; height: 24px;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7" /></svg>
+                </button>
+                {# Right Arrow #}
+                <button type="button" onclick="document.getElementById('related-products-carousel').scrollBy({left: 320, behavior: 'smooth'})" style="background: white; border: 1px solid #e5e7eb; cursor: pointer; color: #17716c; width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); transition: all 0.2s;" onmouseover="this.style.borderColor='#f97316'; this.style.color='#f97316'" onmouseout="this.style.borderColor='#e5e7eb'; this.style.color='#17716c'">
+                    <svg xmlns="http://www.w3.org/2000/svg" style="width: 24px; height: 24px;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7" /></svg>
+                </button>
+            </div>
+        {% endif %}
+    </div>
+
+    {% if related_products is not empty %}
+        <div id="related-products-carousel" style="display: flex; gap: 1.5rem; overflow-x: auto; scroll-snap-type: x mandatory; scroll-behavior: smooth; padding: 1rem 0 2rem; scrollbar-width: none; -ms-overflow-style: none;">
+            <style>
+                #related-products-carousel::-webkit-scrollbar { display: none; }
+            </style>
+            {% for related_product in related_products %}
+                <div class="related-product-card-wrapper" style="scroll-snap-align: start; flex: 0 0 auto; width: 260px; transform: scale(0.95); transform-origin: top center;">
+                    {{ component('sylius_shop:product:card', { product: related_product, template: hookable_metadata.configuration.product_template|default('@SyliusShop/product/common/card.html.twig') }) }}
+                </div>
+            {% endfor %}
+        </div>
+        
+        {# Autoscroll Logic #}
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const carousel = document.getElementById('related-products-carousel');
+                if (carousel && carousel.children.length > 2) {
+                    let scrollAmount = 320; // approximate width of one card + gap
+                    let scrollInterval;
+                    
+                    const startAutoScroll = () => {
+                        scrollInterval = setInterval(() => {
+                            // If we reached the end, smoothly scroll back to the start
+                            if (carousel.scrollLeft + carousel.clientWidth >= carousel.scrollWidth - 10) {
+                                carousel.scrollTo({ left: 0, behavior: 'smooth' });
+                            } else {
+                                carousel.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+                            }
+                        }, 3000); // 3 seconds interval
+                    };
+
+                    const stopAutoScroll = () => {
+                        clearInterval(scrollInterval);
+                    };
+
+                    startAutoScroll();
+
+                    // Pause on hover
+                    carousel.addEventListener('mouseenter', stopAutoScroll);
+                    carousel.addEventListener('mouseleave', startAutoScroll);
+                    carousel.addEventListener('touchstart', stopAutoScroll);
+                    carousel.addEventListener('touchend', startAutoScroll);
+                }
+            });
+        </script>
+    {% else %}
+        <p class="text-muted">Aucun article similaire trouvé.</p>
+    {% endif %}
+</div>

@@ -1,0 +1,120 @@
+{% extends '@SyliusShop/shared/layout/base.html.twig' %}
+
+{% block title %}Mentions légales | {{ parent() }}{% endblock %}
+
+{% block content %}
+<div style="background: white; min-height: 80vh; font-family: 'Outfit', sans-serif;">
+    {# Legend/Header Section - Refined Gray Theme #}
+    <div style="background: linear-gradient(135deg, #d1d5db 0%, #adaeb1ff 100%); padding: 4rem 0; color: #111827; position: relative; overflow: hidden; border-radius: 0 0 3rem 3rem; margin-bottom: 3rem;">
+        {# Photo on the right (Reflet en couleur avec masque fluide) #}
+        <div style="position: absolute; top: 0; right: 0; height: 100%; width: 55%; z-index: 1; -webkit-mask-image: linear-gradient(to right, transparent 0%, black 35%); mask-image: linear-gradient(to right, transparent 0%, black 35%); opacity: 0.6;">
+            <img src="{{ asset('assets/shop/images/rejoignez-club.jpg') }}" alt="" style="width: 100%; height: 100%; object-fit: cover; object-position: right 35%; display: block; filter: grayscale(20%);">
+        </div>
+
+        <div class="container mx-auto px-6 lg:px-12 relative" style="z-index: 2;">
+            {# Breadcrumbs #}
+            <nav style="margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.5rem; font-size: 0.9rem;">
+                <a href="{{ path('sylius_shop_homepage') }}" style="color: #4b5563; text-decoration: none;">Accueil</a>
+                <span style="opacity: 0.6; color: #9ca3af;">/</span>
+                <span style="font-weight: 600; color: #111827;">Mentions légales</span>
+            </nav>
+            
+            <h1 style="font-size: clamp(1.8rem, 4vw, 2.5rem); font-weight: 800; line-height: 1.1; margin: 0; letter-spacing: -0.02em;">
+                Mentions légales
+            </h1>
+        </div>
+    </div>
+
+    {# Main Content #}
+    <div class="container mx-auto px-6 lg:px-12" style="padding-bottom: 6rem;">
+        <div style="max-width: 1200px; margin: 0 auto; color: #4b5563; font-size: 1.15rem; line-height: 2.0; text-align: justify;">
+            
+            {# Contact Editeur Section #}
+            <h2 style="font-size: 1.8rem; font-weight: 700; color: #111827; margin: 3rem 0 1.5rem; font-family: 'Outfit', sans-serif; border-left: 6px solid #40bdb8; padding-left: 1.5rem;">Contact éditeur</h2>
+            <div style="background: #f9fafb; padding: 2rem; border-radius: 1rem; border: 1px solid #e5e7eb; margin-bottom: 2rem;">
+                <p style="margin-bottom: 0.5rem;"><strong>Forme juridique :</strong> SAS</p>
+                <p style="margin-bottom: 0.5rem;"><strong>Dénomination sociale :</strong> CATECO CAY</p>
+                <p style="margin-bottom: 0.5rem;"><strong>SIRET / RCS :</strong> 449 642 990 000 13</p>
+                <p style="margin-bottom: 0.5rem;"><strong>Adresse du siège social :</strong> 20, RUE DES MORPHOS ZI COLLERY EST</p>
+                <p style="margin-bottom: 0.5rem;"><strong>Code postal :</strong> 97300</p>
+                <p style="margin-bottom: 0.5rem;"><strong>Ville :</strong> CAYENNE</p>
+                <p style="margin-bottom: 0.5rem;"><strong>Région :</strong> Guyane Française</p>
+                <p style="margin-bottom: 0.5rem;"><strong>Pays :</strong> France</p>
+                <p style="margin-bottom: 0.5rem;"><strong>Téléphone :</strong> 05 94 38 38 58</p>
+                <p style="margin-bottom: 0.5rem;"><strong>Email :</strong> <a href="mailto:contact@cateco.fr" style="color: #40bdb8; text-decoration: none;">contact@cateco.fr</a></p>
+                <p style="margin-bottom: 0.5rem;"><strong>Capital social :</strong> 50 000 €</p>
+                <p style="margin-bottom: 0.5rem;"><strong>Directeur de la publication :</strong> Delphine BOUDAIRON</p>
+                <p style="margin-bottom: 0;"><strong>URL :</strong> <a href="https://cateco.fr" target="_blank" style="color: #40bdb8; text-decoration: none;">https://cateco.fr</a></p>
+            </div>
+
+            {# Responsables Section #}
+            <h2 style="font-size: 1.8rem; font-weight: 700; color: #111827; margin: 3rem 0 1.5rem; font-family: 'Outfit', sans-serif;">Notes légales</h2>
+            <ul style="list-style: none; padding: 0; margin: 0 0 2rem;">
+                <li style="margin-bottom: 0.5rem;"><strong>Responsable Editeur :</strong> CATECO CAY</li>
+                <li style="margin-bottom: 0.5rem;"><strong>Responsable technique :</strong> Benjamin Queroy</li>
+                <li style="margin-bottom: 0.5rem;"><strong>Email (technique) :</strong> <a href="mailto:maintenance@kwantic.fr" style="color: #40bdb8; text-decoration: none;">maintenance@kwantic.fr</a></li>
+            </ul>
+
+            {# Hébergement Section #}
+            <h2 style="font-size: 1.8rem; font-weight: 700; color: #111827; margin: 3rem 0 1.5rem; font-family: 'Outfit', sans-serif;">Hébergement</h2>
+            <div style="background: #f9fafb; padding: 2rem; border-radius: 1rem; border: 1px solid #e5e7eb; margin-bottom: 2rem;">
+                <p style="margin-bottom: 0.5rem;"><strong>OVH</strong> – 2 RUE KELLERMANN 59100 ROUBAIX WEB</p>
+                <p style="margin-bottom: 0.5rem;"><strong>Site web :</strong> <a href="https://www.ovhcloud.com/fr/" target="_blank" style="color: #40bdb8; text-decoration: none;">https://www.ovhcloud.com/fr/</a></p>
+                <p style="margin-bottom: 0;"><strong>Email support :</strong> <a href="mailto:maintenance@kwantic.fr" style="color: #40bdb8; text-decoration: none;">maintenance@kwantic.fr</a></p>
+            </div>
+
+            <p style="margin-bottom: 2rem;">
+                <strong>Conception, réalisation technique :</strong> <a href="https://kwantic.fr/" target="_blank" style="color: #40bdb8; text-decoration: none; font-weight: 600;">KWANTIC</a>
+            </p>
+
+            {# Legal Sections #}
+            <h2 style="font-size: 1.8rem; font-weight: 700; color: #111827; margin: 3rem 0 1.5rem; font-family: 'Outfit', sans-serif;">Dispositions légales</h2>
+            <p style="margin-bottom: 1.5rem;">
+                Les divers éléments du site web (forme, mise en page, fond, structure) sont protégés par le droit des dessins et modèles, le droit d'auteur, le droit des marques ainsi que le droit à l'image et ils ne peuvent être copiés ou imités en tout ou partie sauf autorisation expresse du responsable éditeur de <a href="https://www.cateco.fr" style="color: #40bdb8; text-decoration: none;">https://www.cateco.fr</a>.
+            </p>
+            <p style="margin-bottom: 1.5rem;">
+                Toute personne ne respectant pas les dispositions légales se rend coupable du délit de contrefaçon et est passible des sanctions pénales prévues par la loi.
+            </p>
+
+            <h2 style="font-size: 1.8rem; font-weight: 700; color: #111827; margin: 3rem 0 1.5rem; font-family: 'Outfit', sans-serif;">Droits d'auteurs</h2>
+            <p style="margin-bottom: 1.5rem;">
+                Le présent site constitue une œuvre au sens des articles L. 111.1 et suivants du Code de la propriété intellectuelle. Les photographies, textes, logos, pictogrammes, ainsi que toutes œuvres intégrées dans le site sont la propriété de <a href="https://www.cateco.fr" style="color: #40bdb8; text-decoration: none;">https://www.cateco.fr</a> ou de tiers ayant autorisé l'utilisation.
+            </p>
+            <p style="margin-bottom: 1.5rem;">
+                Les reproductions, les transmissions, les modifications, les réutilisations, sur un support papier ou informatique du dit site ne sont autorisées que pour un usage personnel et privé conforme aux dispositions de l'article L 122-5 du Code de la Propriété Intellectuelle. Ces reproductions devront ainsi notamment indiquer clairement la source et l'auteur du site.
+            </p>
+            <p style="margin-bottom: 1.5rem;">
+                En aucun cas ces reproductions ne sauraient porter préjudice aux droits des tiers. Les reproductions à des fins publicitaires, commerciales ou d'information sont totalement interdites.
+            </p>
+
+            <h2 style="font-size: 1.8rem; font-weight: 700; color: #111827; margin: 3rem 0 1.5rem; font-family: 'Outfit', sans-serif;">Droit des bases de données</h2>
+            <p style="margin-bottom: 1.5rem;">
+                Les bases de données sont protégées par la loi du 1er juillet 1998 et le régime français du droit d'auteur.
+            </p>
+
+            <h2 style="font-size: 1.8rem; font-weight: 700; color: #111827; margin: 3rem 0 1.5rem; font-family: 'Outfit', sans-serif;">Etablissements de liens vers le site</h2>
+            <p style="margin-bottom: 1.5rem;">
+                <a href="https://www.cateco.fr" style="color: #40bdb8; text-decoration: none;">https://www.cateco.fr</a> autorise la mise en place d'un lien hypertexte vers le site pour tous les sites Internet, à l'exclusion de ceux diffusant des informations à caractère polémique, pornographique, xénophobe ou pouvant porter atteinte à la sensibilité du plus grand nombre.
+            </p>
+            <p style="margin-bottom: 1.5rem;">
+                Les pages du site ne doivent en aucun cas être intégrées à l'intérieur des pages d'un autre site (Frame). La demande d'établissement de lien hypertexte doit être faite par mail à : <a href="mailto:webmaster@cateco.fr" style="color: #40bdb8; text-decoration: none;">webmaster@cateco.fr</a>.
+            </p>
+
+            <h2 style="font-size: 1.8rem; font-weight: 700; color: #111827; margin: 3rem 0 1.5rem; font-family: 'Outfit', sans-serif;">Mise en garde générale</h2>
+            <p style="margin-bottom: 1.5rem;">
+                Nos services mettent tout en œuvre pour offrir aux visiteurs des informations fiables et vérifiées. Cependant, malgré tous les soins apportés, le site peut comporter des inexactitudes ou des erreurs. Nous remercions les utilisateurs de nous faire part d'éventuelles omissions par mail à : <a href="mailto:webmaster@cateco.fr" style="color: #40bdb8; text-decoration: none;">webmaster@cateco.fr</a> ou <a href="mailto:maintenance@kwantic.fr" style="color: #40bdb8; text-decoration: none;">maintenance@kwantic.fr</a>.
+            </p>
+            <p style="margin-bottom: 1.5rem;">
+                Les informations contenues sur le site ne sont pas contractuelles. Elles ne constituent ni une garantie ni un engagement de la part de <a href="https://www.cateco.fr" style="color: #40bdb8; text-decoration: none;">https://www.cateco.fr</a> à l'égard de tout produit ou service.
+            </p>
+
+            <div style="margin-top: 4rem; padding-top: 2rem; border-top: 2px solid #e5e7eb;">
+                <p style="font-size: 1.2rem; font-weight: 600;">
+                    Cookies : Voir notre page <a href="{{ path('app_privacy_policy') }}" style="color: #40bdb8; text-decoration: underline;">Politique de confidentialité</a>
+                </p>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

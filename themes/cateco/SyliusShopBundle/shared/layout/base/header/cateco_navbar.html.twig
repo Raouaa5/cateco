@@ -13,9 +13,10 @@
         </a>
 
         <!-- RECHERCHE - center expanding -->
-        <form action="{{ path('sylius_shop_homepage') }}" method="get" style="flex: 1; max-width: 500px; margin: 0 32px; display: flex;">
+        <form action="/{{ sylius.localeCode|default(app.request.locale)|default('fr_FR') }}/search" method="get" style="flex: 1; max-width: 500px; margin: 0 32px; display: flex;">
             <input type="text" 
                    name="search"
+                   value="{{ app.request.query.get('search') }}"
                    placeholder="Ex: Salon de jardin..." 
                    style="flex: 1; padding: 10px 16px; font-size: 14px; border-radius: 20px 0 0 20px; background: rgba(255,255,255,0.9); border: none; color: #333; outline: none;">
             <button type="submit" style="padding: 10px 20px; background: rgba(255,255,255,0.9); border: none; border-radius: 0 20px 20px 0; cursor: pointer; display: flex; align-items: center; gap: 8px; font-weight: bold; color: #333;">

@@ -1,8 +1,8 @@
 {#
-    Nouveautés produits - Dynamic Carousel with horizontal scrolling
+    Nouveautés produits - Stable Carousel with Infinite Loop
 #}
 
-{% set products = get_latest_products(8) %}
+{% set products = get_latest_products(16) %}
 
 <section style="padding: 4rem 0; background-color: #f9fafb; border-top: 1px solid #e5e7eb; overflow: hidden;">
     <div class="container mx-auto px-4 lg:px-8">
@@ -13,19 +13,17 @@
                 <h2 style="font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 800; color: #111827; margin: 0 0 0.5rem 0; letter-spacing: -0.02em;">
                     Nouveautés produits
                 </h2>
-                <a href="#" style="font-size: 1rem; font-weight: 700; color: #111827; border-bottom: 2px solid #f97316; text-decoration: none; display: inline-block; transition: color 0.2s;" onmouseover="this.style.color='#f97316'" onmouseout="this.style.color='#111827'">
+                <a href="{{ path('sylius_shop_product_index', {'slug': 'nouveaute'}) }}" style="font-size: 1rem; font-weight: 700; color: #111827; border-bottom: 2px solid #f97316; text-decoration: none; display: inline-block; transition: color 0.2s;" onmouseover="this.style.color='#f97316'" onmouseout="this.style.color='#111827'">
                     Voir tous nos produits >
                 </a>
             </div>
             
             {# Carousel Navigation Arrows #}
             <div style="display: flex; align-items: center; gap: 0.5rem;">
-                {# Left Arrow #}
-                <button onclick="document.getElementById('products-carousel').scrollBy({left: -320, behavior: 'smooth'})" style="background: white; border: 1px solid #e5e7eb; cursor: pointer; color: #17716c; width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); transition: all 0.2s;" onmouseover="this.style.borderColor='#f97316'; this.style.color='#f97316'" onmouseout="this.style.borderColor='#e5e7eb'; this.style.color='#17716c'">
+                <button type="button" id="prev-btn" style="background: white; border: 1px solid #e5e7eb; cursor: pointer; color: #17716c; width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); transition: all 0.2s;" onmouseover="this.style.borderColor='#f97316'; this.style.color='#f97316'" onmouseout="this.style.borderColor='#e5e7eb'; this.style.color='#17716c'">
                     <svg xmlns="http://www.w3.org/2000/svg" style="width: 24px; height: 24px;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7" /></svg>
                 </button>
-                {# Right Arrow #}
-                <button onclick="document.getElementById('products-carousel').scrollBy({left: 320, behavior: 'smooth'})" style="background: white; border: 1px solid #e5e7eb; cursor: pointer; color: #17716c; width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); transition: all 0.2s;" onmouseover="this.style.borderColor='#f97316'; this.style.color='#f97316'" onmouseout="this.style.borderColor='#e5e7eb'; this.style.color='#17716c'">
+                <button type="button" id="next-btn" style="background: white; border: 1px solid #e5e7eb; cursor: pointer; color: #17716c; width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); transition: all 0.2s;" onmouseover="this.style.borderColor='#f97316'; this.style.color='#f97316'" onmouseout="this.style.borderColor='#e5e7eb'; this.style.color='#17716c'">
                     <svg xmlns="http://www.w3.org/2000/svg" style="width: 24px; height: 24px;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7" /></svg>
                 </button>
             </div>
@@ -33,76 +31,114 @@
 
         {# Products Carousel Container #}
         {% if products|length > 0 %}
-            <div id="products-carousel" style="display: flex; gap: 1.5rem; overflow-x: auto; scroll-snap-type: x mandatory; scroll-behavior: smooth; padding: 1rem 0 2rem; scrollbar-width: none; -ms-overflow-style: none;">
+            <div id="homepage-products-scroll-wrapper" style="position: relative; overflow-x: auto; scrollbar-width: none; -ms-overflow-style: none; padding: 1rem 0 2rem;">
+                <style>#homepage-products-scroll-wrapper::-webkit-scrollbar { display: none; }</style>
                 
-                <style>
-                    #products-carousel::-webkit-scrollbar { display: none; }
-                </style>
-
-                {% for product in products %}
-                    
-                    {% set cheapest_variant = null %}
-                    {% set cheapest_price = null %}
-                    {% set cheapest_currency = 'EUR' %}
-                    {% for variant in product.variants %}
-                        {% for pricing in variant.channelPricings %}
-                            {% if pricing.price is not null %}
-                                {% if cheapest_price is null or pricing.price < cheapest_price %}
-                                    {% set cheapest_price = pricing.price %}
-                                    {% set cheapest_variant = variant %}
-                                    {% set cheapest_currency = pricing.currencyCode|default('EUR') %}
+                <div id="homepage-products-carousel" style="display: flex; gap: 1.5rem; width: max-content;">
+                    {% for product in products %}
+                        {% set cheapest_variant = null %}
+                        {% set cheapest_price = null %}
+                        {% set cheapest_currency = 'EUR' %}
+                        {% for variant in product.variants %}
+                            {% for pricing in variant.channelPricings %}
+                                {% if pricing.price is not null %}
+                                    {% if cheapest_price is null or pricing.price < cheapest_price %}
+                                        {% set cheapest_price = pricing.price %}
+                                        {% set cheapest_variant = variant %}
+                                        {% set cheapest_currency = pricing.currencyCode|default('EUR') %}
+                                    {% endif %}
                                 {% endif %}
-                            {% endif %}
+                            {% endfor %}
                         {% endfor %}
-                    {% endfor %}
-                    
-                    {# Product Card #}
-                    <div style="scroll-snap-align: start; flex: 0 0 auto; width: 260px; display: flex; flex-direction: column; background: transparent;">
                         
-                        {# Image Block #}
-                        <div style="background-color: #ececec; border-radius: 1.5rem; padding: 1.5rem; margin-bottom: 1rem; position: relative; width: 100%; aspect-ratio: 1/1; display: flex; align-items: center; justify-content: center; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,0.05); transition: box-shadow 0.3s;" onmouseover="this.style.boxShadow='0 10px 25px rgba(0,0,0,0.1)'; this.querySelector('img').style.transform='scale(1.05)'" onmouseout="this.style.boxShadow='0 2px 10px rgba(0,0,0,0.05)'; this.querySelector('img').style.transform='scale(1)'">
-                            {% if product.images|length > 0 %}
-                                {% set image_path = product.images.first.path %}
-                                <img 
-                                    src="{{ image_path[0:4] == 'http' ? image_path : asset('media/image/' ~ image_path) }}" 
-                                    alt="{{ product.name }}"
-                                    style="width: 100%; height: 100%; object-fit: contain; mix-blend-mode: multiply; transition: transform 0.5s ease;"
-                                    onerror="this.src='/assets/shop/images/no-image.png'; this.style.mixBlendMode='normal';"
-                                />
-                            {% else %}
-                                <div style="display: flex; align-items: center; justify-content: center; color: #9ca3af; width: 100%; height: 100%;">
-                                    <svg style="width: 48px; height: 48px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
-                                </div>
-                            {% endif %}
-                        </div>
-
-                        {# Info Block #}
-                        <div style="padding: 0 0.5rem; text-align: left;">
-                            <h3 style="font-size: 1.125rem; font-weight: 700; color: #111827; margin: 0 0 0.25rem 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
-                                <a href="{{ path('sylius_shop_product_show', {'slug': product.slug}) }}" style="color: inherit; text-decoration: none; transition: color 0.2s;" onmouseover="this.style.color='#f97316'" onmouseout="this.style.color='#111827'">
-                                    {{ product.name }}
-                                </a>
-                            </h3>
-                            
-                            <p style="font-size: 0.875rem; color: #6b7280; margin: 0 0 0.75rem 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Ultra léger et robuste</p>
-
-                            <div>
-                                {% if cheapest_price %}
-                                    <span style="font-size: 1.25rem; font-weight: 800; color: #111827;">
-                                        {{ cheapest_price|sylius_format_money(cheapest_currency) }}
-                                    </span>
+                        {# Unique class name and forced width to avoid conflicts #}
+                        <div class="cateco-home-product-card" style="flex: 0 0 260px; width: 260px !important; display: flex; flex-direction: column; vertical-align: top; background: transparent;">
+                            <div style="background-color: #ececec; border-radius: 1.5rem; padding: 1.5rem; margin-bottom: 1rem; position: relative; width: 100%; aspect-ratio: 1/1; display: flex; align-items: center; justify-content: center; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,0.05);">
+                                {% if product.images|length > 0 %}
+                                    {% set image_path = product.images.first.path %}
+                                    <img src="{{ image_path[0:4] == 'http' ? image_path : asset('media/image/' ~ image_path) }}" alt="{{ product.name }}" style="width: 100%; height: 100%; object-fit: contain; mix-blend-mode: multiply;" />
+                                {% else %}
+                                    <div style="color: #9ca3af;"><svg style="width: 48px; height: 48px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg></div>
                                 {% endif %}
                             </div>
+                            <div style="padding: 0 0.5rem;">
+                                <h3 style="font-size: 1.125rem; font-weight: 700; color: #111827; margin: 0 0 0.25rem 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                    <a href="{{ path('sylius_shop_product_show', {'slug': product.slug}) }}" style="color: inherit; text-decoration: none;">{{ product.name }}</a>
+                                </h3>
+                                
+                                <div style="margin-bottom: 1rem;">
+                                    {% if cheapest_price %}
+                                        <span style="font-size: 1.25rem; font-weight: 800; color: #111827;">{{ cheapest_price|sylius_format_money(cheapest_currency) }}</span>
+                                    {% endif %}
+                                </div>
+
+                                <div class="home-add-to-cart-wrapper" style="margin-top: auto;">
+                                    {{ component('sylius_shop:product:add_to_cart_form', {
+                                        'product': product,
+                                        'variant': cheapest_variant,
+                                        'template': '@SyliusShop/product/common/add_to_cart_form.html.twig'
+                                    }) }}
+                                </div>
+                            </div>
                         </div>
-
-                    </div>
-                {% endfor %}
+                    {% endfor %}
+                </div>
             </div>
+
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    const scrollWrapper = document.getElementById('homepage-products-scroll-wrapper');
+                    const carousel = document.getElementById('homepage-products-carousel');
+                    const nextBtn = document.getElementById('next-btn');
+                    const prevBtn = document.getElementById('prev-btn');
+                    if (!carousel || carousel.children.length === 0) return;
+
+                    const originalCount = {{ products|length }};
+                    const itemWidth = 260 + 24; // width + gap
+                    
+                    // Clone items to enable smooth infinite loop
+                    const items = Array.from(carousel.children);
+                    items.forEach(item => carousel.appendChild(item.cloneNode(true)));
+                    items.forEach(item => carousel.appendChild(item.cloneNode(true)));
+
+                    let isAutoScrolling = true;
+                    let scrollSpeed = 0.8; // px per frame
+                    
+                    // Set initial position to the middle set
+                    scrollWrapper.scrollLeft = itemWidth * originalCount;
+
+                    function animate() {
+                        if (isAutoScrolling) {
+                            scrollWrapper.scrollLeft += scrollSpeed;
+                            
+                            // Seamless loop back to middle
+                            if (scrollWrapper.scrollLeft >= itemWidth * originalCount * 2) {
+                                scrollWrapper.scrollLeft -= itemWidth * originalCount;
+                            }
+                        }
+                        requestAnimationFrame(animate);
+                    }
+
+                    nextBtn.addEventListener('click', () => {
+                        isAutoScrolling = false;
+                        scrollWrapper.scrollBy({ left: itemWidth, behavior: 'smooth' });
+                        setTimeout(() => { isAutoScrolling = true; }, 1000);
+                    });
+
+                    prevBtn.addEventListener('click', () => {
+                        isAutoScrolling = false;
+                        scrollWrapper.scrollBy({ left: -itemWidth, behavior: 'smooth' });
+                        setTimeout(() => { isAutoScrolling = true; }, 1000);
+                    });
+
+                    scrollWrapper.addEventListener('mouseenter', () => isAutoScrolling = false);
+                    scrollWrapper.addEventListener('mouseleave', () => isAutoScrolling = true);
+                    
+                    requestAnimationFrame(animate);
+                });
+            </script>
         {% else %}
-            <div style="text-align: center; padding: 5rem 0; color: #6b7280;">
-                <p style="font-size: 1.125rem;">Aucun produit disponible pour le moment.</p>
-            </div>
+            <div style="text-align: center; padding: 5rem 0; color: #6b7280;"><p>Aucun produit disponible.</p></div>
         {% endif %}
-
     </div>
 </section>

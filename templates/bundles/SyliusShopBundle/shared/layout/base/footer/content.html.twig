@@ -9,16 +9,16 @@
     <div class="container mx-auto px-4 lg:px-8">
         
         {# Single row: Logo+Socials | Catégories | Catégories2 | En savoir plus | Légal #}
-        <div style="display: flex; flex-wrap: wrap; gap: 2rem; align-items: flex-start; justify-content: flex-start; margin-bottom: 2rem;">
+        <div style="display: flex; flex-wrap: wrap; gap: 2rem; align-items: flex-start; justify-content: space-between; margin-bottom: 2rem;">
             
             {# Column 1: Real Logo & Socials #}
             <div style="flex: 0 0 auto; min-width: 140px; max-width: 180px;">
                 <a href="{{ path('sylius_shop_homepage') }}" style="display: block; margin-bottom: 1rem;">
-                    <img src="{{ asset('assets/shop/images/logo2.png') }}" alt="Catéco" style="max-width: 150px; height: auto; display: block;">
+                    <img src="{{ asset('assets/shop/images/logo2.png') }}" alt="Catéco" style="max-width: 200px; height: auto; display: block;">
                 </a>
                 <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-                    <a href="#" style="color: #ffffff; text-decoration: none; font-weight: 600; font-size: 0.9rem; border-bottom: 1px solid #f97316; width: fit-content;" onmouseover="this.style.color='#f97316'" onmouseout="this.style.color='#ffffff'">Facebook</a>
-                    <a href="#" style="color: #ffffff; text-decoration: none; font-weight: 600; font-size: 0.9rem; border-bottom: 1px solid #f97316; width: fit-content;" onmouseover="this.style.color='#f97316'" onmouseout="this.style.color='#ffffff'">Instagram</a>
+                    <a href="https://www.facebook.com/Cateco.Guyane" target="_blank" style="color: #ffffff; text-decoration: none; font-weight: 600; font-size: 0.9rem; border-bottom: 1px solid #f97316; width: fit-content;" onmouseover="this.style.color='#f97316'" onmouseout="this.style.color='#ffffff'">Facebook</a>
+                    <a href="https://www.instagram.com/cateco.guyane/" target="_blank" style="color: #ffffff; text-decoration: none; font-weight: 600; font-size: 0.9rem; border-bottom: 1px solid #f97316; width: fit-content;" onmouseover="this.style.color='#f97316'" onmouseout="this.style.color='#ffffff'">Instagram</a>
                 </div>
             </div>
 
@@ -26,19 +26,19 @@
             <div style="flex: 0 0 auto; min-width: 130px;">
                 <h4 style="font-size: 1rem; font-weight: 700; margin-bottom: 1rem; color: #ffffff;">Catégories</h4>
                 <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.75rem;">
-                    <li><a href="#" style="color: #ffffff; font-size: 0.875rem; font-weight: 500; text-decoration: none;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">Jardin</a></li>
-                    <li><a href="#" style="color: #ffffff; font-size: 0.875rem; font-weight: 500; text-decoration: none;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">Plein air</a></li>
-                    <li><a href="#" style="color: #ffffff; font-size: 0.875rem; font-weight: 500; text-decoration: none;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">Tentes & bâches</a></li>
-                    <li><a href="#" style="color: #ffffff; font-size: 0.875rem; font-weight: 500; text-decoration: none;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">Anti insectes</a></li>
+                    <li><a href="{{ path('sylius_shop_product_index', {'slug': 'jardin', '_locale': sylius.localeCode}) }}" style="color: #ffffff; font-size: 0.875rem; font-weight: 500; text-decoration: none;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">Jardin</a></li>
+                    <li><a href="{{ path('sylius_shop_product_index', {'slug': 'plein-air', '_locale': sylius.localeCode}) }}" style="color: #ffffff; font-size: 0.875rem; font-weight: 500; text-decoration: none;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">Plein air</a></li>
+                    <li><a href="{{ path('sylius_shop_product_index', {'slug': 'tentes-baches', '_locale': sylius.localeCode}) }}" style="color: #ffffff; font-size: 0.875rem; font-weight: 500; text-decoration: none;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">Tentes & bâches</a></li>
+                    <li><a href="{{ path('sylius_shop_product_index', {'slug': 'anti-insectes', '_locale': sylius.localeCode}) }}" style="color: #ffffff; font-size: 0.875rem; font-weight: 500; text-decoration: none;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">Anti insectes</a></li>
                 </ul>
             </div>
 
             {# Column 3: Catégories Part 2 #}
             <div style="flex: 0 0 auto; min-width: 160px; padding-top: 2rem;">
                 <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.75rem;">
-                    <li><a href="#" style="color: #ffffff; font-size: 0.875rem; font-weight: 500; text-decoration: none;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">Maison</a></li>
-                    <li><a href="#" style="color: #ffffff; font-size: 0.875rem; font-weight: 500; text-decoration: none;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">Bricolage, automobile, 2 roues</a></li>
-                    <li><a href="#" style="color: #ffffff; font-size: 0.875rem; font-weight: 500; text-decoration: none;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">Sport & bien-être</a></li>
+                    <li><a href="{{ path('sylius_shop_product_index', {'slug': 'maison', '_locale': sylius.localeCode}) }}" style="color: #ffffff; font-size: 0.875rem; font-weight: 500; text-decoration: none;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">Maison</a></li>
+                    <li><a href="{{ path('sylius_shop_product_index', {'slug': 'bricolage-auto', '_locale': sylius.localeCode}) }}" style="color: #ffffff; font-size: 0.875rem; font-weight: 500; text-decoration: none;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">Bricolage, automobile, 2 roues</a></li>
+                    <li><a href="{{ path('sylius_shop_product_index', {'slug': 'sport-bien-etre', '_locale': sylius.localeCode}) }}" style="color: #ffffff; font-size: 0.875rem; font-weight: 500; text-decoration: none;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">Sport & bien-être</a></li>
                 </ul>
             </div>
 
@@ -46,9 +46,9 @@
             <div style="flex: 0 0 auto; min-width: 150px;">
                 <h4 style="font-size: 1rem; font-weight: 700; margin-bottom: 1rem; color: #ffffff;">En savoir plus</h4>
                 <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.75rem;">
-                    <li><a href="/qui-sommes-nous" style="color: #ffffff; font-size: 0.875rem; font-weight: 500; text-decoration: none;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">Qui sommes-nous ?</a></li>
-                    <li><a href="#" style="color: #ffffff; font-size: 0.875rem; font-weight: 500; text-decoration: none;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">Nos magasins</a></li>
-                    <li><a href="#" style="color: #ffffff; font-size: 0.875rem; font-weight: 500; text-decoration: none;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">Programme de fidélité</a></li>
+                    <li><a href="{{ path('app_about_us') }}" style="color: #ffffff; font-size: 0.875rem; font-weight: 500; text-decoration: none;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">Qui sommes-nous ?</a></li>
+                    <li><a href="{{ path('app_about_us') }}" style="color: #ffffff; font-size: 0.875rem; font-weight: 500; text-decoration: none;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">Nos magasins</a></li>
+                    <li><a href="{{ path('app_club_cateco_index') }}" style="color: #ffffff; font-size: 0.875rem; font-weight: 500; text-decoration: none;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">Programme de fidélité</a></li>
                     <li><a href="#" style="color: #ffffff; font-size: 0.875rem; font-weight: 500; text-decoration: none;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">Prendre contact</a></li>
                     <li><a href="#" style="color: #ffffff; font-size: 0.875rem; font-weight: 500; text-decoration: none;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">Plan du site</a></li>
                 </ul>
@@ -57,9 +57,9 @@
             {# Column 5: Légal - in same row #}
             <div style="flex: 0 0 auto; min-width: 170px; padding-top: 2rem;">
                 <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.75rem;">
-                    <li><a href="#" style="color: #ffffff; font-size: 0.875rem; font-weight: 500; text-decoration: none;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">Politique de confidentialité</a></li>
-                    <li><a href="#" style="color: #ffffff; font-size: 0.875rem; font-weight: 500; text-decoration: none;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">Mentions légales</a></li>
-                    <li><a href="#" style="color: #ffffff; font-size: 0.875rem; font-weight: 500; text-decoration: none;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">CGV</a></li>
+                    <li><a href="{{ path('app_privacy_policy') }}" style="color: #ffffff; font-size: 0.875rem; font-weight: 500; text-decoration: none;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">Politique de confidentialité</a></li>
+                    <li><a href="{{ path('app_legal_mentions') }}" style="color: #ffffff; font-size: 0.875rem; font-weight: 500; text-decoration: none;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">Mentions légales</a></li>
+                    <li><a href="{{ path('app_cgv') }}" style="color: #ffffff; font-size: 0.875rem; font-weight: 500; text-decoration: none;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">CGV</a></li>
                 </ul>
             </div>
 
@@ -72,8 +72,8 @@
                 Paramètres des cookies
             </button>
 
-            <p style="color: #ffffff; font-size: 0.8rem; font-weight: 500; margin: 0; text-align: center; flex: 1;">
-                © Copyright Catéco {{ 'now'|date('Y') }}, Tous droits réservés | Développé par l'agence web Kwantic
+            <p style="color: #ffffff; font-size: 0.9rem; font-weight: 500; margin: 0; text-align: center; flex: 1;">
+                © Copyright Catéco {{ 'now'|date('Y') }}, Tous droits réservés | Développé par l'agence web <a href="https://kwantic.fr/" target="_blank" style="color: inherit; text-decoration: none;" onmouseover="this.style.textDecoration='underline'" onmouseout="this.style.textDecoration='none'">Kwantic</a>
             </p>
 
             <div style="background-color: white; padding: 0.25rem 0.5rem; border-radius: 4px; display: flex; flex-direction: column; align-items: flex-end;">

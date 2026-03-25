@@ -1,0 +1,274 @@
+{% extends '@SyliusShop/shared/layout/base.html.twig' %}
+
+{% block title %}Qui sommes-nous ? | {{ parent() }}{% endblock %}
+
+{% block content %}
+<div style="background: white; min-height: 80vh; font-family: 'Outfit', sans-serif;">
+    {# Legend/Header Section #}
+    <div style="background: linear-gradient(135deg, #40bdb8 0%, #2c8a86 100%); padding: 4rem 0; color: white; position: relative; overflow: hidden; border-radius: 0 0 3rem 3rem; margin-bottom: 3rem;">
+        {# Photo on the right (Reflet en couleur avec masque fluide) #}
+        <div style="position: absolute; top: 0; right: 0; height: 100%; width: 55%; z-index: 1; -webkit-mask-image: linear-gradient(to right, transparent 0%, black 35%); mask-image: linear-gradient(to right, transparent 0%, black 35%);">
+            <img src="{{ asset('assets/shop/images/rejoignez-club.jpg') }}" alt="" style="width: 100%; height: 100%; object-fit: cover; object-position: right 35%; display: block; opacity: 0.85;">
+        </div>
+
+        <div class="container mx-auto px-6 lg:px-12 relative" style="z-index: 2;">
+            {# Breadcrumbs #}
+            <nav style="margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.5rem; font-size: 0.9rem; opacity: 0.9;">
+                <a href="{{ path('sylius_shop_homepage') }}" style="color: white; text-decoration: none;">Accueil</a>
+                <span style="opacity: 0.6;">/</span>
+                <span style="font-weight: 600;">Qui sommes-nous ?</span>
+            </nav>
+            
+            <h1 style="font-size: clamp(1.8rem, 4vw, 2.5rem); font-weight: 800; line-height: 1.1; margin: 0; letter-spacing: -0.02em;">
+                Qui sommes-nous ?
+            </h1>
+        </div>
+    </div>
+
+    {# Main Intro Text Section #}
+    <div class="container mx-auto px-6 lg:px-12" style="padding: 4rem 0;">
+        <div style="max-width: 800px; margin: 0 auto;">
+            <p style="font-size: 1.15rem; color: #4b5563; line-height: 1.8; margin-bottom: 2rem;">
+                Ouvert en 2003, CATECO est l’enseigne incontournable des guyanais.
+            </p>
+            
+            <p style="font-size: 1.15rem; color: #4b5563; line-height: 1.8; margin-bottom: 2rem;">
+                Devenu un acteur majeur de l’équipement de la maison, CATECO propose une sélection de produits astucieux à prix imbattables pour aménager vos espaces intérieurs et extérieurs.
+            </p>
+            
+            <p style="font-size: 1.15rem; color: #4b5563; line-height: 1.8; margin-bottom: 2rem;">
+                Jardin, Plein air, Meubles, Buanderie, Salle de bain, Cuisine, Bricolage, Automobile, Sport et bien-être,
+            </p>
+            
+            <p style="font-size: 1.15rem; color: #4b5563; line-height: 1.8; margin-bottom: 2rem;">
+                CATECO, c’est un choix de <strong>plusieurs milliers de références</strong>, sans cesse renouvelés de produits tendances et pratiques. Des arrivages massifs pour des prix mini !
+            </p>
+            
+            <p style="font-size: 1.15rem; color: #4b5563; line-height: 1.8; margin-bottom: 0;">
+                CATECO, c’est aussi un catalogue de 124 pages distribué chaque mois sur tout le territoire de la Guyane, constitué de plus de 500 nouveaux produits.
+            </p>
+        </div>
+    </div>
+
+    {# Locations List (Horizontal Bands) #}
+    <div class="container mx-auto px-6 lg:px-12" style="padding-bottom: 6rem;">
+        <div style="display: flex; flex-direction: column; gap: 3rem;">
+            {# Store 1: Cayenne #}
+            <div class="store-band" style="display: flex; flex-wrap: nowrap; background: #f3f4f7; border-radius: 2rem; overflow: hidden; height: 250px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
+                <div style="flex: 0 0 380px; height: 100%;">
+                    <img src="{{ asset('assets/shop/images/cateco_cayenne.jpg') }}" alt="Catéco Cayenne" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+                </div>
+                <div style="flex: 1; padding: 2rem 3rem; display: flex; flex-direction: column; justify-content: center;">
+                    <h3 style="font-size: 1.6rem; font-weight: 700; color: #111827; margin-bottom: 1rem; font-family: 'Outfit', sans-serif;">Catéco Cayenne</h3>
+                    <p style="color: #374151; font-size: 1rem; line-height: 1.5; margin-bottom: 0.5rem;">
+                        31, rue des Morphos ZI collery 4, 97300 Cayenne
+                    </p>
+                    <p style="color: #374151; font-size: 1rem; line-height: 1.5; font-weight: 500;">
+                        Du lundi au samedi de 8:30 à 18:30
+                    </p>
+                </div>
+            </div>
+
+            {# Store 2: St Laurent #}
+            <div class="store-band" style="display: flex; flex-wrap: nowrap; background: #f3f4f7; border-radius: 2rem; overflow: hidden; height: 250px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
+                <div style="flex: 0 0 380px; height: 100%;">
+                    <img src="{{ asset('assets/shop/images/cateco_st_laurent.jpeg') }}" alt="Catéco St Laurent" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+                </div>
+                <div style="flex: 1; padding: 2rem 3rem; display: flex; flex-direction: column; justify-content: center;">
+                    <h3 style="font-size: 1.6rem; font-weight: 700; color: #111827; margin-bottom: 1rem; font-family: 'Outfit', sans-serif;">Catéco St Laurent</h3>
+                    <p style="color: #374151; font-size: 1rem; line-height: 1.5; margin-bottom: 0.5rem;">
+                        700, avenue Christophe Colomb, 97320 Saint-Laurent-du-Maroni
+                    </p>
+                    <p style="color: #374151; font-size: 1rem; line-height: 1.5; font-weight: 500;">
+                        Du lundi au vendredi de 9:00 à 13:30 et de 15:30 à 18:30 et le samedi de 9:00 à 18:30
+                    </p>
+                </div>
+            </div>
+
+            {# Store 3: Remire-Montjoly #}
+            <div class="store-band" style="display: flex; flex-wrap: nowrap; background: #f3f4f7; border-radius: 2rem; overflow: hidden; height: 250px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
+                <div style="flex: 0 0 380px; height: 100%;">
+                    <img src="{{ asset('assets/shop/images/cateco_remire_montjoly.jpg') }}" alt="Catéco Remire-Montjoly" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+                </div>
+                <div style="flex: 1; padding: 2rem 3rem; display: flex; flex-direction: column; justify-content: center;">
+                    <h3 style="font-size: 1.6rem; font-weight: 700; color: #111827; margin-bottom: 1rem; font-family: 'Outfit', sans-serif;">Catéco Remire-Montjoly</h3>
+                    <p style="color: #374151; font-size: 1rem; line-height: 1.5; margin-bottom: 0.5rem;">
+                        Les jardins d’Amélie, au 720 route de Rémire 97354 Rémire/Montjoly
+                    </p>
+                    <p style="color: #374151; font-size: 1rem; line-height: 1.5; font-weight: 500;">
+                        Du lundi au vendredi de 8:30 à 13:00 et de 15:30 à 18:30 et le samedi de 8:30 à 18:30
+                    </p>
+                </div>
+            </div>
+
+            {# Store 4: Kourou #}
+            <div class="store-band" style="display: flex; flex-wrap: nowrap; background: #f3f4f7; border-radius: 2rem; overflow: hidden; height: 250px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
+                <div style="flex: 0 0 380px; height: 100%;">
+                    <img src="{{ asset('assets/shop/images/cateco_kourou.jpg') }}" alt="Catéco Kourou" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+                </div>
+                <div style="flex: 1; padding: 2rem 3rem; display: flex; flex-direction: column; justify-content: center;">
+                    <h3 style="font-size: 1.6rem; font-weight: 700; color: #111827; margin-bottom: 1rem; font-family: 'Outfit', sans-serif;">Catéco Kourou</h3>
+                    <p style="color: #374151; font-size: 1rem; line-height: 1.5; margin-bottom: 0.5rem;">
+                        Espace Millenium, 805 avenue Pariacabo 97304 Kourou
+                    </p>
+                    <p style="color: #374151; font-size: 1rem; line-height: 1.5; font-weight: 500;">
+                        Du lundi au vendredi de 8:30 à 13:00 et de 15:30 à 18:30 et le samedi de 8:30 à 18:30
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {# Maps Cards Section #}
+    <div class="container mx-auto px-6 lg:px-12" style="padding-bottom: 6rem;">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 2rem;">
+            {% for i in 1..4 %}
+                <div style="border-radius: 1rem; overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.12); transition: transform 0.3s ease;" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='translateY(0)'">
+                    <img src="{{ asset('assets/shop/images/magasin' ~ i ~ '.png') }}" alt="Magasin map {{ i }}" style="width: 100%; height: 100%; object-fit: cover; display: block; transform: scale(1.12); transform-origin: center;">
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    {# Notre Histoire Section #}
+    <div class="container mx-auto px-6 lg:px-12" style="padding-bottom: 4rem;">
+        <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 4rem;">
+            {# Text Column #}
+            <div style="flex: 3; min-width: 500px; display: flex; flex-direction: column; justify-content: center;">
+                <h2 style="font-size: 3.5rem; font-weight: 800; color: #111827; margin-bottom: 2.5rem; font-family: 'Outfit', sans-serif; letter-spacing: -0.02em;">
+                    Notre histoire
+                </h2>
+                
+                <div style="color: #4b5563; font-size: 1.15rem; line-height: 1.8; text-align: justify;">
+                    <p style="margin-bottom: 1.5rem;">
+                        C'est en décembre 2003, à Cayenne, qu'ouvre le premier magasin CATECO. Ce magasin connaitra 2 phases d'agrandissements, l'une en mai 2004 et l'autre en janvier 2005.
+                    </p>
+                    <p style="margin-bottom: 1.5rem;">
+                        En novembre 2017, un second magasin ouvre à Saint Laurent du Maroni.
+                    </p>
+                    <p style="margin-bottom: 1.5rem;">
+                        Plus récemment, en décembre 2022, notre magasin historique de Cayenne a fermé ses portes pour ouvrir quelques 100m plus loin, son tout nouveau magasin : beaucoup plus grand, plus accessible, offrant un large parking. La surface de vente du magasin a doublé, et CATECO y présente son tout nouveau concept enrichi de nombreuses familles de produits tels que le meuble, la déco, le plein air et le jardin.
+                    </p>
+                    <p style="margin-bottom: 1.5rem;">
+                        En février 2023, CATECO met en ligne son site marchand <a href="https://www.cateco.fr" style="color: #40bdb8; font-weight: 600; text-decoration: none;">www.cateco.fr</a> proposant l'ensemble de ses produits dans sa boutique en ligne.
+                    </p>
+                    <p style="margin-bottom: 1.5rem;">
+                        En juin 2025, Catéco s'agrandit avec l'ouverture de son 3ᵉ magasin à Rémire-Montjoly !
+                    </p>
+                </div>
+            </div>
+
+            {# Image Column #}
+            <div style="flex: 3; min-width: 520px; position: relative; padding-top: 3rem;">
+                {# Decorative Teal Backdrop #}
+                <div style="position: absolute; top: 0; right: -3rem; width: 100%; height: 90%; background: #2c8a86; border-radius: 2rem; z-index: 1;"></div>
+                
+                {# Main Image Container #}
+                <div style="position: relative; z-index: 2; border-radius: 2rem; overflow: hidden; box-shadow: 0 40px 80px rgba(0,0,0,0.15); height: 560px;">
+                    <img src="{{ asset('assets/shop/images/notre_histoire.jpg') }}" alt="Notre Histoire" style="width: 100%; height: 100%; object-fit: cover; object-position: 80% center; display: block;">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {# Catalogue & Prix Section #}
+    <div class="container mx-auto px-6 lg:px-12" style="padding-bottom: 5rem;">
+        <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 4rem;">
+            {# Image Column #}
+            <div style="flex: 3; min-width: 520px; position: relative; padding-top: 3rem; transform: translateY(-3rem);">
+                {# Decorative Teal Backdrop #}
+                <div style="position: absolute; top: 0; left: -3rem; width: 100%; height: 90%; background: #2c8a86; border-radius: 2rem; z-index: 1;"></div>
+                
+                {# Main Image Container #}
+                <div style="position: relative; z-index: 2; border-radius: 2rem; overflow: hidden; box-shadow: 0 40px 80px rgba(0,0,0,0.15); height: 560px;">
+                    <img src="{{ asset('assets/shop/images/rejoignez-club.jpg') }}" alt="Catalogue CATECO" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+                </div>
+            </div>
+
+            {# Text Column #}
+            <div style="flex: 3; min-width: 500px; display: flex; flex-direction: column; justify-content: center;">
+                <h2 style="font-size: 2.2rem; font-weight: 800; color: #111827; margin-bottom: 2rem; font-family: 'Outfit', sans-serif; line-height: 1.2; letter-spacing: -0.02em;">
+                    CATECO le magasin qui fait scandale sur les prix
+                </h2>
+                <p style="color: #4b5563; font-size: 1.25rem; font-weight: 500; margin-bottom: 3rem; line-height: 1.6;">
+                    L'équipement de votre maison à petits prix. Des produits tendances et astucieux, une offre large et variée, un renouvellement permanent !
+                </p>
+
+                <h2 style="font-size: 2.2rem; font-weight: 800; color: #111827; margin-bottom: 1.5rem; font-family: 'Outfit', sans-serif; letter-spacing: -0.02em;">
+                    Notre dernier catalogue promotionnel en ligne
+                </h2>
+                
+                <div style="color: #4b5563; font-size: 1.15rem; line-height: 1.8; text-align: justify;">
+                    <p style="margin-bottom: 1.5rem;">
+                        Consultez et feuilletez les pages de nos différentes rubriques : mobilier, jardinage, bricolage, entretien de la maison, entretien automobile, bien être et plein air.
+                    </p>
+                    <p style="font-size: 1.2rem; font-weight: 600;">
+                        Pour accéder au catalogue actuel <a href="https://www.calameo.com/read/007260152f5b472bbd8b8" target="_blank" style="color: #ff9d2e; text-decoration: none;">cliquez ici</a>
+                    </p>
+                </div>
+
+                {# Interactive Catalogue Book #}
+                <div style="margin-top: 3rem; display: flex; justify-content: flex-end;">
+                    <a href="https://www.calameo.com/read/007260152f5b472bbd8b8" target="_blank" style="display: block; transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);" onmouseover="this.style.transform='scale(1.05) translateY(-5px) rotate(-2deg)'" onmouseout="this.style.transform='scale(1) translateY(0) rotate(0)'">
+                        <div style="position: relative; width: 280px; border-radius: 2px 8px 8px 2px; box-shadow: -15px 20px 35px rgba(0,0,0,0.15), inset 4px 0 10px rgba(0,0,0,0.1); background: white; border-left: 8px solid #2c8a86; transform: perspective(1000px) rotateY(-8deg); transition: transform 0.3s ease;">
+                            
+                            {# Spine Shadowing #}
+                            <div style="position: absolute; top: 0; left: 0; bottom: 0; width: 15px; background: linear-gradient(to right, rgba(0,0,0,0.2) 0%, rgba(255,255,255,0.3) 50%, rgba(0,0,0,0) 100%); z-index: 2; pointer-events: none;"></div>
+                            
+                            {# Glossy Cover Sheen #}
+                            <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(135deg, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0) 40%); z-index: 3; pointer-events: none; border-radius: 2px 8px 8px 2px;"></div>
+                            
+                            <img src="{{ asset('assets/shop/images/catalogue.png') }}" alt="Consultez notre Catalogue" style="width: 100%; height: auto; display: block; border-radius: 0 8px 8px 0; position: relative; z-index: 1;">
+                            
+                            {# Floating 'Read' badge #}
+                            <div style="position: absolute; bottom: -12px; right: -12px; background: #ff9d2e; color: white; width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 20px rgba(255,157,46,0.4); z-index: 4; font-weight: bold; font-family: 'Outfit', sans-serif; font-size: 0.85rem;">
+                                Lire
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {# Garantie & Showcase Section #}
+    <div style="padding-bottom: 1rem;">
+        {# Centered Text #}
+        <div style="text-align: center; margin-bottom: 2rem;">
+            <h2 style="font-size: 2.5rem; font-weight: 800; color: #111827; margin-bottom: 1rem; font-family: 'Outfit', sans-serif; letter-spacing: -0.02em;">
+                Une garantie 2 ans
+            </h2>
+            <p style="color: #6b7280; font-size: 1.15rem; font-weight: 400;">
+                Sur tous les articles électriques et thermiques
+            </p>
+        </div>
+
+        {# Banner (Pleine Largeur) #}
+        <div class="container mx-auto" style="padding: 0 1.5rem; max-width: 1400px;">
+            <div style="background-color: #b6dedc; border-radius: 1rem; display: flex; flex-wrap: wrap; align-items: stretch; overflow: hidden; position: relative; min-height: 280px; box-shadow: 0 10px 30px rgba(0,0,0,0.05);">
+                {# Left Content #}
+                <div style="flex: 1; min-width: 300px; padding: 3rem 3rem 3rem 5rem; display: flex; flex-direction: column; justify-content: center; z-index: 2;">
+                    <h3 style="font-size: 2.2rem; font-weight: 800; color: #111827; margin-bottom: 2rem; font-family: 'Outfit', sans-serif; letter-spacing: -0.02em;">
+                        Découvrez nos produits
+                    </h3>
+                    <div>
+                        <a href="{{ path('sylius_shop_homepage') }}" style="display: inline-block; background-color: #ff9d2e; color: white; font-weight: 700; font-size: 1.1rem; padding: 1rem 2.5rem; border-radius: 2rem; text-decoration: none; transition: transform 0.2s, background-color 0.2s;" onmouseover="this.style.transform='scale(1.05)'; this.style.backgroundColor='#e68c29';" onmouseout="this.style.transform='scale(1)'; this.style.backgroundColor='#ff9d2e';">
+                            Commencer mon shopping
+                        </a>
+                    </div>
+                </div>
+                
+                {# Right Image #}
+                <div style="flex: 1.5; min-width: 400px; position: relative;">
+                    <img src="{{ asset('assets/shop/images/qui_sommes-nous.png') }}" alt="Nos Produits" style="position: absolute; bottom: 0; right: 0; max-height: 125%; width: auto; object-fit: contain; object-position: right bottom; display: block; transform: translateX(5%);">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .store-band { transition: transform 0.3s ease, box-shadow 0.3s ease; }
+    .store-band:hover { transform: translateY(-5px); box-shadow: 0 12px 20px -5px rgba(0,0,0,0.1); }
+</style>
+{% endblock %}

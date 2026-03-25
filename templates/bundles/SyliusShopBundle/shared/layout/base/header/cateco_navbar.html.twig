@@ -13,7 +13,7 @@
         </a>
 
         <!-- RECHERCHE - center expanding -->
-        <form action="{{ path('sylius_shop_homepage') }}" method="get" style="flex: 1; max-width: 500px; margin: 0 32px; display: flex;">
+        <form action="/{{ sylius.localeCode|default(app.request.locale)|default('fr_FR') }}/search" method="get" style="flex: 1; max-width: 500px; margin: 0 32px; display: flex;">
             <input type="text" 
                    name="search"
                    placeholder="Ex: Salon de jardin..." 
@@ -157,7 +157,7 @@
             </div>
 
             <!-- Blog -->
-            <a href="#" style="color: white; text-decoration: none; display: flex; flex-direction: column; align-items: center; gap: 4px; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+            <a href="{{ path('app_blog_index') }}" style="color: white; text-decoration: none; display: flex; flex-direction: column; align-items: center; gap: 4px; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
                 <svg style="width: 24px; height: 24px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9.5a2.5 2.5 0 00-2.5-2.5H15M9 11l3 3L22 4"/>
                 </svg>

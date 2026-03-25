@@ -4,6 +4,10 @@
 
 {# In this context, product is passed directly #}
 {% set cheapest_variant = product|sylius_resolve_variant %}
+{% if cheapest_variant is null and product.variants is not empty %}
+    {% set cheapest_variant = product.variants.first %}
+{% endif %}
+
 {% set price = 0 %}
 {% set original_price = 0 %}
 {% set has_discount = false %}
@@ -68,18 +72,31 @@
                              style="height:32px;width:auto;display:block;flex-shrink:0;">
                         <span class="final-price">{{ price|sylius_format_money(sylius.currencyCode) }}</span>
                     </div>
-                {% else %}
-                    <span class="final-price" style="font-size: 1.1rem; color: #9ca3af;">Indisponible</span>
                 {% endif %}
             </div>
             
             {% if cheapest_variant is not null %}
-                {# Rendering the official Sylius 2 AddToCart Live Component with our lightweight custom template #}
-                {{ component('sylius_shop:product:add_to_cart_form', {
-                    'product': product,
-                    'variant': cheapest_variant,
-                    'template': '@SyliusShop/product/common/add_to_cart_form.html.twig'
-                }) }}
+                {% set is_out_of_stock = product.enabledVariants.empty() or (product.simple and not sylius_inventory_is_available(cheapest_variant)) %}
+                <div class="{{ is_out_of_stock ? 'cateco-product-card-out-of-stock' : '' }}">
+                    {# Rendering the official Sylius 2 AddToCart Live Component with our lightweight custom template #}
+                    {{ component('sylius_shop:product:add_to_cart_form', {
+                        'product': product,
+                        'variant': cheapest_variant,
+                        'template': '@SyliusShop/product/common/add_to_cart_form.html.twig'
+                    }) }}
+
+                    {% if is_out_of_stock %}
+                        <style>
+                            .cateco-product-card-out-of-stock button[type="submit"] {
+                                background-color: #cbd5e1 !important;
+                                border-color: #cbd5e1 !important;
+                                color: white !important;
+                                cursor: not-allowed !important;
+                                pointer-events: none !important;
+                            }
+                        </style>
+                    {% endif %}
+                </div>
             {% endif %}
         </div>
     </div>

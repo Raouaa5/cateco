@@ -1,8 +1,8 @@
 # config/routes.yaml
-sylius_shop_homepage:
-    path: /{_locale}/
+cateco_product_search:
+    path: /{_locale}/search
     methods: [GET]
-    controller: App\Controller\HomepageController::index
+    defaults: { _locale: fr, _controller: App\Controller\Shop\SearchController::search, _sylius: { template: "Shop/Search/results.html.twig" } }
     requirements:
         _locale: ^[A-Za-z]{2,4}(_([A-Za-z]{4}|[0-9]{3}))?(_([A-Za-z]{2}|[0-9]{3}))?$
 
@@ -12,3 +12,87 @@ app_club_cateco_index:
     controller: App\Controller\ClubCatecoController::index
     requirements:
         _locale: ^[A-Za-z]{2,4}(_([A-Za-z]{4}|[0-9]{3}))?(_([A-Za-z]{2}|[0-9]{3}))?$
+
+sylius_shop_homepage:
+    path: /{_locale}/
+    methods: [GET]
+    controller: App\Controller\HomepageController::index
+    requirements:
+        _locale: ^[A-Za-z]{2,4}(_([A-Za-z]{4}|[0-9]{3}))?(_([A-Za-z]{2}|[0-9]{3}))?$
+
+sylius_shop_product_show:
+    path: /{_locale}/products/{slug}
+    methods: [GET]
+    defaults:
+        _controller: sylius.controller.product::showAction
+        _sylius:
+            template: "@SyliusShop/product/show.html.twig"
+            repository:
+                method: findOneByChannelAndSlug
+                arguments:
+                    - "expr:service('sylius.context.channel').getChannel()"
+                    - "expr:service('sylius.context.locale').getLocaleCode()"
+                    - $slug
+    requirements:
+        _locale: ^[A-Za-z]{2,4}(_([A-Za-z]{4}|[0-9]{3}))?(_([A-Za-z]{2}|[0-9]{3}))?$
+        slug: .+
+
+app_about_us:
+    path: /{_locale}/qui-sommes-nous
+    methods: [GET]
+    controller: App\Controller\AboutUsController::index
+    requirements:
+        _locale: ^[A-Za-z]{2,4}(_([A-Za-z]{4}|[0-9]{3}))?(_([A-Za-z]{2}|[0-9]{3}))?$
+
+app_about_us_redirect:
+    path: /qui-sommes-nous
+    controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController::redirectAction
+    defaults:
+        route: app_about_us
+        permanent: true
+        _locale: fr_FR
+
+app_privacy_policy:
+    path: /{_locale}/politique-de-confidentialite
+    methods: [GET]
+    controller: App\Controller\PrivacyPolicyController::index
+    requirements:
+        _locale: ^[A-Za-z]{2,4}(_([A-Za-z]{4}|[0-9]{3}))?(_([A-Za-z]{2}|[0-9]{3}))?$
+
+app_privacy_policy_redirect:
+    path: /politique-de-confidentialite
+    controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController::redirectAction
+    defaults:
+        route: app_privacy_policy
+        permanent: true
+        _locale: fr_FR
+
+app_legal_mentions:
+    path: /{_locale}/mentions-legales
+    methods: [GET]
+    controller: App\Controller\LegalMentionsController::index
+    requirements:
+        _locale: ^[A-Za-z]{2,4}(_([A-Za-z]{4}|[0-9]{3}))?(_([A-Za-z]{2}|[0-9]{3}))?$
+
+app_legal_mentions_redirect:
+    path: /mentions-legales
+    controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController::redirectAction
+    defaults:
+        route: app_legal_mentions
+        permanent: true
+        _locale: fr_FR
+
+app_cgv:
+    path: /{_locale}/cgv
+    methods: [GET]
+    controller: App\Controller\CgvController::index
+    requirements:
+        _locale: ^[A-Za-z]{2,4}(_([A-Za-z]{4}|[0-9]{3}))?(_([A-Za-z]{2}|[0-9]{3}))?$
+
+app_cgv_redirect:
+    path: /cgv
+    controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController::redirectAction
+    defaults:
+        route: app_cgv
+        permanent: true
+        _locale: fr_FR

@@ -1,0 +1,43 @@
+{# Rendered with \Sylius\Bundle\ShopBundle\Twig\Component\Product\AddToCartFormComponent #}
+
+{% import '@SyliusShop/shared/macro/loader.html.twig' as loader %}
+
+{% form_theme form '@SyliusShop/form/theme.html.twig' %}
+
+<div class="position-relative" {{ attributes }}>
+    {% set is_out_of_stock = product.enabledVariants.empty() or (product.simple and not sylius_inventory_is_available(product.enabledVariants.first)) %}
+    
+    {% if is_out_of_stock %}
+        <div class="mb-3 d-flex align-items-center" {{ sylius_test_html_attribute('product-out-of-stock') }}>
+            <svg xmlns="http://www.w3.org/2000/svg" class="me-2" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f97316" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="4.93" y1="4.93" x2="19.07" y2="19.07"></line>
+            </svg>
+            <span class="fw-bold" style="color: #4a5568;">Rupture de stock</span>
+        </div>
+    {% endif %}
+
+    {{ loader.render() }}
+    <div class="my-4 cateco-product-show-add-to-cart" {{ sylius_test_html_attribute('product-selecting-variant') }}>
+        {{ form_start(form, {'attr': {'data-action': 'live#action:prevent live#$render', 'data-live-action-param': 'addToCart'}}) }}
+        {{ form_errors(form) }}
+
+        {% hook 'add_to_cart' with { product, form } %}
+
+        {{ form_row(form._token) }}
+        
+        {% if is_out_of_stock %}
+            <style>
+                .cateco-product-show-add-to-cart button[type="submit"] {
+                    background-color: #cbd5e1 !important;
+                    border-color: #cbd5e1 !important;
+                    color: white !important;
+                    cursor: not-allowed !important;
+                    pointer-events: none !important;
+                }
+            </style>
+        {% endif %}
+
+        {{ form_end(form, {'render_rest': false}) }}
+    </div>
+</div>

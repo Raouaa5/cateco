@@ -1,0 +1,135 @@
+{% extends '@SyliusShop/shared/layout/base.html.twig' %}
+
+{% block title %}Conditions générales de ventes | {{ parent() }}{% endblock %}
+
+{% block content %}
+<div style="background: white; min-height: 80vh; font-family: 'Outfit', sans-serif;">
+    {# Legend/Header Section - Refined Gray Theme #}
+    <div style="background: linear-gradient(135deg, #d1d5db 0%, #9ca3af 100%); padding: 4rem 0; color: #111827; position: relative; overflow: hidden; border-radius: 0 0 3rem 3rem; margin-bottom: 3rem;">
+        {# Photo on the right (Reflet en couleur avec masque fluide) #}
+        <div style="position: absolute; top: 0; right: 0; height: 100%; width: 55%; z-index: 1; -webkit-mask-image: linear-gradient(to right, transparent 0%, black 35%); mask-image: linear-gradient(to right, transparent 0%, black 35%); opacity: 0.6;">
+            <img src="{{ asset('assets/shop/images/rejoignez-club.jpg') }}" alt="" style="width: 100%; height: 100%; object-fit: cover; object-position: right 35%; display: block; filter: grayscale(20%);">
+        </div>
+
+        <div class="container mx-auto px-6 lg:px-12 relative" style="z-index: 2;">
+            {# Breadcrumbs #}
+            <nav style="margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.5rem; font-size: 0.9rem;">
+                <a href="{{ path('sylius_shop_homepage') }}" style="color: #4b5563; text-decoration: none;">Accueil</a>
+                <span style="opacity: 0.6; color: #9ca3af;">/</span>
+                <span style="font-weight: 600; color: #111827;">Conditions générales de ventes</span>
+            </nav>
+            
+            <h1 style="font-size: clamp(1.8rem, 4vw, 2.5rem); font-weight: 800; line-height: 1.1; margin: 0; letter-spacing: -0.02em;">
+                Conditions générales de ventes
+            </h1>
+        </div>
+    </div>
+
+    {# Main Content #}
+    <div class="container mx-auto px-6 lg:px-12" style="padding-bottom: 6rem;">
+        <div style="max-width: 1200px; margin: 0 auto; color: #4b5563; font-size: 1.15rem; line-height: 2.0; text-align: justify;">
+            
+            <p style="margin-bottom: 2rem;">
+                Le présent site Internet <a href="https://www.cateco.fr" style="color: #40bdb8; text-decoration: none; font-weight: 600;">www.cateco.fr</a> (le "Site Internet") est édité par la société **CATECO CAY**, Société par Actions Simplifiée au capital de 50 000 Euros, dont le siège social est situé 31 rue des Morphos, ZI Collery 4, 97300 Cayenne, immatriculée au Registre du Commerce et des Sociétés de Cayenne sous le numéro 832 264 782 ("CATECO SLM"). Téléphone : 0594 38 38 58. Pour nous contacter par email <a href="mailto:contact@cateco.fr" style="color: #40bdb8; text-decoration: none;">contact@cateco.fr</a>.
+            </p>
+
+            <h2 style="font-size: 1.8rem; font-weight: 700; color: #111827; margin: 3rem 0 1.5rem; font-family: 'Outfit', sans-serif; border-left: 6px solid #40bdb8; padding-left: 1.5rem;">01 - Préambule</h2>
+            <p style="margin-bottom: 1.5rem;">
+                Les présentes conditions générales de vente (les "Conditions Générales") sont conclues entre CATECO et toute personne physique non commerçante ("Vous") souhaitant effectuer un achat sur le Site Internet.
+            </p>
+            <p style="margin-bottom: 1.5rem;">
+                Les présentes Conditions Générales régissent exclusivement votre relation avec CATECO.
+            </p>
+            <p style="margin-bottom: 1.5rem;">
+                CATECO se réserve le droit de modifier à tout moment les Conditions Générales. Elles seront alors applicables dès leur mise en ligne.
+            </p>
+
+            <h2 style="font-size: 1.8rem; font-weight: 700; color: #111827; margin: 3rem 0 1.5rem; font-family: 'Outfit', sans-serif; border-left: 6px solid #40bdb8; padding-left: 1.5rem;">02 - Produits</h2>
+            <p style="margin-bottom: 1.5rem;">
+                Les produits régis par les présentes Conditions Générales sont ceux qui figurent sur le Site Internet et qui sont indiqués comme vendus par CATECO (les "Produits"). Ils sont proposés dans la limite des stocks disponibles.
+            </p>
+            <p style="margin-bottom: 1.5rem;">
+                Les caractéristiques essentielles des Produits sont décrites et présentées avec la plus grande exactitude possible.
+            </p>
+
+            <h2 style="font-size: 1.8rem; font-weight: 700; color: #111827; margin: 3rem 0 1.5rem; font-family: 'Outfit', sans-serif; border-left: 6px solid #40bdb8; padding-left: 1.5rem;">03 - Prix</h2>
+            <p style="margin-bottom: 1.5rem;">
+                Les prix des Produits sont indiqués en Euros et tiennent compte des éventuelles réductions applicables au jour de la commande.
+            </p>
+            <p style="margin-bottom: 1.5rem;">
+                Si une ou plusieurs taxes ou contributions, notamment environnementales, venaient à être créées ou modifiées, en hausse comme en baisse, ce changement pourra être répercuté sur le prix de vente des Produits présents sur le Site Internet et sur les différents supports de vente.
+            </p>
+            <p style="margin-bottom: 1.5rem;">
+                Toutefois, un prix ne pourra pas être modifié une fois votre commande validée. Néanmoins en cas d’erreur de prix (prix manifestement dérisoire par rapport à la valeur réelle du Produit), la commande validée pourra être annulée par CATECO. Cette mesure demeure exceptionnelle.
+            </p>
+
+            <h2 style="font-size: 1.8rem; font-weight: 700; color: #111827; margin: 3rem 0 1.5rem; font-family: 'Outfit', sans-serif; border-left: 6px solid #40bdb8; padding-left: 1.5rem;">04 - Commande</h2>
+            <h3 style="font-size: 1.4rem; font-weight: 700; color: #111827; margin: 2rem 0 1rem;">4.1 Identification préalable</h3>
+            <p style="margin-bottom: 1.5rem;">
+                Pour passer une commande, Vous devez vous identifier avec votre adresse email ou votre numéro de client, et votre mot de passe. Pour toute première commande, Vous devrez créer un compte.
+            </p>
+            <h3 style="font-size: 1.4rem; font-weight: 700; color: #111827; margin: 2rem 0 1rem;">4.2 Enregistrement et validation de la commande</h3>
+            <p style="margin-bottom: 1rem;">Vous avez la possibilité de passer votre commande en ligne :</p>
+            <ul style="margin-bottom: 1.5rem; padding-left: 2rem;">
+                <li>Soit à partir de la boutique en ligne;</li>
+                <li>Soit directement à partir des références des catalogues papier.</li>
+            </ul>
+            <p style="margin-bottom: 1.5rem;">
+                Une fois votre panier validé, vous devrez valider votre moyen de paiement, cette dernière étape formalisant le contrat de vente avec CATECO.
+            </p>
+            <p style="margin-bottom: 1.5rem;">
+                Toute commande vaut acceptation des prix et descriptions des Produits disponibles à la vente. CATECO accusera réception de votre commande dès sa validation en vous envoyant un email.
+            </p>
+
+            <h2 style="font-size: 1.8rem; font-weight: 700; color: #111827; margin: 3rem 0 1.5rem; font-family: 'Outfit', sans-serif; border-left: 6px solid #40bdb8; padding-left: 1.5rem;">05 - Modalités de paiement</h2>
+            <p style="margin-bottom: 1.5rem;">
+                Toute commande sera réglée par carte bancaire : Carte Bleue, e-carte bleue, Visa, Mastercard. Votre compte sera débité à la confirmation de la commande.
+            </p>
+
+            <h2 style="font-size: 1.8rem; font-weight: 700; color: #111827; margin: 3rem 0 1.5rem; font-family: 'Outfit', sans-serif; border-left: 6px solid #40bdb8; padding-left: 1.5rem;">06 - Retour des Produits</h2>
+            <h3 style="font-size: 1.4rem; font-weight: 700; color: #111827; margin: 2rem 0 1rem;">6.1. Exercice du droit de rétractation</h3>
+            <p style="margin-bottom: 1.5rem;">
+                Vous disposez d'un droit de rétraction de **quatorze (14) jours calendaires** à compter de la date du retrait de l'ensemble de votre commande.
+            </p>
+            <p style="margin-bottom: 1.5rem;">
+                Les Produits retournés doivent être intacts et complets et ne doivent pas avoir fait l'objet d'une utilisation. Pour exercer ce droit, vous devez retourner les Produits au magasin de retrait muni du ticket caisse original.
+            </p>
+            <h3 style="font-size: 1.4rem; font-weight: 700; color: #111827; margin: 2rem 0 1rem;">6.2. Cas particulier d’un Produit non conforme</h3>
+            <p style="margin-bottom: 1.5rem;">
+                CATECO vous conseille de contrôler le Produit au moment de son retrait et d'émettre des réserves écrites au plus tard dans les trois (3) jours en cas de non-conformité.
+            </p>
+
+            <h2 style="font-size: 1.8rem; font-weight: 700; color: #111827; margin: 3rem 0 1.5rem; font-family: 'Outfit', sans-serif; border-left: 6px solid #40bdb8; padding-left: 1.5rem;">07 – Garanties Légales</h2>
+            <p style="margin-bottom: 1.5rem;">
+                Tous les Produits bénéficient de la garantie légale de conformité et de la garantie contre les vices cachés. Vous disposez d’un délai de deux ans à compter de la délivrance du Produit pour agir.
+            </p>
+
+            <h2 style="font-size: 1.8rem; font-weight: 700; color: #111827; margin: 3rem 0 1.5rem; font-family: 'Outfit', sans-serif; border-left: 6px solid #40bdb8; padding-left: 1.5rem;">08 - Environnement</h2>
+            <p style="margin-bottom: 1.5rem;">
+                CATECO vous informe que la présence de substances dangereuses dans les équipements électriques peut avoir des effets potentiels sur l'environnement. Ces produits ne doivent pas être jetés avec les déchets municipaux non triés.
+            </p>
+
+            <h2 style="font-size: 1.8rem; font-weight: 700; color: #111827; margin: 3rem 0 1.5rem; font-family: 'Outfit', sans-serif; border-left: 6px solid #40bdb8; padding-left: 1.5rem;">09 - Preuves</h2>
+            <p style="margin-bottom: 1.5rem;">
+                La validation finale de la commande vaudra preuve de l'intégralité de ladite commande. Les registres informatisés de CATECO seront considérés comme des preuves des communications, commandes et paiements.
+            </p>
+
+            <h2 style="font-size: 1.8rem; font-weight: 700; color: #111827; margin: 3rem 0 1.5rem; font-family: 'Outfit', sans-serif; border-left: 6px solid #40bdb8; padding-left: 1.5rem;">10 - Responsabilités</h2>
+            <p style="margin-bottom: 1.5rem;">
+                CATECO s'engage à décrire avec la plus grande exactitude les Produits. En revanche, sa responsabilité ne pourra être engagée en cas de force majeure ou d'inconvénients inhérents à l'utilisation du réseau Internet.
+            </p>
+
+            <h2 style="font-size: 1.8rem; font-weight: 700; color: #111827; margin: 3rem 0 1.5rem; font-family: 'Outfit', sans-serif; border-left: 6px solid #40bdb8; padding-left: 1.5rem;">11 - Informations nominatives</h2>
+            <p style="margin-bottom: 1.5rem;">
+                Lors de votre commande, les données nominatives collectées feront l'objet d'un traitement informatique.
+            </p>
+
+            <h2 style="font-size: 1.8rem; font-weight: 700; color: #111827; margin: 3rem 0 1.5rem; font-family: 'Outfit', sans-serif; border-left: 6px solid #40bdb8; padding-left: 1.5rem;">12 - Loi applicable et compétence juridictionnelle</h2>
+            <p style="margin-bottom: 1.5rem;">
+                Les Conditions Générales sont soumises à la loi française. Le tribunal compétent sera celui du lieu de domicile du défendeur.
+            </p>
+
+        </div>
+    </div>
+</div>
+{% endblock %}
