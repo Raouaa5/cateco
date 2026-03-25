@@ -4,6 +4,8 @@ framework:
 
 when@test: &mailer_test
     framework:
+        mailer:
+            dsn: 'null://null'
         cache:
             pools:
                 test.mailer_pool:
