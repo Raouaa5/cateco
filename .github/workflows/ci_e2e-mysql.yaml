@@ -53,6 +53,7 @@ jobs:
         env:
             APP_ENV: ${{ matrix.env || 'test_cached' }}
             DATABASE_URL: "mysql://root:root@127.0.0.1/sylius?charset=utf8mb4&serverVersion=${{ matrix.mysql }}"
+            MAILER_DSN: "null://null"
 
         steps:
             -   name: "Checkout (With Branch)"
@@ -142,6 +143,7 @@ jobs:
         env:
             APP_ENV: ${{ matrix.env || 'test_cached' }}
             DATABASE_URL: "mysql://root:root@127.0.0.1/sylius?charset=utf8mb4&serverVersion=${{ matrix.mysql }}"
+            MAILER_DSN: "null://null"
 
         steps:
             -   name: "Checkout (With Branch)"
@@ -217,6 +219,7 @@ jobs:
         env:
             APP_ENV: ${{ matrix.env || 'test_cached' }}
             DATABASE_URL: "mysql://root:root@127.0.0.1/sylius?charset=utf8mb4&serverVersion=${{ matrix.mysql }}"
+            MAILER_DSN: "null://null"
 
         steps:
             -   name: "Checkout (With Branch)"
