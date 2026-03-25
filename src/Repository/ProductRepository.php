@@ -5,10 +5,13 @@ declare(strict_types=1);
 namespace App\Repository;
 
 use Sylius\Component\Core\Model\ChannelInterface;
+use Sylius\Component\Core\Model\ProductInterface;
 use Sylius\Component\Core\Model\TaxonInterface;
-use Doctrine\ORM\QueryBuilder;
-use Sylius\Bundle\CoreBundle\Doctrine\ORM\ProductRepository as BaseProductRepository;
+use Doctrine\ORM\Query\Expr\OrderBy;
 
+/**
+ * @extends \Sylius\Bundle\CoreBundle\Doctrine\ORM\ProductRepository<ProductInterface>
+ */
 class ProductRepository extends \Sylius\Bundle\CoreBundle\Doctrine\ORM\ProductRepository
 {
     public function createShopListQueryBuilder(
@@ -25,7 +28,7 @@ class ProductRepository extends \Sylius\Bundle\CoreBundle\Doctrine\ORM\ProductRe
                 ->addSelect('translation')
                 ->addSelect('productTaxon')
                 ->innerJoin('o.translations', 'translation', 'WITH', 'translation.locale = :locale')
-                ->leftJoin('o.productTaxons', 'productTaxon')   // required alias for grid sorter
+                ->leftJoin('o.productTaxons', 'productTaxon')
                 ->andWhere(':channel MEMBER OF o.channels')
                 ->andWhere('o.enabled = :enabled')
                 ->setParameter('locale', $locale)
@@ -33,12 +36,10 @@ class ProductRepository extends \Sylius\Bundle\CoreBundle\Doctrine\ORM\ProductRe
                 ->setParameter('enabled', true)
             ;
 
-            // Apply default sorting by newest if no specific sorting is requested
             if (empty($sorting)) {
                 $queryBuilder->addOrderBy('o.createdAt', 'DESC');
             }
 
-            // Grid hack for price sorting (needed to not break frontend price sorting)
             if (isset($sorting['price'])) {
                 $subQuery = $this->createQueryBuilder('m')
                      ->select('min(v.position)')
@@ -64,18 +65,15 @@ class ProductRepository extends \Sylius\Bundle\CoreBundle\Doctrine\ORM\ProductRe
                 ;
             }
         } else {
-            // Normal fallback for regular categories
             $queryBuilder = parent::createShopListQueryBuilder($channel, $taxon, $locale, $sorting, $includeAllDescendants);
         }
 
-        // Prepend our images-first sort exactly as before
+        /** @var OrderBy[] $orderByParts */
         $orderByParts = $queryBuilder->getDQLPart('orderBy');
         $queryBuilder->resetDQLPart('orderBy');
         
-        // Use SIZE() to sort by image count. Higher count first.
         $queryBuilder->addOrderBy('SIZE(o.images)', 'DESC');
         
-        // Re-append existing sorts as secondary rules
         foreach ($orderByParts as $orderBy) {
             foreach ($orderBy->getParts() as $part) {
                 $sortPart = (string) $part;
@@ -90,7 +88,10 @@ class ProductRepository extends \Sylius\Bundle\CoreBundle\Doctrine\ORM\ProductRe
         return $queryBuilder;
     }
 
-    public function findByPhrase(string $phrase, string $locale, ?int $limit = null, ?\Sylius\Component\Core\Model\ChannelInterface $channel = null): iterable
+    /**
+     * @return iterable<ProductInterface>
+     */
+    public function findByPhrase(string $phrase, string $locale, ?int $limit = null, ?ChannelInterface $channel = null): iterable
     {
         $queryBuilder = $this->createQueryBuilder('o')
             ->addSelect('translation')
@@ -106,7 +107,6 @@ class ProductRepository extends \Sylius\Bundle\CoreBundle\Doctrine\ORM\ProductRe
                 ->setParameter('channel', $channel)
             ;
             
-            // Join variant and channel pricing to ensure prices are available in the card
             $queryBuilder
                 ->addSelect('variant')
                 ->addSelect('channelPricing')
@@ -137,7 +137,6 @@ class ProductRepository extends \Sylius\Bundle\CoreBundle\Doctrine\ORM\ProductRe
             $i++;
         }
 
-        // Prioritize products with images, then by creation date
         $queryBuilder
             ->addOrderBy('SIZE(o.images)', 'DESC')
             ->addOrderBy('o.createdAt', 'DESC')
@@ -147,6 +146,8 @@ class ProductRepository extends \Sylius\Bundle\CoreBundle\Doctrine\ORM\ProductRe
             $queryBuilder->setMaxResults($limit);
         }
 
-        return $queryBuilder->getQuery()->getResult();
+        /** @var iterable<ProductInterface> $result */
+        $result = $queryBuilder->getQuery()->getResult();
+        return $result;
     }
 }

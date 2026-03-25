@@ -16,6 +16,7 @@ use Sylius\Component\Resource\Factory\FactoryInterface;
 use Sylius\Component\Resource\Repository\RepositoryInterface;
 use Sylius\Component\Taxonomy\Model\TaxonTranslationInterface;
 use Sylius\Component\Product\Generator\SlugGeneratorInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -23,9 +24,9 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Sylius\Component\Core\Uploader\ImageUploaderInterface;
 
+#[AsCommand(name: 'app:import-products')]
 class ImportProductsCommand extends Command
 {
-    protected static $defaultName = 'app:import-products';
 
     private FactoryInterface $productFactory;
     private FactoryInterface $productVariantFactory;
@@ -79,7 +80,7 @@ class ImportProductsCommand extends Command
             return Command::FAILURE;
         }
         
-        $locale = $channel->getDefaultLocale()->getCode();
+        $locale = $channel->getDefaultLocale()?->getCode() ?? 'fr_FR';
         $io->note(sprintf('Using Channel: %s and Locale: %s', $channel->getCode(), $locale));
 
         $csvFile = dirname(__DIR__, 2) . '/products.csv';
@@ -89,6 +90,10 @@ class ImportProductsCommand extends Command
         }
 
         $handle = fopen($csvFile, 'r');
+        if ($handle === false) {
+            $io->error('Could not open CSV file.');
+            return Command::FAILURE;
+        }
         fgetcsv($handle); // skip header
 
         $count = 0;
@@ -189,7 +194,8 @@ class ImportProductsCommand extends Command
                 try {
                     $imageContent = @file_get_contents($imageUrl);
                     if ($imageContent) {
-                        $imageFileName = basename(parse_url($imageUrl, PHP_URL_PATH));
+                        $parsedPath = parse_url($imageUrl, PHP_URL_PATH);
+                        $imageFileName = is_string($parsedPath) ? basename($parsedPath) : '';
                         if (empty($imageFileName)) {
                             $imageFileName = $sku . '.jpg';
                         }

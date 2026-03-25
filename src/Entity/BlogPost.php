@@ -15,7 +15,7 @@ class BlogPost
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    private ?int $id = null;
+    private int|null $id = null;
 
     #[ORM\Column(length: 255)]
     private ?string $title = null;
@@ -36,7 +36,7 @@ class BlogPost
     private ?\DateTimeInterface $createdAt = null;
 
     #[ORM\Column]
-    private ?bool $enabled = true;
+    private bool $enabled = true;
 
     public function __construct()
     {
@@ -120,7 +120,7 @@ class BlogPost
         return $this;
     }
 
-    public function isEnabled(): ?bool
+    public function isEnabled(): bool
     {
         return $this->enabled;
     }

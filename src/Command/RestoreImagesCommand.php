@@ -6,33 +6,25 @@ namespace App\Command;
 
 use App\Entity\Product\ProductImage;
 use Sylius\Component\Core\Model\ProductInterface;
-use Sylius\Component\Core\Model\ProductImageInterface;
 use Sylius\Component\Core\Uploader\ImageUploaderInterface;
 use Sylius\Component\Core\Repository\ProductRepositoryInterface;
-use Sylius\Component\Resource\Factory\FactoryInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Doctrine\ORM\EntityManagerInterface;
 
+#[AsCommand(name: 'app:restore-images')]
 class RestoreImagesCommand extends Command
 {
-    protected static $defaultName = 'app:restore-images';
-
-    private $productRepository;
-    private $imageUploader;
-    private $entityManager;
-
+    /** @param ProductRepositoryInterface<ProductInterface> $productRepository */
     public function __construct(
-        ProductRepositoryInterface $productRepository,
-        ImageUploaderInterface $imageUploader,
-        EntityManagerInterface $entityManager
+        private ProductRepositoryInterface $productRepository,
+        private ImageUploaderInterface $imageUploader,
+        private EntityManagerInterface $entityManager,
     ) {
         parent::__construct();
-        $this->productRepository = $productRepository;
-        $this->imageUploader = $imageUploader;
-        $this->entityManager = $entityManager;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -44,6 +36,11 @@ class RestoreImagesCommand extends Command
         }
 
         $handle = fopen($csvFile, 'r');
+        if ($handle === false) {
+            $output->writeln("Could not open CSV file: $csvFile");
+            return Command::FAILURE;
+        }
+
         fgetcsv($handle); // skip header
 
         $count = 0;
@@ -55,8 +52,8 @@ class RestoreImagesCommand extends Command
         while (($data = fgetcsv($handle)) !== false) {
             if (count($data) < 4) continue;
 
-            $sku = trim($data[3]);
-            $imageUrl = trim($data[1]);
+            $sku = trim((string) $data[3]);
+            $imageUrl = trim((string) $data[1]);
 
             if (empty($sku) || empty($imageUrl) || !filter_var($imageUrl, FILTER_VALIDATE_URL)) {
                 continue;
@@ -71,7 +68,6 @@ class RestoreImagesCommand extends Command
                 continue;
             }
 
-            // Check if product already has images
             if (!$product->getImages()->isEmpty()) {
                 $skipped++;
                 continue;
@@ -81,8 +77,9 @@ class RestoreImagesCommand extends Command
 
             try {
                 $imageContent = @file_get_contents($imageUrl);
-                if ($imageContent) {
-                    $imageFileName = basename(parse_url($imageUrl, PHP_URL_PATH));
+                if ($imageContent !== false && $imageContent !== '') {
+                    $parsedPath = parse_url($imageUrl, PHP_URL_PATH);
+                    $imageFileName = is_string($parsedPath) ? basename($parsedPath) : '';
                     if (empty($imageFileName)) {
                         $imageFileName = $sku . '.jpg';
                     }
@@ -90,7 +87,6 @@ class RestoreImagesCommand extends Command
                     $tmpPath = sys_get_temp_dir() . '/' . uniqid() . '_' . $imageFileName;
                     file_put_contents($tmpPath, $imageContent);
 
-                    /** @var ProductImageInterface $image */
                     $image = new ProductImage();
                     $image->setType('main');
                     

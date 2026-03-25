@@ -49,21 +49,20 @@ class RelatedProductsComponent
         $channel = $this->channelContext->getChannel();
         $localeCode = $this->localeContext->getLocaleCode();
 
-        // Find products within the same main taxon.
-        // We use createShopListQueryBuilder because it handles enabled status and channels.
         $queryBuilder = $this->productRepository->createShopListQueryBuilder(
             $channel,
             $mainTaxon,
             $localeCode
         );
 
-        // Exclude the current product from the related products list
         $queryBuilder
             ->andWhere('o.id != :excludedProductId')
             ->setParameter('excludedProductId', $this->product->getId())
             ->setMaxResults($this->limit)
         ;
 
-        return $queryBuilder->getQuery()->getResult();
+        /** @var array<ProductInterface> $result */
+        $result = $queryBuilder->getQuery()->getResult();
+        return $result;
     }
 }

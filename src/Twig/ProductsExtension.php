@@ -2,14 +2,15 @@
 
 namespace App\Twig;
 
-use Sylius\Component\Core\Repository\ProductRepositoryInterface;
+use App\Repository\ProductRepository;
+use Sylius\Component\Core\Model\ProductInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
 class ProductsExtension extends AbstractExtension
 {
     public function __construct(
-        private ProductRepositoryInterface $productRepository
+        private ProductRepository $productRepository
     ) {
     }
 
@@ -21,6 +22,7 @@ class ProductsExtension extends AbstractExtension
         ];
     }
 
+    /** @return array<ProductInterface> */
     public function getLatestProducts(int $limit = 8): array
     {
         $qb = $this->productRepository->createQueryBuilder('o');
@@ -33,9 +35,12 @@ class ProductsExtension extends AbstractExtension
            ->setParameter('false', false)
            ->setMaxResults($limit);
 
-        return $qb->getQuery()->getResult();
+        /** @var array<ProductInterface> $result */
+        $result = $qb->getQuery()->getResult();
+        return $result;
     }
 
+    /** @return array<ProductInterface> */
     public function getBannerProducts(): array
     {
         $slugs = [
@@ -48,7 +53,6 @@ class ProductsExtension extends AbstractExtension
 
         $products = [];
         foreach ($slugs as $slug) {
-            // Safe search by slug in translations using QueryBuilder
             $qb = $this->productRepository->createQueryBuilder('o');
             $qb->leftJoin('o.translations', 't')
                ->where('t.slug = :slug')
@@ -58,11 +62,10 @@ class ProductsExtension extends AbstractExtension
             $product = $qb->getQuery()->getOneOrNullResult();
             
             if (!$product) {
-                // Second check by code as fallback
                 $product = $this->productRepository->findOneBy(['code' => $slug]);
             }
 
-            if ($product) {
+            if ($product instanceof ProductInterface) {
                 $products[] = $product;
             }
         }

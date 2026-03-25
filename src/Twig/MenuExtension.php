@@ -4,18 +4,17 @@ declare(strict_types=1);
 
 namespace App\Twig;
 
-
+use Sylius\Component\Taxonomy\Model\TaxonInterface;
 use Sylius\Component\Taxonomy\Repository\TaxonRepositoryInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
 final class MenuExtension extends AbstractExtension
 {
-    private TaxonRepositoryInterface $taxonRepository;
-
-    public function __construct(TaxonRepositoryInterface $taxonRepository)
-    {
-        $this->taxonRepository = $taxonRepository;
+    /** @param TaxonRepositoryInterface<TaxonInterface> $taxonRepository */
+    public function __construct(
+        private TaxonRepositoryInterface $taxonRepository
+    ) {
     }
 
     public function getFunctions(): array
@@ -25,8 +24,10 @@ final class MenuExtension extends AbstractExtension
         ];
     }
 
+    /** @return iterable<TaxonInterface> */
     public function getMegaMenuTaxons(): iterable
     {
+        /** @var TaxonInterface|null $taxon */
         $taxon = $this->taxonRepository->findOneBy(['code' => 'category']);
         return $taxon ? $taxon->getChildren() : [];
     }
