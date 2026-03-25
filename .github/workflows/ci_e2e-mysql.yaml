@@ -76,6 +76,13 @@ jobs:
                     echo "{}" > public/build/app/admin/manifest.json
                     echo "{}" > public/build/app/shop/manifest.json
 
+            -   name: Prepare NSS database and Environment for build
+                run: |
+                    sudo apt-get update && sudo apt-get install -y libnss3-tools
+                    mkdir -p $HOME/.pki/nssdb
+                    certutil -d sql:$HOME/.pki/nssdb -N --empty-password || true
+                    cp .env.test .env || touch .env
+
             -   name: Build application
                 uses: SyliusLabs/BuildTestAppAction@v2.4
                 with:
@@ -162,6 +169,13 @@ jobs:
                 if: matrix.twig == '^2.12'
                 run: composer require --no-update --no-scripts --no-interaction "twig/twig:${{ matrix.twig }}"
 
+            -   name: Prepare NSS database and Environment for build
+                run: |
+                    sudo apt-get update && sudo apt-get install -y libnss3-tools
+                    mkdir -p $HOME/.pki/nssdb
+                    certutil -d sql:$HOME/.pki/nssdb -N --empty-password || true
+                    cp .env.test .env || touch .env
+
             -   name: Build application
                 uses: SyliusLabs/BuildTestAppAction@v2.4
                 with:
@@ -229,6 +243,13 @@ jobs:
             -   name: Restrict Twig
                 if: matrix.twig == '^2.12'
                 run: composer require --no-update --no-scripts --no-interaction "twig/twig:${{ matrix.twig }}"
+
+            -   name: Prepare NSS database and Environment for build
+                run: |
+                    sudo apt-get update && sudo apt-get install -y libnss3-tools
+                    mkdir -p $HOME/.pki/nssdb
+                    certutil -d sql:$HOME/.pki/nssdb -N --empty-password || true
+                    cp .env.test .env || touch .env
 
             -   name: Build application
                 uses: SyliusLabs/BuildTestAppAction@v2.4

@@ -28,11 +28,14 @@ final class SearchController extends AbstractController
             return $this->redirectToRoute('sylius_shop_homepage');
         }
 
+        /** @var \Sylius\Component\Core\Model\ChannelInterface $channel */
+        $channel = $this->channelContext->getChannel();
+
         $products = $this->productRepository->findByPhrase(
             $phrase,
             $this->localeContext->getLocaleCode(),
             null,
-            $this->channelContext->getChannel()
+            $channel
         );
 
         return $this->render('Shop/Search/results.html.twig', [

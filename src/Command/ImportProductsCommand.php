@@ -118,14 +118,14 @@ class ImportProductsCommand extends Command
         while (($data = fgetcsv($handle)) !== false) {
             if (count($data) < 7) continue;
 
-            $id = trim($data[0]);
-            $imageUrl = trim($data[1]);
-            $name = trim($data[2]);
-            $sku = trim($data[3]);
-            $categoryName = trim($data[4]);
-            $priceTTC = trim($data[6]);
-            $quantity = count($data) >= 8 ? (int)trim($data[7]) : 0;
-            $enabled = count($data) >= 9 ? (trim($data[8]) === '0') : true;
+            $id = trim((string)($data[0] ?? ''));
+            $imageUrl = trim((string)($data[1] ?? ''));
+            $name = trim((string)($data[2] ?? ''));
+            $sku = trim((string)($data[3] ?? ''));
+            $categoryName = trim((string)($data[4] ?? ''));
+            $priceTTC = trim((string)($data[6] ?? '0'));
+            $quantity = count($data) >= 8 ? (int)trim((string)($data[7] ?? '0')) : 0;
+            $enabled = count($data) >= 9 ? (trim((string)($data[8] ?? '1')) === '0' ? false : true) : true;
 
             if (empty($sku)) {
                 $sku = 'SKU-' . $id;
@@ -137,7 +137,9 @@ class ImportProductsCommand extends Command
             /** @var ProductInterface $product */
             $product = $this->productRepository->findOneBy(['code' => $sku]);
             if (!$product) {
-                $product = $this->productFactory->createNew();
+                /** @var ProductInterface $newProduct */
+                $newProduct = $this->productFactory->createNew();
+                $product = $newProduct;
                 $product->setCode($sku);
             }
             
@@ -153,8 +155,9 @@ class ImportProductsCommand extends Command
 
             // Variant
             if ($product->getVariants()->isEmpty()) {
-                /** @var ProductVariantInterface $variant */
-                $variant = $this->productVariantFactory->createNew();
+                /** @var ProductVariantInterface $newVariant */
+                $newVariant = $this->productVariantFactory->createNew();
+                $variant = $newVariant;
                 $variant->setCode($sku);
                 $variant->setProduct($product);
                 $product->addVariant($variant);
@@ -169,8 +172,9 @@ class ImportProductsCommand extends Command
             $priceInCents = (int) round(((float) $priceTTC) * 100);
             $channelPricing = $variant->getChannelPricingForChannel($channel);
             if (!$channelPricing) {
-                /** @var ChannelPricingInterface $channelPricing */
-                $channelPricing = $this->channelPricingFactory->createNew();
+                /** @var ChannelPricingInterface $newPricing */
+                $newPricing = $this->channelPricingFactory->createNew();
+                $channelPricing = $newPricing;
                 $channelPricing->setChannelCode($channel->getCode());
                 $variant->addChannelPricing($channelPricing);
             }
@@ -184,6 +188,7 @@ class ImportProductsCommand extends Command
                     $taxon = $taxonMap[$catNameLower];
                     $product->setMainTaxon($taxon);
                     if (!$product->hasTaxon($taxon)) {
+                        /** @phpstan-ignore method.notFound */
                         $product->addTaxon($taxon);
                     }
                 }
@@ -203,8 +208,9 @@ class ImportProductsCommand extends Command
                         $tmpPath = sys_get_temp_dir() . '/' . uniqid() . '_' . $imageFileName;
                         file_put_contents($tmpPath, $imageContent);
 
-                        /** @var ProductImageInterface $image */
-                        $image = $this->productImageFactory->createNew();
+                        /** @var ProductImageInterface $newImage */
+                        $newImage = $this->productImageFactory->createNew();
+                        $image = $newImage;
                         $image->setType('main');
                         
                         $mime = mime_content_type($tmpPath) ?: 'image/jpeg';

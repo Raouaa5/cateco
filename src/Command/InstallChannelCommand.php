@@ -43,13 +43,8 @@ class InstallChannelCommand extends Command
         $channel->setEnabled(true);
         $channel->setHostname('localhost');
         
-        // Set default locale
-        $channel->setDefaultLocale('en_US');
-        $channel->addLocale('en_US');
-        
-        // Set default currency
-        $channel->setBaseCurrency(null); // Will use system default
-        $channel->addCurrency(null); // Will use system default
+        // Let Sylius core or database handle default Locales and Currencies later
+        // or we would need to inject LocaleRepository and CurrencyRepository to fetch the objects
 
         $this->entityManager->persist($channel);
         $this->entityManager->flush();

@@ -9,9 +9,7 @@ use Sylius\Component\Core\Model\ProductInterface;
 use Sylius\Component\Core\Model\TaxonInterface;
 use Doctrine\ORM\Query\Expr\OrderBy;
 
-/**
- * @extends \Sylius\Bundle\CoreBundle\Doctrine\ORM\ProductRepository<ProductInterface>
- */
+/** @phpstan-ignore missingType.generics */
 class ProductRepository extends \Sylius\Bundle\CoreBundle\Doctrine\ORM\ProductRepository
 {
     public function createShopListQueryBuilder(

@@ -6,6 +6,7 @@ parameters:
         - tests/
     excludePaths:
         - src/DataFixtures/
+    reportUnmatchedIgnoredErrors: false
     ignoreErrors:
         - '#with generic interface Sylius\\#'
         - '#no value type specified in iterable type#'

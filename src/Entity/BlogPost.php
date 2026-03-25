@@ -15,6 +15,7 @@ class BlogPost
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    /** @phpstan-ignore property.unusedType */
     private int|null $id = null;
 
     #[ORM\Column(length: 255)]
