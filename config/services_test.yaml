@@ -3,3 +3,11 @@ imports:
 
 sylius_api:
     enabled: true
+
+services:
+    Sylius\Bundle\ThemeBundle\Configuration\Test\TestThemeConfigurationManagerInterface:
+        class: Sylius\Bundle\ThemeBundle\Configuration\Test\TestThemeConfigurationManager
+        arguments:
+            - '@Sylius\Bundle\ThemeBundle\Configuration\ConfigurationProcessorInterface'
+            - '%kernel.cache_dir%'
+        public: true
