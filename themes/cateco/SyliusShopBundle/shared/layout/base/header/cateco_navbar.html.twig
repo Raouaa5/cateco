@@ -3,6 +3,10 @@
         margin: 0 !important;
         padding: 0 !important;
     }
+    .cateco-main-search:focus-within {
+        border-color: #E87722 !important;
+        background-color: white !important;
+    }
 </style>
 <nav style="background: linear-gradient(to right, #0f172a, #f97316, #fbbf24); box-shadow: 0 4px 6px rgba(0,0,0,0.3); padding: 0; position: sticky; top: 0; z-index: 10000; margin: 0; height: 72px; display: flex; align-items: center;">
     <div style="display: flex; align-items: center; justify-content: space-between; width: 100%; max-width: 1600px; margin: 0 auto; padding: 0 16px; box-sizing: border-box;">
@@ -13,13 +17,13 @@
         </a>
 
         <!-- RECHERCHE - center expanding -->
-        <form action="/{{ sylius.localeCode|default(app.request.locale)|default('fr_FR') }}/search" method="get" style="flex: 1; max-width: 500px; margin: 0 32px; display: flex;">
+        <form class="cateco-main-search" action="/{{ sylius.localeCode|default(app.request.locale)|default('fr_FR') }}/search" method="get" style="flex: 1; max-width: 500px; margin: 0 32px; display: flex; background: rgba(255,255,255,0.9); border-radius: 20px; border: 1px solid transparent; transition: all 0.2s ease;">
             <input type="text" 
                    name="search"
                    value="{{ app.request.query.get('search') }}"
                    placeholder="Ex: Salon de jardin..." 
-                   style="flex: 1; padding: 10px 16px; font-size: 14px; border-radius: 20px 0 0 20px; background: rgba(255,255,255,0.9); border: none; color: #333; outline: none;">
-            <button type="submit" style="padding: 10px 20px; background: rgba(255,255,255,0.9); border: none; border-radius: 0 20px 20px 0; cursor: pointer; display: flex; align-items: center; gap: 8px; font-weight: bold; color: #333;">
+                   style="flex: 1; padding: 10px 16px; font-size: 14px; border-radius: 20px 0 0 20px; background: transparent; border: none; color: #333; outline: none;">
+            <button type="submit" style="padding: 10px 20px; background: transparent; border: none; border-radius: 0 20px 20px 0; cursor: pointer; display: flex; align-items: center; gap: 8px; font-weight: bold; color: #333;">
                 <svg style="width: 18px; height: 18px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
                 </svg>
@@ -190,6 +194,10 @@
                 .cateco-account-trigger:hover {
                     transform: scale(1.05);
                 }
+                .cateco-account-trigger:hover,
+                .cateco-account-trigger:hover span {
+                    color: #E87722 !important;
+                }
                 .cateco-account-trigger span {
                     font-size: 11px;
                     font-weight: 700;
@@ -304,7 +312,7 @@
                 </div>
             {% else %}
                 {# --- GUEST: direct link to login --- #}
-                <a href="{{ path('sylius_shop_login') }}" style="color: white; text-decoration: none; display: flex; flex-direction: column; align-items: center; gap: 4px; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                <a href="{{ path('sylius_shop_login') }}" style="color: white; text-decoration: none; display: flex; flex-direction: column; align-items: center; gap: 4px; transition: transform 0.2s, color 0.2s;" onmouseover="this.style.transform='scale(1.05)'; this.style.color='#E87722';" onmouseout="this.style.transform='scale(1)'; this.style.color='white';">
                     <svg style="width: 24px; height: 24px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
                     </svg>

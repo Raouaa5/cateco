@@ -12,10 +12,10 @@ default:
         DMore\ChromeExtension\Behat\ServiceContainer\ChromeExtension: ~
         Robertfausk\Behat\PantherExtension: ~
 
-        FriendsOfBehat\MinkDebugExtension:
-            directory: etc/build
-            clean_start: false
-            screenshot: true
+#        FriendsOfBehat\MinkDebugExtension:
+#            directory: etc/build
+#            clean_start: false
+#            screenshot: true
 
         Behat\MinkExtension:
             files_path: "%paths.base%/vendor/sylius/sylius/src/Sylius/Behat/Resources/fixtures/"

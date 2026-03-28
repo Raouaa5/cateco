@@ -1,0 +1,61 @@
+{% set prefixes = hookable_metadata.prefixes|merge(['sylius_shop.shared.order.show']) %}
+
+<style>
+    /* Cateco Modern Checkout Summary */
+    .cateco-modern-summary {
+        background: #ffffff;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05), 0 1px 3px rgba(0, 0, 0, 0.02);
+        padding: 2rem 2.5rem 0.5rem 2.5rem;
+        margin-bottom: 0;
+        border: 1px solid #f0f0f0;
+    }
+    
+    .cateco-modern-summary h2,
+    .cateco-modern-summary h3,
+    .cateco-modern-summary h4,
+    .cateco-modern-summary h5 {
+        font-weight: 700;
+        color: #1a1a1a;
+        margin-bottom: 1.25rem;
+        border-bottom: 2px solid #f97316; /* Cateco Orange Accent */
+        padding-bottom: 0.5rem;
+        display: inline-block;
+    }
+    
+    /* Improve table spacing */
+    .cateco-modern-summary table {
+        margin-top: 1.5rem;
+        margin-bottom: 0;
+    }
+    
+    .cateco-modern-summary .table-borderless td,
+    .cateco-modern-summary .table-borderless th {
+        padding: 1rem 0;
+        border-bottom: 1px dashed #e5e5e5;
+    }
+
+    .cateco-modern-summary .text-body-secondary {
+        color: #4b5563 !important;
+    }
+
+    /* Style the address blocks */
+    .cateco-modern-summary address {
+        font-style: normal;
+        line-height: 1.6;
+        color: #4b5563;
+        background: #fdfdfd;
+        padding: 1.5rem;
+        border-radius: 8px;
+        border: 1px solid #eef2f6;
+    }
+
+    /* Fix the spacing of the summary pieces */
+    .cateco-modern-summary .row {
+        gap: 1rem;
+    }
+</style>
+
+<div class="cateco-modern-summary">
+    {% hook 'summary' with { _prefixes: prefixes } %}
+</div>

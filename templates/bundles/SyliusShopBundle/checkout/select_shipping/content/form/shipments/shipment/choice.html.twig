@@ -1,0 +1,185 @@
+{% import '@SyliusShop/shared/macro/money.html.twig' as money %}
+
+{% set form = hookable_metadata.context.form %}
+
+<style>
+    .cateco-shipping-list {
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+    }
+    .cateco-shipping-item {
+        border: 1px solid #e1e1e1;
+        background: #f9f9f9;
+        margin-bottom: -1px; /* collapse borders */
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        padding: 1rem;
+        transition: background 0.2s;
+    }
+    .cateco-shipping-item:first-child {
+        border-top-left-radius: 4px;
+        border-top-right-radius: 4px;
+    }
+    .cateco-shipping-item:last-child {
+        border-bottom-left-radius: 4px;
+        border-bottom-right-radius: 4px;
+        margin-bottom: 0;
+    }
+    .cateco-shipping-item:hover {
+        background: #f5f5f5;
+    }
+    /* When input inside is checked, change background */
+    .cateco-shipping-item:has(input:checked) {
+        background: #fff;
+        position: relative;
+        z-index: 1; /* Bring selected item border above */
+    }
+    .cateco-shipping-radio-col {
+        width: 40px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .cateco-shipping-logo-col {
+        width: 80px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .cateco-shipping-logo-col img {
+        max-width: 60px;
+        max-height: 40px;
+        object-fit: contain;
+    }
+    .cateco-shipping-info-col {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+    .cateco-shipping-name {
+        font-weight: 700;
+        font-size: 0.95rem;
+        color: #333;
+        width: 150px;
+    }
+    .cateco-shipping-desc {
+        font-size: 0.85rem;
+        color: #666;
+        flex: 1;
+    }
+    .cateco-shipping-price-col {
+        font-weight: 600;
+        color: #333;
+        font-size: 0.95rem;
+        padding-left: 1rem;
+    }
+    /* Custom Orange Radio */
+    .cateco-radio {
+        appearance: none;
+        width: 18px;
+        height: 18px;
+        border: 2px solid #ccc;
+        border-radius: 50%;
+        outline: none;
+        cursor: pointer;
+        position: relative;
+        background: #fff;
+    }
+    .cateco-radio:checked {
+        border-color: #f97316; /* Tailwind orange-500 */
+    }
+    .cateco-radio:checked::after {
+        content: "";
+        position: absolute;
+        top: 3px;
+        left: 3px;
+        width: 8px;
+        height: 8px;
+        background: #f97316;
+        border-radius: 50%;
+    }
+    /* Order Notes Section */
+    .cateco-order-notes {
+        margin-top: 1.5rem;
+        font-size: 0.9rem;
+        color: #444;
+    }
+    .cateco-order-notes label {
+        display: block;
+        margin-bottom: 0.5rem;
+    }
+    .cateco-order-notes textarea {
+        width: 100%;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        padding: 0.75rem;
+        min-height: 80px;
+        resize: vertical;
+        outline: none;
+    }
+    .cateco-order-notes textarea:focus {
+        border-color: #f97316;
+    }
+</style>
+
+<div class="mb-5 cateco-shipping-list" {{ sylius_test_html_attribute('shipments') }}>
+    {{ form_errors(form.method) }}
+
+    {% for key, choice_form in form.method %}
+        {% set fee = form.method.vars.shipping_costs[choice_form.vars.value] %}
+        {% set method = form.method.vars.choices[key].data %}
+        {% set is_chronopost = ('chronopost' in method.name|lower) %}
+
+        <label class="cateco-shipping-item" {{ sylius_test_html_attribute('shipping-item') }} for="{{ choice_form.vars.id }}">
+            <div class="cateco-shipping-radio-col">
+                <input type="radio"
+                       id="{{ choice_form.vars.id }}"
+                       name="{{ choice_form.vars.full_name }}"
+                       value="{{ choice_form.vars.value }}"
+                       class="cateco-radio"
+                       {% if choice_form.vars.checked %}checked="checked"{% endif %}>
+            </div>
+            
+            <div class="cateco-shipping-logo-col">
+                {% if is_chronopost %}
+                    <img src="https://e7.pngegg.com/pngimages/79/8/png-clipart-chronopost-logistics-logo-delivery-brand-small-cube-blue-angle.png" alt="Chronopost">
+                {% else %}
+                    {# Invisible placeholder space so alignment matches Chronopost perfectly #}
+                    <div style="width: 40px; height: 40px;"></div>
+                {% endif %}
+            </div>
+
+            <div class="cateco-shipping-info-col">
+                <div class="cateco-shipping-name">
+                    {{ method.name }}
+                </div>
+                <div class="cateco-shipping-desc">
+                    {{ method.description }}
+                </div>
+            </div>
+
+            <div class="cateco-shipping-price-col">
+                {% if fee == 0 %}
+                    gratuit
+                {% else %}
+                    {{ money.convertAndFormat(fee) }} TTC
+                {% endif %}
+            </div>
+        </label>
+    {% else %}
+        {% hook 'choice#unavailable' %}
+    {% endfor %}
+</div>
+
+{# ── Order Notes Section ───────────────────────────────────── #}
+{# Since Sylius LiveComponent doesn't naturally look for 'notes' on the shipping type, #}
+{# we will pass it as a generic input. In a real Sylius setup, we would need a FormExtension on SelectShippingType. #}
+<div class="cateco-order-notes">
+    <label for="cateco-order-notes-input">
+        Si vous voulez nous laisser un message à propos de votre commande, merci de bien vouloir renseigner dans le champ ci-contre
+    </label>
+    <textarea id="cateco-order-notes-input" name="sylius_checkout_select_shipping[notes]" placeholder="Saisissez votre message ici..."></textarea>
+</div>

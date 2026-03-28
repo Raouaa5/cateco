@@ -1,65 +1,104 @@
 {#
-    Qui Sommes-Nous Section — White background, text/CTA left, magasin image right
+    Qui Sommes-Nous Section — Full-width cinematic background image with overlay text
 #}
 
-<section style="background-color: #ffffff; padding: 5rem 0; overflow: hidden;">
-    <div class="container mx-auto px-6 lg:px-12">
+<section style="position: relative; width: 100%; height: 65vh; min-height: 500px; max-height: 720px; overflow: hidden; display: flex; align-items: center;">
 
-        <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 3rem;">
+    {# Background Image #}
+    <div style="
+        position: absolute;
+        inset: 0;
+        background-image: url('https://cateco.fr/17276-large_default/table-basse-gigogne-memphis-x3.webp');
+        background-size: cover;
+        background-position: center;
+        transform: scale(1.04);
+        transition: transform 6s ease;
+    " id="about-bg"></div>
 
-            {# Left: Text content #}
-            <div style="flex: 1; min-width: 300px; max-width: 550px;">
-                <h2 style="font-size: clamp(2.5rem, 4vw, 3.5rem); font-weight: 800; color: #111827; margin: 0 0 1.5rem 0; line-height: 1.1; letter-spacing: -0.02em; white-space: nowrap;">
-                    Qui sommes-nous&nbsp;?
-                </h2>
-                
-                <p style="font-size: 1.1rem; color: #4b5563; line-height: 1.7; margin: 0 0 2rem 0;">
-                    Ouvert depuis 2003, Catéco est l'enseigne incontournable des guyanais dans l'équipement 
-                    des maisons, bricolage, jardinage et loisirs et tant d'autres secteurs. C'est le magasin 
-                    des bonnes affaires qui propose toujours des prix agressifs. Son catalogue 124&nbsp;pages 
-                    renouvelé régulièrement propose les produits les plus astucieux et malins.
-                </p>
-                
-                <a href="/qui-sommes-nous"
-                   style="
-                       display: inline-block;
-                       background-color: #40bdb8;
-                       color: #ffffff;
-                       font-weight: 700;
-                       font-size: 1rem;
-                       padding: 0.8rem 1.8rem;
-                       border-radius: 9999px;
-                       text-decoration: none;
-                       box-shadow: 0 4px 10px rgba(64, 189, 184, 0.3);
-                       transition: all 0.3s ease;
-                   "
-                   onmouseover="this.style.backgroundColor='#34a49f'; this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 15px rgba(64, 189, 184, 0.4)'"
-                   onmouseout="this.style.backgroundColor='#40bdb8'; this.style.transform=''; this.style.boxShadow='0 4px 10px rgba(64, 189, 184, 0.3)'">
-                    En savoir plus
-                </a>
-            </div>
+    {# Gradient Overlay — dark on left, fades to transparent on right #}
+    <div style="
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+            90deg,
+            rgba(15, 15, 15, 0.72) 0%,
+            rgba(15, 15, 15, 0.45) 45%,
+            rgba(15, 15, 15, 0.08) 100%
+        );
+    "></div>
 
-            {# Right: Magasin image with modern styling (made slightly larger) #}
-            <div style="flex: 1; min-width: 350px; display: flex; justify-content: flex-end;">
-                <div style="
-                    position: relative;
-                    width: 100%;
-                    max-width: 600px;
-                    border-radius: 1.5rem;
-                    overflow: hidden;
-                    box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-                    transform: perspective(1000px) rotateY(-5deg);
-                    transition: transform 0.5s ease;
-                "
-                onmouseover="this.style.transform='perspective(1000px) rotateY(0deg) scale(1.02)'"
-                onmouseout="this.style.transform='perspective(1000px) rotateY(-5deg)'">
-                    <img src="{{ asset('assets/shop/images/magasincateco.jpg') }}"
-                         alt="Magasin Catéco"
-                         style="width: 100%; height: auto; display: block; object-fit: cover;">
-                </div>
-            </div>
+    {# Content — left-aligned overlay #}
+    <div style="position: relative; z-index: 2; padding: 0 6vw; max-width: 640px;">
 
-        </div>
+        {# Eyebrow label #}
+        <p style="
+            color: #E87722;
+            font-size: 0.8rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            margin: 0 0 1rem 0;
+        ">Notre histoire</p>
+
+        {# Headline #}
+        <h2 style="
+            font-size: clamp(2.2rem, 4.5vw, 3.8rem);
+            font-weight: 800;
+            color: #ffffff;
+            margin: 0 0 1.5rem 0;
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+        ">Qui sommes-nous&nbsp;?</h2>
+
+        {# Body text #}
+        <p style="
+            font-size: clamp(0.95rem, 1.3vw, 1.1rem);
+            color: rgba(255,255,255,0.82);
+            line-height: 1.75;
+            margin: 0 0 2.2rem 0;
+            max-width: 480px;
+        ">
+            Ouvert depuis 2003, Catéco est l'enseigne incontournable des guyanais dans l'équipement
+            des maisons, bricolage, jardinage et loisirs et tant d'autres secteurs. C'est le magasin
+            des bonnes affaires qui propose toujours des prix agressifs. Son catalogue 124&nbsp;pages
+            renouvelé régulièrement propose les produits les plus astucieux et malins.
+        </p>
+
+        {# CTA Button #}
+        <a href="/qui-sommes-nous"
+           style="
+               display: inline-flex;
+               align-items: center;
+               gap: 0.5rem;
+               background-color: #E87722;
+               color: #ffffff;
+               font-weight: 700;
+               font-size: 0.95rem;
+               padding: 0.85rem 2rem;
+               border-radius: 9999px;
+               text-decoration: none;
+               box-shadow: 0 4px 20px rgba(232, 119, 34, 0.4);
+               transition: all 0.3s ease;
+           "
+           onmouseover="this.style.backgroundColor='#cf6a1e'; this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 25px rgba(232,119,34,0.5)'"
+           onmouseout="this.style.backgroundColor='#E87722'; this.style.transform=''; this.style.boxShadow='0 4px 20px rgba(232,119,34,0.4)'">
+            En savoir plus
+            <svg style="width:16px;height:16px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/>
+            </svg>
+        </a>
 
     </div>
+
+    {# Subtle Ken Burns animation on the background #}
+    <style>
+        #about-bg {
+            animation: kenburns 12s ease-in-out infinite alternate;
+        }
+        @keyframes kenburns {
+            from { transform: scale(1.04) translateX(0); }
+            to   { transform: scale(1.08) translateX(-1%); }
+        }
+    </style>
+
 </section>

@@ -1,0 +1,593 @@
+{#
+    Avis clients vérifiés Section (Compact Version)
+#}
+
+{% set reviews = [
+    { name: 'Willem V.', date: '25 mars 2026', initials: 'WV', rating: 5, text: "Facile a trouver et commande prêt en 24 heures. Service impeccable, je recommande vraiment ce magasin !", featured: true },
+    { name: 'S. L.', date: '25 mars 2026', initials: 'SL', rating: 4, text: "Bon produit, livraison rapide. Magasin bien organisé et personnel sympathique. Très bonne expérience.", featured: false },
+    { name: 'Lydia L.', date: '22 mars 2026', initials: 'LL', rating: 5, text: "Site clair et navigation intuitive. Produits conformes à la description, je suis très satisfaite de mon achat.", featured: false },
+    { name: 'Brigitte L.', date: '25 mars 2026', initials: 'BL', rating: 5, text: "Très pratique ce magasin à Kourou. Très bons conseils, très bon accueil. Super. Merci.", featured: false },
+    { name: 'Serge D.', date: '14 mars 2026', initials: 'SD', rating: 4, text: "J'ai parti avec", featured: false },
+    { name: 'Mireille L.', date: '14 mars 2026', initials: 'ML', rating: 5, text: "Bonne accueil", featured: false },
+    { name: 'Deniau M.', date: '12 mars 2026', initials: 'DM', rating: 5, text: "tout est OK....", featured: false },
+    { name: 'Thomas L.', date: '9 mars 2026', initials: 'TL', rating: 2, text: "Un site bien présent mais l'achat que j'ai fait le 7/03/26 la vendeuse m'a induit en erreur.", featured: false },
+    { name: 'Christian C.', date: '8 mars 2026', initials: 'CC', rating: 5, text: "RAS", featured: false },
+    { name: 'Jean-Claude G.', date: '8 mars 2026', initials: 'JG', rating: 5, text: "Bon achat j'espère que c'est du solide c'est super chez cateco", featured: false },
+    { name: 'F. P.', date: '6 mars 2026', initials: 'FP', rating: 4, text: "Le site est fonctionnel et on trouve tout de suite ce que nous cherchons.", featured: false },
+    { name: 'Fernanda P.', date: '22 févr. 2026', initials: 'FP', rating: 5, text: "Le magasin de St Laurent rien a dire super accueil", featured: false }
+] %}
+
+<style>
+.av-section-wrapper {
+    padding: 2rem 0 4rem 0;
+}
+.av-container {
+    background-color: #F5F4F0;
+    border-radius: 16px;
+    padding: 28px;
+    color: #1A1A1A;
+    font-family: inherit;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Header */
+.av-header {
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #E0DDD5;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+}
+@media (max-width: 992px) {
+    .av-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+    }
+}
+.av-bar {
+    width: 3px;
+    background-color: #E87722;
+    border-radius: 2px;
+    align-self: stretch;
+    margin-right: 16px;
+    flex-shrink: 0;
+}
+@media (max-width: 992px) {
+    .av-bar { display: none; }
+}
+
+.av-header-group {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    align-items: flex-start;
+}
+.av-header-top-row {
+    display: flex;
+    gap: 24px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+.av-title {
+    font-size: 20px;
+    font-weight: 800;
+    color: #1A1A1A;
+    margin: 0;
+    line-height: 1.2;
+}
+.av-title span {
+    color: #E87722;
+}
+.av-stars-avg {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+.av-star {
+    color: #E87722;
+}
+.av-star svg {
+    width: 14px;
+    height: 14px;
+    fill: currentColor;
+}
+.av-avg-text {
+    color: #888;
+    font-size: 11px;
+    font-weight: 600;
+}
+.av-pills-wrap {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+.av-pill-green {
+    background-color: #e8f5e9;
+    border: 1px solid #a5d6a7;
+    color: #2e7d32;
+    padding: 4px 8px;
+    border-radius: 99px;
+    font-size: 11px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+.av-pill-green::before {
+    content: '';
+    display: block;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background-color: #4CAF50;
+}
+.av-pill-badge {
+    background-color: #fff;
+    border: 1px solid #E0DDD5;
+    padding: 4px 10px;
+    border-radius: 99px;
+    font-size: 11px;
+    font-weight: 600;
+    color: #888;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+.av-pill-badge .av-dot {
+    width: 5px;
+    height: 5px;
+    background-color: #4CAF50;
+    border-radius: 50%;
+}
+.av-pill-badge a {
+    color: #E87722;
+    text-decoration: none;
+    font-weight: 700;
+    margin-left: 4px;
+}
+
+.av-header-divider {
+    width: 1px;
+    background-color: #E0DDD5;
+    align-self: stretch;
+    margin-left: 16px;
+    margin-right: 16px;
+}
+@media (max-width: 992px) {
+    .av-header-divider { display: none; }
+}
+
+.av-header-score {
+    display: flex;
+    align-items: baseline;
+    flex-shrink: 0;
+}
+.av-score-num {
+    color: #E87722;
+    font-size: 36px;
+    font-weight: 800;
+    line-height: 1;
+}
+.av-score-max {
+    color: #BBBBBB;
+    font-size: 16px;
+    font-weight: 700;
+    margin-left: 2px;
+}
+
+/* CARDS GRID */
+.av-grid-wrapper {
+    overflow: hidden;
+    position: relative;
+    padding: 2px;
+    margin-bottom: 16px;
+}
+.av-grid-inner {
+    display: flex;
+    transition: transform 0.4s ease-in-out;
+}
+.av-slide {
+    min-width: 100%;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+}
+@media (max-width: 1024px) {
+    .av-slide { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 640px) {
+    .av-slide { grid-template-columns: 1fr; }
+}
+
+.av-card {
+    background-color: #242424;
+    border: 0.5px solid #E87722;
+    border-radius: 10px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    transition: all 0.2s;
+    height: 100%;
+    min-height: 200px;
+}
+.av-card:hover {
+    box-shadow: 0 4px 12px rgba(232, 119, 34, 0.15);
+}
+.av-card.featured {
+    background-color: #26201a;
+    border-color: #E87722;
+}
+
+.av-card-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+.av-card-stars-wrap {
+    display: flex;
+    align-items: flex-start;
+    gap: 5px;
+}
+.av-card-stars {
+    display: flex;
+    gap: 2px;
+}
+.av-card-stars svg {
+    width: 11px;
+    height: 11px;
+}
+.av-card-score {
+    font-size: 10px;
+    font-weight: 700;
+    color: #E87722;
+    background-color: #2e2e2e;
+    padding: 1px 6px;
+    border-radius: 3px;
+}
+.av-card.featured .av-card-score {
+    background-color: #2e2010;
+}
+.av-card-pill-heart {
+    background-color: #E87722;
+    color: #fff;
+    font-size: 7px;
+    font-weight: 700;
+    padding: 2px 6px;
+    border-radius: 3px;
+    display: inline-block;
+    margin-top: 5px;
+}
+.av-card-verified {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    color: #555;
+    font-size: 8px;
+    font-weight: 600;
+}
+.av-card-verified::before {
+    content: '';
+    display: block;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background-color: #4CAF50;
+}
+
+.av-card-text {
+    flex: 1;
+    color: #aaa;
+    font-size: 12px;
+    font-style: italic;
+    line-height: 1.6;
+    margin: 0;
+}
+.av-card-text::before {
+    content: '"';
+    color: #E87722;
+    font-size: 15px;
+    font-weight: 800;
+    font-style: normal;
+    vertical-align: -0.25em;
+    display: inline-block;
+    margin-right: 2px;
+}
+.av-card-text::after {
+    content: '"';
+    color: #E87722;
+    font-size: 15px;
+    font-weight: 800;
+    font-style: normal;
+    vertical-align: -0.25em;
+    display: inline-block;
+    margin-left: 2px;
+}
+
+.av-card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 0.5px solid #2e2e2e;
+    padding-top: 10px;
+    margin-top: auto;
+}
+.av-card-author-wrap {
+    display: flex;
+    flex-direction: column;
+}
+.av-card-author {
+    color: #fff;
+    font-size: 11px;
+    font-weight: 800;
+    margin: 0 0 2px 0;
+}
+.av-card-date {
+    color: #444;
+    font-size: 9px;
+    margin: 0;
+}
+.av-card-avatar {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background-color: #2e2e2e;
+    border: 1.5px solid #333;
+    font-size: 9px;
+    font-weight: 800;
+    color: #666;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.av-card.featured .av-card-avatar {
+    background-color: #3a2a1a;
+    color: #E87722;
+    border-color: #E87722;
+}
+
+/* Bottom Row */
+.av-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.av-dots {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+}
+.av-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background-color: #E0DDD5;
+    transition: all 0.3s;
+    cursor: pointer;
+}
+.av-dot.active {
+    width: 16px;
+    border-radius: 3px;
+    background-color: #E87722;
+}
+
+.av-nav-wrap {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+.av-nav-arrows {
+    display: flex;
+    gap: 8px;
+}
+.av-btn-circle {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 1.5px solid #E0DDD5;
+    background-color: #fff;
+    color: #333;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.av-btn-circle:hover {
+    background-color: #E87722;
+    border-color: #E87722;
+    color: #fff;
+}
+.av-btn-all {
+    background-color: #fff;
+    border: 1.5px solid #E0DDD5;
+    color: #888;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 8px 16px;
+    border-radius: 7px;
+    text-decoration: none;
+    transition: all 0.2s;
+}
+.av-btn-all:hover {
+    border-color: #E87722;
+    color: #E87722;
+}
+@media (max-width: 640px) {
+    .av-btn-all { display: none; }
+}
+
+</style>
+
+<section class="av-section-wrapper">
+    <div style="max-width: 1440px; margin: 0 auto; padding: 0 24px;">
+        <div class="av-container">
+            
+            {# HEADER #}
+            <div class="av-header">
+                <div class="av-bar"></div>
+                
+                <div class="av-header-group">
+                    <div class="av-header-top-row">
+                        <h2 class="av-title"><span>76</span> clients ont partagé leur avis</h2>
+                        
+                        <div class="av-stars-avg">
+                            {% for i in 1..5 %}
+                                <div class="av-star">
+                                    <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                                </div>
+                            {% endfor %}
+                            <span class="av-avg-text">4.5/5</span>
+                        </div>
+                    </div>
+
+                    <div class="av-pills-wrap">
+                        <div class="av-pill-green">92% recommandent</div>
+                        <div class="av-pill-badge">
+                            <div class="av-dot"></div>
+                            Avis Vérifiés
+                            <a href="https://www.avis-verifies.com/avis-clients/cateco.fr" target="_blank">Voir tous &rarr;</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="av-header-divider"></div>
+
+                <div class="av-header-score">
+                    <span class="av-score-num">4.5</span>
+                    <span class="av-score-max">/5</span>
+                </div>
+            </div>
+
+            {# CARDS GRID #}
+            <div class="av-grid-wrapper">
+                <div class="av-grid-inner" id="avTrack">
+                    
+                    {# Split reviews into chunks of 4 #}
+                    {% set chunks = reviews|batch(4) %}
+                    
+                    {% for chunk in chunks %}
+                        <div class="av-slide">
+                            {% for review in chunk %}
+                                <div class="av-card {% if review.featured %}featured{% endif %}">
+                                    <div class="av-card-head">
+                                        <div>
+                                            <div class="av-card-stars-wrap">
+                                                <div class="av-card-stars">
+                                                    {% for s in 1..5 %}
+                                                        <div class="av-star" style="color: {% if s <= review.rating %}#E87722{% else %}#444{% endif %};">
+                                                            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                                                        </div>
+                                                    {% endfor %}
+                                                </div>
+                                                <span class="av-card-score">{{ review.rating }}/5</span>
+                                            </div>
+                                            {% if review.featured %}
+                                                <span class="av-card-pill-heart">COUP DE COEUR</span>
+                                            {% endif %}
+                                        </div>
+                                        <div class="av-card-verified">Vérifié</div>
+                                    </div>
+
+                                    <p class="av-card-text">{{ review.text }}</p>
+
+                                    <div class="av-card-footer">
+                                        <div class="av-card-author-wrap">
+                                            <p class="av-card-author">{{ review.name }}</p>
+                                            <p class="av-card-date">{{ review.date }}</p>
+                                        </div>
+                                        <div class="av-card-avatar">{{ review.initials }}</div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% endfor %}
+
+                </div>
+            </div>
+
+            {# FOOTER NAV #}
+            <div class="av-footer">
+                <div style="display: flex; align-items: center; gap: 32px;">
+                    <div class="av-dots" id="avDots">
+                        {% for chunk in chunks %}
+                            <div class="av-dot {% if loop.first %}active{% endif %}" data-index="{{ loop.index0 }}"></div>
+                        {% endfor %}
+                    </div>
+                    <a href="https://www.avis-verifies.com/avis-clients/cateco.fr" target="_blank" style="display: block; line-height: 0; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                        <img src="{{ asset('assets/shop/images/avis-verifiés.svg') }}" style="height: 48px; width: auto;" alt="Avis Vérifiés">
+                    </a>
+                </div>
+
+                <div class="av-nav-wrap">
+                    <div class="av-nav-arrows">
+                        <button class="av-btn-circle" id="avPrev">
+                            <svg style="width:16px;height:16px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"/></svg>
+                        </button>
+                        <button class="av-btn-circle" id="avNext">
+                            <svg style="width:16px;height:16px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
+                        </button>
+                    </div>
+                    <a href="https://www.avis-verifies.com/avis-clients/cateco.fr" class="av-btn-all" target="_blank">Voir tous les avis &rarr;</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const track = document.getElementById('avTrack');
+    const dots = document.querySelectorAll('#avDots .av-dot');
+    const btnPrev = document.getElementById('avPrev');
+    const btnNext = document.getElementById('avNext');
+    const maxSlides = {{ chunks|length }};
+    let currentSlide = 0;
+    let autoPlayInterval = null;
+
+    function goToSlide(n) {
+        currentSlide = (n + maxSlides) % maxSlides;
+        track.style.transform = `translateX(-${currentSlide * 100}%)`;
+        dots.forEach((d, i) => {
+            if (i === currentSlide) d.classList.add('active');
+            else d.classList.remove('active');
+        });
+    }
+
+    function startAutoPlay() {
+        stopAutoPlay();
+        if (maxSlides > 1) {
+            autoPlayInterval = setInterval(() => goToSlide(currentSlide + 1), 5000);
+        }
+    }
+
+    function stopAutoPlay() {
+        if (autoPlayInterval) {
+            clearInterval(autoPlayInterval);
+            autoPlayInterval = null;
+        }
+    }
+
+    if (btnPrev) {
+        btnPrev.addEventListener('click', () => { stopAutoPlay(); goToSlide(currentSlide - 1); startAutoPlay(); });
+    }
+    if (btnNext) {
+        btnNext.addEventListener('click', () => { stopAutoPlay(); goToSlide(currentSlide + 1); startAutoPlay(); });
+    }
+    
+    dots.forEach(dot => {
+        dot.addEventListener('click', () => {
+            stopAutoPlay();
+            goToSlide(parseInt(dot.dataset.index, 10));
+            startAutoPlay();
+        });
+    });
+
+    // Start auto-play on load
+    startAutoPlay();
+});
+</script>

@@ -1,0 +1,160 @@
+{#
+    Custom Cateco override of address_book.html.twig
+    Displays existing addresses as clickable radio cards.
+#}
+
+{% if addresses is not empty %}
+    <div {{ attributes }} class="cateco-address-book mb-4">
+    
+        {# ── STYLES FOR THE RADIO CARDS ──────── #}
+        <style>
+            .cateco-address-cards { display: flex; flex-wrap: wrap; gap: 1rem; margin-bottom: 1rem; }
+            .cateco-address-card { display: flex; align-items: flex-start; gap: 0.75rem; border: 2px solid #e5e7eb; border-radius: 0.75rem; padding: 1rem 1.25rem; cursor: pointer; min-width: 220px; max-width: 340px; background: #fff; transition: border-color 0.2s, box-shadow 0.2s; }
+            .cateco-address-card input[type="radio"] { display: none; }
+            .cateco-address-card.selected { border-color: #f97316; box-shadow: 0 0 0 3px rgba(249,115,22,0.15); }
+            .cateco-addr-check { width: 22px; height: 22px; min-width: 22px; border-radius: 50%; border: 2px solid #d1d5db; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; color: transparent; margin-top: 3px; transition: all 0.2s; }
+            .cateco-address-card.selected .cateco-addr-check { background: #f97316; border-color: #f97316; color: #fff; }
+            .cateco-addr-info { font-size: 0.92rem; color: #374151; line-height: 1.6; }
+            .cateco-addr-phone { color: #6b7280; font-size: 0.85rem; }
+            .cateco-add-address-link { display: inline-block; margin: 0.25rem 0 1rem; color: #f97316; font-weight: 600; text-decoration: none; font-size: 0.95rem; }
+            .cateco-add-address-link:hover { text-decoration: underline; }
+        </style>
+
+        {# ── Store address data in JS for instant frontend prepopulation ──────── #}
+        <script>
+        window.catecoAddressesData_{{ field }} = {
+            {% for address in addresses %}
+            "{{ address.id }}": {
+                firstName: "{{ address.firstName|e('js') }}",
+                lastName: "{{ address.lastName|e('js') }}",
+                company: "{{ address.company|e('js') }}",
+                street: "{{ address.street|e('js') }}",
+                countryCode: "{{ address.countryCode|e('js') }}",
+                city: "{{ address.city|e('js') }}",
+                postcode: "{{ address.postcode|e('js') }}",
+                phoneNumber: "{{ address.phoneNumber|e('js') }}"
+            }{{ not loop.last ? ',' : '' }}
+            {% endfor %}
+        };
+        </script>
+
+        {# ── Radio cards (Natively binding data-model to trigger LiveComponent) ──── #}
+        <div class="cateco-address-cards" id="cateco-address-cards-{{ field }}">
+            {% for address in addresses %}
+                <label class="cateco-address-card {{ loop.first ? 'selected' : '' }}"
+                       for="addr_{{ field }}_{{ address.id }}">
+                    <input type="radio"
+                           id="addr_{{ field }}_{{ address.id }}"
+                           name="addr_dummy_{{ field }}"
+                           value="{{ address.id }}"
+                           class="cateco-addr-radio"
+                           data-model="addressId"
+                           {{ loop.first ? 'checked' : '' }}
+                           onchange="window.catecoSelectAddressCard(this, '{{ field }}')">
+                    <span class="cateco-addr-check">✓</span>
+                    <div class="cateco-addr-info">
+                        <strong>{{ address.fullName }}</strong><br>
+                        {{ address.street }}<br>
+                        {{ address.postcode }} {{ address.city }}<br>
+                        {{ address.countryCode|sylius_country_name }}<br>
+                        {% if address.phoneNumber %}<span class="cateco-addr-phone">{{ address.phoneNumber }}</span>{% endif %}
+                    </div>
+                </label>
+            {% endfor %}
+            <input type="radio" class="d-none" id="addr_{{ field }}_empty" name="addr_dummy_{{ field }}" value="" data-model="addressId">
+        </div>
+
+        {# ── "Add new address" link ───────────────────────────── #}
+        <a href="#"
+           class="cateco-add-address-link"
+           id="cateco-add-addr-link-{{ field }}"
+           onclick="window.catecoToggleNewAddress('{{ field }}', event);">
+            + Ajouter une nouvelle adresse
+        </a>
+
+        <script>
+        if (typeof window.catecoSelectAddressCard !== 'function') {
+            window.catecoFillAddressForm = function(field, addressId) {
+                var formContainer = document.getElementById('cateco-new-addr-form-' + field);
+                if (!formContainer) return;
+                
+                var data = window['catecoAddressesData_' + field][addressId];
+                if (data) {
+                    var setVal = function(nameSuffix, val) {
+                        // Find input ending with exactly "[nameSuffix]"
+                        var input = formContainer.querySelector('[name$="[' + nameSuffix + ']"]');
+                        if (input) {
+                            input.value = val || '';
+                        }
+                    };
+                    setVal('firstName', data.firstName);
+                    setVal('lastName', data.lastName);
+                    setVal('company', data.company);
+                    setVal('street', data.street);
+                    setVal('countryCode', data.countryCode);
+                    setVal('city', data.city);
+                    setVal('postcode', data.postcode);
+                    setVal('phoneNumber', data.phoneNumber);
+                } else if (addressId === "") {
+                    // Empty the form
+                    var clearVal = function(nameSuffix) {
+                        var input = formContainer.querySelector('[name$="[' + nameSuffix + ']"]');
+                        if (input) input.value = '';
+                    };
+                    clearVal('firstName');
+                    clearVal('lastName');
+                    clearVal('company');
+                    clearVal('street');
+                    clearVal('city');
+                    clearVal('postcode');
+                    clearVal('phoneNumber');
+                }
+            };
+
+            window.catecoSelectAddressCard = function(radio, field) {
+                // Highlight the selected card visually
+                document.querySelectorAll('#cateco-address-cards-' + field + ' .cateco-address-card')
+                    .forEach(function(c) { c.classList.remove('selected'); });
+                radio.closest('.cateco-address-card').classList.add('selected');
+
+                // Fill the form fields instantly without waiting for backend
+                window.catecoFillAddressForm(field, radio.value);
+            };
+
+            window.catecoToggleNewAddress = function(field, event) {
+                if (event) event.preventDefault();
+                var radios = document.querySelectorAll('#cateco-address-cards-' + field + ' .cateco-addr-radio');
+                var emptyRadio = document.getElementById('addr_' + field + '_empty');
+
+                // Deselect all cards
+                radios.forEach(function(r) {
+                    r.checked = false;
+                    r.closest('.cateco-address-card').classList.remove('selected');
+                });
+
+                // Check the empty native radio to clear the backend selection naturally
+                if (emptyRadio) {
+                    emptyRadio.checked = true;
+                    emptyRadio.dispatchEvent(new Event('change', { bubbles: true }));
+                }
+
+                // Clear the form fields
+                window.catecoFillAddressForm(field, "");
+            };
+        }
+        
+        // Trigger initial update to sync frontend checked state with backend and fill the form instantly
+        setTimeout(function() {
+            var cardsBox = document.getElementById('cateco-address-cards-{{ field }}');
+            if (cardsBox) {
+                var selectedRadio = cardsBox.querySelector('.cateco-addr-radio:checked');
+                if (selectedRadio) {
+                    selectedRadio.dispatchEvent(new Event('change', { bubbles: true }));
+                    window.catecoFillAddressForm('{{ field }}', selectedRadio.value);
+                }
+            }
+        }, 100);
+        </script>
+
+    </div>
+{% endif %}

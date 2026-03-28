@@ -4,26 +4,26 @@
 
 {% set products = get_latest_products(16) %}
 
-<section style="padding: 4rem 0; background-color: #f9fafb; border-top: 1px solid #e5e7eb; overflow: hidden;">
+<section style="padding: 4rem 0; background-color: var(--color-bg-page); border-top: 1px solid var(--color-border); overflow: hidden;">
     <div class="container mx-auto px-4 lg:px-8">
         
         {# Header #}
         <div style="margin-bottom: 2.5rem; display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 1.5rem;">
             <div>
-                <h2 style="font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 800; color: #111827; margin: 0 0 0.5rem 0; letter-spacing: -0.02em;">
+                <h2 style="font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 800; color: var(--color-text-heading); margin: 0 0 0.5rem 0; letter-spacing: -0.02em;">
                     Nouveautés produits
                 </h2>
-                <a href="{{ path('sylius_shop_product_index', {'slug': 'nouveaute'}) }}" style="font-size: 1rem; font-weight: 700; color: #111827; border-bottom: 2px solid #f97316; text-decoration: none; display: inline-block; transition: color 0.2s;" onmouseover="this.style.color='#f97316'" onmouseout="this.style.color='#111827'">
+                <a href="{{ path('sylius_shop_product_index', {'slug': 'nouveaute'}) }}" style="font-size: 1rem; font-weight: 700; color: var(--color-text-heading); border-bottom: 2px solid var(--color-primary); text-decoration: none; display: inline-block; transition: color 0.2s;" onmouseover="this.style.color='var(--color-primary)'" onmouseout="this.style.color='var(--color-text-heading)'">
                     Voir tous nos produits >
                 </a>
             </div>
             
             {# Carousel Navigation Arrows #}
             <div style="display: flex; align-items: center; gap: 0.5rem;">
-                <button type="button" id="prev-btn" style="background: white; border: 1px solid #e5e7eb; cursor: pointer; color: #17716c; width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); transition: all 0.2s;" onmouseover="this.style.borderColor='#f97316'; this.style.color='#f97316'" onmouseout="this.style.borderColor='#e5e7eb'; this.style.color='#17716c'">
+                <button type="button" id="prev-btn" style="background: var(--color-bg-card); border: 1px solid var(--color-border); cursor: pointer; color: var(--color-text-heading); width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: var(--shadow-card); transition: all 0.2s;" onmouseover="this.style.borderColor='var(--color-primary)'; this.style.color='var(--color-primary)'" onmouseout="this.style.borderColor='var(--color-border)'; this.style.color='var(--color-text-heading)'">
                     <svg xmlns="http://www.w3.org/2000/svg" style="width: 24px; height: 24px;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7" /></svg>
                 </button>
-                <button type="button" id="next-btn" style="background: white; border: 1px solid #e5e7eb; cursor: pointer; color: #17716c; width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); transition: all 0.2s;" onmouseover="this.style.borderColor='#f97316'; this.style.color='#f97316'" onmouseout="this.style.borderColor='#e5e7eb'; this.style.color='#17716c'">
+                <button type="button" id="next-btn" style="background: var(--color-bg-card); border: 1px solid var(--color-border); cursor: pointer; color: var(--color-text-heading); width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: var(--shadow-card); transition: all 0.2s;" onmouseover="this.style.borderColor='var(--color-primary)'; this.style.color='var(--color-primary)'" onmouseout="this.style.borderColor='var(--color-border)'; this.style.color='var(--color-text-heading)'">
                     <svg xmlns="http://www.w3.org/2000/svg" style="width: 24px; height: 24px;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7" /></svg>
                 </button>
             </div>
@@ -53,22 +53,22 @@
                         
                         {# Unique class name and forced width to avoid conflicts #}
                         <div class="cateco-home-product-card" style="flex: 0 0 260px; width: 260px !important; display: flex; flex-direction: column; vertical-align: top; background: transparent;">
-                            <div style="background-color: #ececec; border-radius: 1.5rem; padding: 1.5rem; margin-bottom: 1rem; position: relative; width: 100%; aspect-ratio: 1/1; display: flex; align-items: center; justify-content: center; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,0.05);">
+                            <div style="background-color: var(--color-bg-card); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: 1.5rem; margin-bottom: 1rem; position: relative; width: 100%; aspect-ratio: 1/1; display: flex; align-items: center; justify-content: center; overflow: hidden; box-shadow: var(--shadow-card);">
                                 {% if product.images|length > 0 %}
                                     {% set image_path = product.images.first.path %}
                                     <img src="{{ image_path[0:4] == 'http' ? image_path : asset('media/image/' ~ image_path) }}" alt="{{ product.name }}" style="width: 100%; height: 100%; object-fit: contain; mix-blend-mode: multiply;" />
                                 {% else %}
-                                    <div style="color: #9ca3af;"><svg style="width: 48px; height: 48px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg></div>
+                                    <div style="color: var(--color-text-muted);"><svg style="width: 48px; height: 48px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg></div>
                                 {% endif %}
                             </div>
                             <div style="padding: 0 0.5rem;">
-                                <h3 style="font-size: 1.125rem; font-weight: 700; color: #111827; margin: 0 0 0.25rem 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                <h3 style="font-size: 1.125rem; font-weight: 700; color: var(--color-text-heading); margin: 0 0 0.25rem 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
                                     <a href="{{ path('sylius_shop_product_show', {'slug': product.slug}) }}" style="color: inherit; text-decoration: none;">{{ product.name }}</a>
                                 </h3>
                                 
                                 <div style="margin-bottom: 1rem;">
                                     {% if cheapest_price %}
-                                        <span style="font-size: 1.25rem; font-weight: 800; color: #111827;">{{ cheapest_price|sylius_format_money(cheapest_currency) }}</span>
+                                        <span style="font-size: 1.25rem; font-weight: 800; color: var(--color-text-heading);">{{ cheapest_price|sylius_format_money(cheapest_currency) }}</span>
                                     {% endif %}
                                 </div>
 
@@ -76,7 +76,8 @@
                                     {{ component('sylius_shop:product:add_to_cart_form', {
                                         'product': product,
                                         'variant': cheapest_variant,
-                                        'template': '@SyliusShop/product/common/add_to_cart_form.html.twig'
+                                        'template': '@SyliusShop/product/common/add_to_cart_form.html.twig',
+                                        'key': product.id|default(random())
                                     }) }}
                                 </div>
                             </div>

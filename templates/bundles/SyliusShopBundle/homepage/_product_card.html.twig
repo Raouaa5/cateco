@@ -61,7 +61,8 @@
                 {{ component('sylius_shop:product:add_to_cart_form', {
                     'product': product,
                     'variant': cheapest_variant,
-                    'template': '@SyliusShop/product/common/add_to_cart_form.html.twig'
+                    'template': '@SyliusShop/product/common/add_to_cart_form.html.twig',
+                    'key': product.id|default(random())
                 }) }}
             {% endif %}
         </div>

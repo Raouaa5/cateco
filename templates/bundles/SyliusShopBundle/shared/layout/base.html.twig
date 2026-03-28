@@ -14,19 +14,51 @@
 
                 <link rel="preconnect" href="https://fonts.googleapis.com">
                 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-                <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+                <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700;800&display=swap" rel="stylesheet">
 
                 <style>
+                        :root {
+                                --color-primary: #E87722;
+                                --color-primary-hover: #C85A00;
+                                --color-primary-tint: #FFF0E8;
+                                --color-text-heading: #1A1A1A;
+                                --color-text-body: #555555;
+                                --color-text-muted: #888888;
+                                --color-text-inverse: #FFFFFF;
+                                --color-bg-page: #F3F4F6;
+                                --color-bg-card: #FFFFFF;
+                                --color-bg-sand: #F5F0E6;
+                                --color-border: #E0DCD5;
+                                --color-success-bg: #E8F4E8;
+                                --color-success-text: #2A8B2A;
+                                --color-error-bg: #FDECEA;
+                                --color-error-text: #D02020;
+                                --radius-sm: 6px;
+                                --radius-md: 10px;
+                                --radius-lg: 14px;
+                                --radius-xl: 20px;
+                                --shadow-card: 0 1px 4px rgba(0,0,0,0.06);
+                                --shadow-hover: 0 4px 16px rgba(0,0,0,0.12);
+                                --font-base: 'DM Sans', sans-serif;
+                        }
+
                         /* Forcibly hide any top containers or newsletters from base themes */
-                        header + div, #sylius-top-bar, .container.py-4, nav.bg-primary { display: none !important; }
+                        #sylius-top-bar, .container.py-4, nav.bg-primary { display: none !important; }
                         
                         /* Snap everything to the top */
                         html, body { 
                                 margin: 0 !important; 
                                 padding: 0 !important; 
                                 scroll-padding-top: 144px; /* Space for both navbars */
-                                font-family: 'Outfit', sans-serif !important;
-                                background-color: #f9fafb !important;
+                                font-family: var(--font-base) !important;
+                                font-weight: 400;
+                                color: var(--color-text-body) !important;
+                                background-color: var(--color-bg-page) !important;
+                        }
+
+                        h1, h2, h3, h4, h5, h6 {
+                                font-weight: 800 !important;
+                                color: var(--color-text-heading) !important;
                         }
 
                         /* Emergency Utility Fallbacks */
@@ -42,26 +74,30 @@
                         
                         /* Cateco Brand Styles */
                         .main-header, .header-main {
-                          background: linear-gradient(to right, #1F2937, #1F2937, #F97316) !important;
-                          box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+                          background: var(--color-bg-card) !important;
+                          border-bottom: 1px solid var(--color-border);
                         }
                         .site-name a {
-                          background: linear-gradient(to right, #F97316, #F59E0B);
-                          -webkit-background-clip: text;
-                          background-clip: text;
-                          color: transparent;
+                          color: var(--color-text-heading) !important;
                           font-weight: 900;
                           font-size: 1.75rem;
                           text-decoration: none;
                         }
+                        .site-name a span {
+                          color: var(--color-primary) !important;
+                        }
                         .btn-primary {
-                          background: linear-gradient(to right, #F97316, #F59E0B);
-                          color: white !important;
+                          background: var(--color-primary) !important;
+                          color: var(--color-text-inverse) !important;
                           border: none;
-                          padding: 0.5rem 1.5rem;
-                          border-radius: 0.375rem;
-                          font-weight: 600;
-                          transition: opacity 0.2s;
+                          padding: 0.5rem 1.75rem;
+                          border-radius: var(--radius-sm);
+                          font-weight: 700;
+                          transition: background 0.2s, transform 0.2s;
+                        }
+                        .btn-primary:hover {
+                          background: var(--color-primary-hover) !important;
+                          transform: translateY(-1px);
                         }
                         
                         /* Simple Category Menu Fallback */
@@ -75,16 +111,16 @@
 
                         /* --- PRODUCT CARD STYLES --- */
                         .cateco-product-card {
-                            background: white !important;
-                            border-radius: 1rem !important;
+                            background: var(--color-bg-card) !important;
+                            border-radius: var(--radius-md) !important;
                             overflow: hidden !important;
-                            box-shadow: 0 2px 12px rgba(0,0,0,0.07) !important;
+                            box-shadow: var(--shadow-card) !important;
                             transition: transform 0.25s ease, box-shadow 0.25s ease !important;
                             display: flex !important;
                             flex-direction: column !important;
-                            border: 1px solid #ebebeb !important;
+                            border: 1px solid var(--color-border) !important;
                         }
-                        .cateco-product-card:hover { transform: translateY(-4px) !important; box-shadow: 0 10px 28px rgba(0,0,0,0.11) !important; }
+                        .cateco-product-card:hover { transform: translateY(-4px) !important; box-shadow: var(--shadow-hover) !important; }
 
                         /* Image: square, dominant */
                         .product-image-wrapper { position: relative; width: 100%; aspect-ratio: 1/1; background: #f5f5f5 !important; display: flex; align-items: center; justify-content: center; overflow: hidden; }
@@ -145,6 +181,11 @@
                         @media (min-width: 640px)  { .products-grid { grid-template-columns: repeat(2, 1fr) !important; } }
                         @media (min-width: 1024px) { .products-grid { grid-template-columns: repeat(3, 1fr) !important; } }
                         @media (min-width: 1280px) { .products-grid { grid-template-columns: repeat(3, 1fr) !important; } }
+                        
+                        /* Push down checkout steps */
+                        body[data-route^="sylius_shop_checkout"] #main {
+                            padding-top: 2.5rem !important;
+                        }
                 </style>
 
         {% block metatags %}
@@ -167,9 +208,11 @@
                 {% hook 'sylius.shop.layout.before_body' %}
 
                 {% block header %}
+                    <header style="position: sticky; top: 0; z-index: 10000; width: 100%; background: var(--color-bg-card); display: flex; flex-direction: column; box-shadow: 0 4px 15px rgba(0,0,0,0.05);">
                         {% include '@SyliusShop/shared/layout/base/header/cateco_navbar.html.twig' %}
                         {# Optimized: Direct inclusion instead of sub-request for massive speed boost #}
                         {% include '@SyliusShop/shared/layout/base/header/navbar/menu.html.twig' with {'taxons': get_mega_menu_taxons()} %}
+                    </header>
                 {% endblock %}
 
                 <div class="min-h-[50vh] flex-1 pb-16 w-full" id="main">
@@ -235,6 +278,20 @@
                     function hideLoginModal() {
                         document.getElementById('wishlist-login-modal').classList.remove('active');
                     }
+                </script>
+
+                <script>
+                    // Auto-fill registration email if redirected from the newsletter forms
+                    document.addEventListener("DOMContentLoaded", function() {
+                        const urlParams = new URLSearchParams(window.location.search);
+                        const emailParam = urlParams.get('email');
+                        if (emailParam && (window.location.pathname.includes('/register') || window.location.pathname.includes('/inscription'))) {
+                            const emailInput = document.querySelector('input[type="email"][name$="[email]"]');
+                            if (emailInput) {
+                                emailInput.value = emailParam;
+                            }
+                        }
+                    });
                 </script>
         </body>
 </html>

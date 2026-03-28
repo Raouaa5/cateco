@@ -1,0 +1,95 @@
+{% extends '@SyliusShop/shared/layout/base.html.twig' %}
+
+{% block title %}{{ 'sylius.ui.thank_you'|trans }} | {{ parent() }}{% endblock %}
+
+{% block content %}
+<div class="cateco-thankyou-wrapper flex items-center justify-center min-h-[70vh] py-12 px-4">
+    <div class="cateco-thankyou-card max-w-2xl w-full bg-white rounded-2xl shadow-xl p-8 md:p-12 text-center border border-gray-100">
+        
+        <!-- Animated Checkmark -->
+        <div class="success-animation mb-8">
+            <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+                <circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none"/>
+                <path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
+            </svg>
+        </div>
+
+        <h1 class="text-4xl md:text-5xl font-extrabold text-gray-900 mb-4 tracking-tight">
+            Merci pour votre commande !
+        </h1>
+        
+        <p class="text-lg md:text-xl text-gray-600 mb-2">
+            Votre commande <span class="font-bold text-gray-900">#{{ order.number }}</span> a bien été confirmée.
+        </p>
+        
+        <p class="text-md text-gray-500 mb-10">
+            Nous avons envoyé un e-mail de confirmation avec tous les détails de votre commande. 
+            Nous la préparons avec soin !
+        </p>
+
+        <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <a href="{{ path('sylius_shop_order_show', {'tokenValue': order.tokenValue}) }}" class="btn-primary w-full sm:w-auto shadow-lg hover:-translate-y-1 transform transition-all text-center text-lg py-3 px-8 rounded-xl font-bold inline-flex justify-center items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                    <polyline points="14 2 14 8 20 8"></polyline>
+                    <line x1="16" y1="13" x2="8" y2="13"></line>
+                    <line x1="16" y1="17" x2="8" y2="17"></line>
+                    <polyline points="10 9 9 9 8 9"></polyline>
+                </svg>
+                Voir ma commande
+            </a>
+            
+            <a href="{{ path('sylius_shop_homepage') }}" class="btn-secondary w-full sm:w-auto text-center text-lg py-3 px-8 rounded-xl font-bold inline-flex justify-center items-center gap-2 border-2 border-gray-200 text-gray-700 hover:bg-gray-50 hover:border-gray-300 transition-all">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                    <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                </svg>
+                Retour à l'accueil
+            </a>
+        </div>
+        
+        <!-- Helpful Links Bottom -->
+        <div class="mt-12 pt-8 border-t border-gray-100 flex flex-col md:flex-row justify-center gap-6 text-sm text-gray-500 font-medium">
+            <a href="#" class="hover:text-orange-500 transition-colors flex items-center gap-1 justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                Besoin d'aide ?
+            </a>
+            <a href="#" class="hover:text-orange-500 transition-colors flex items-center gap-1 justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                Paiement sécurisé
+            </a>
+            <a href="#" class="hover:text-orange-500 transition-colors flex items-center gap-1 justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+                Suivi de livraison
+            </a>
+        </div>
+    </div>
+</div>
+
+<style>
+/* Modern Checkmark Animation */
+.success-animation { margin: 0 auto; width: 100px; height: 100px; }
+.checkmark { width: 100px; height: 100px; border-radius: 50%; display: block; stroke-width: 3.5; stroke: #22c55e; stroke-miterlimit: 10; font-size: 0px; margin: 0 auto; box-shadow: inset 0px 0px 0px #22c55e; animation: fill .4s ease-in-out .4s forwards, scale .3s ease-in-out .9s both; }
+.checkmark__circle { stroke-dasharray: 166; stroke-dashoffset: 166; stroke-width: 3.5; stroke-miterlimit: 10; stroke: #22c55e; fill: none; animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards; }
+.checkmark__check { transform-origin: 50% 50%; stroke-dasharray: 48; stroke-dashoffset: 48; animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.6s forwards; }
+
+@keyframes stroke { 100% { stroke-dashoffset: 0; } }
+@keyframes scale { 0%, 100% { transform: none; } 50% { transform: scale3d(1.1, 1.1, 1); } }
+@keyframes fill { 100% { box-shadow: inset 0px 0px 0px 50px rgba(34, 197, 94, 0.1); } }
+
+/* Modern Card Hover Effects */
+.cateco-thankyou-card {
+    position: relative;
+    overflow: hidden;
+}
+.cateco-thankyou-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 6px;
+    background: linear-gradient(to right, #f97316, #f59e0b, #eab308);
+}
+</style>
+{% endblock %}

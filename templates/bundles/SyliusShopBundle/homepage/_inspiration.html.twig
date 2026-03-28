@@ -1,0 +1,552 @@
+{#
+    Inspiration / Magazine Section — Nos idées d'ameublement
+    - Tabs: Salon, Chambre, Cuisine, Bureau, Extérieur (static 3-card grid)
+    - Tout: auto-cycling carousel across all categories, animated every 2.5s
+#}
+
+{# Fetch exact products per section using product reference codes #}
+{% set cat_salon     = get_products_by_codes(['30089816', '30042373', '30089587']) %}
+{% set cat_exterieur = get_products_by_codes(['40042461', '7278', '40088651']) %}
+{% set cat_chambre   = get_products_by_codes(['30088774', '30088693', '30130205']) %}
+{% set cat_bureau    = get_products_by_codes(['10Z24719', '10Z24720', '30088354']) %}
+{% set cat_cuisine   = get_products_by_codes(['30012266', '30150010', '30150106', '30150103']) %}
+
+{# Tout: one product from each category, interleaved round-robin #}
+{% set all_products = [] %}
+{% for i in 0..2 %}
+    {% if cat_salon[i] is defined %}
+        {% set all_products = all_products|merge([{'product': cat_salon[i], 'room': 'Salon'}]) %}
+    {% endif %}
+    {% if cat_exterieur[i] is defined %}
+        {% set all_products = all_products|merge([{'product': cat_exterieur[i], 'room': 'Extérieur'}]) %}
+    {% endif %}
+    {% if cat_chambre[i] is defined %}
+        {% set all_products = all_products|merge([{'product': cat_chambre[i], 'room': 'Chambre'}]) %}
+    {% endif %}
+    {% if cat_bureau[i] is defined %}
+        {% set all_products = all_products|merge([{'product': cat_bureau[i], 'room': 'Bureau'}]) %}
+    {% endif %}
+    {% if cat_cuisine[i] is defined %}
+        {% set all_products = all_products|merge([{'product': cat_cuisine[i], 'room': 'Cuisine'}]) %}
+    {% endif %}
+{% endfor %}
+
+{% set tabs = [
+    {'id': 'all',       'label': 'Tout'},
+    {'id': 'salon',     'label': 'Salon',     'products': cat_salon},
+    {'id': 'chambre',   'label': 'Chambre',   'products': cat_chambre},
+    {'id': 'cuisine',   'label': 'Cuisine',   'products': cat_cuisine},
+    {'id': 'bureau',    'label': 'Bureau',    'products': cat_bureau},
+    {'id': 'exterieur', 'label': 'Extérieur', 'products': cat_exterieur}
+] %}
+
+<style>
+/* ---- Filter Tabs ---- */
+.insp-tab {
+    padding: 0.5rem 1.3rem;
+    border-radius: 9999px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    cursor: pointer;
+    border: 1.5px solid #E0DDD5;
+    color: #888;
+    background: transparent;
+    transition: all 0.2s;
+    white-space: nowrap;
+}
+.insp-tab:hover { border-color: #E87722; color: #E87722; }
+.insp-tab.active { background: #E87722; border-color: #E87722; color: #fff; }
+
+/* ---- Grids ---- */
+.insp-panel { display: none; }
+.insp-panel.active { display: grid; }
+@media (min-width: 992px) {
+    .insp-panel {
+        grid-template-columns: 1.6fr 1fr;
+        grid-template-rows: repeat(2, 310px);
+        gap: 20px;
+    }
+    .insp-hero { grid-row: span 2; }
+}
+@media (max-width: 991px) {
+    .insp-panel.active { display: flex; flex-direction: column; gap: 16px; }
+    .insp-hero { min-height: 320px; }
+    .insp-side { min-height: 200px; }
+}
+
+/* ---- Cards ---- */
+.insp-card {
+    position: relative;
+    border-radius: 14px;
+    overflow: hidden;
+    background: #e5e7eb;
+}
+.insp-card img {
+    width: 100%; height: 100%;
+    object-fit: cover; display: block;
+    transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.insp-card:hover img { transform: scale(1.04); }
+.insp-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.78) 0%, rgba(0,0,0,0) 55%);
+    pointer-events: none;
+}
+.insp-content {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    padding: 1.8rem; z-index: 5;
+}
+.insp-room-label {
+    font-size: 0.78rem; font-weight: 800; letter-spacing: 0.1em;
+    color: rgba(255,255,255,0.6); text-transform: uppercase; margin-bottom: 0.4rem;
+}
+.insp-name { font-size: 1.35rem; font-weight: 800; color: #ffffff !important; line-height: 1.2; margin: 0 0 0.4rem; }
+.insp-name-sm { font-size: 1.1rem; }
+.insp-price { font-size: 1.3rem; font-weight: 800; color: #E87722; margin: 0 0 1rem; }
+.insp-price-sm { font-size: 1.1rem; margin-bottom: 0.8rem; }
+.insp-btn {
+    display: inline-flex; align-items: center; gap: 4px;
+    padding: 0.55rem 1.1rem; border-radius: 8px;
+    border: 1px solid rgba(255,255,255,0.3); color: #fff;
+    font-weight: 700; font-size: 0.88rem; text-decoration: none;
+    background: rgba(0,0,0,0.35); backdrop-filter: blur(4px);
+    transition: all 0.2s;
+}
+.insp-btn:hover { background: #E87722; border-color: #E87722; }
+.insp-side-footer { display: flex; justify-content: space-between; align-items: flex-end; }
+
+/* ---- Shoppable Hotspots ---- */
+.hotspot {
+    position: absolute; width: 26px; height: 26px;
+    transform: translate(-50%, -50%); z-index: 15; cursor: pointer;
+}
+.hotspot-dot {
+    position: absolute; inset: 4px;
+    background: #E87722; border: 2.5px solid #fff;
+    border-radius: 50%; z-index: 2;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+.hotspot-ring {
+    position: absolute; inset: 0;
+    border-radius: 50%; background: rgba(232,119,34,0.5);
+    animation: hotspot-pulse 2s ease-out infinite;
+}
+@keyframes hotspot-pulse {
+    0%   { transform: scale(1); opacity: 1; }
+    100% { transform: scale(2.6); opacity: 0; }
+}
+.hotspot-tip {
+    position: absolute; bottom: 140%; left: 50%;
+    transform: translateX(-50%) translateY(8px);
+    background: #fff; border-radius: 10px; padding: 0.7rem 0.9rem;
+    width: 190px; box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+    opacity: 0; visibility: hidden;
+    transition: all 0.28s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    pointer-events: none;
+}
+.hotspot-tip::after {
+    content: ''; position: absolute; top: 100%; left: 50%;
+    margin-left: -6px; border: 6px solid transparent;
+    border-top-color: #fff;
+}
+.hotspot:hover .hotspot-tip {
+    opacity: 1; visibility: visible;
+    transform: translateX(-50%) translateY(0);
+}
+.tip-name  { font-size: 0.82rem; font-weight: 700; color: #1a1a1a; margin: 0 0 0.25rem; line-height: 1.3;
+             display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.tip-price { font-size: 0.95rem; font-weight: 800; color: #E87722; margin: 0; }
+
+/* ---- Pagination Dots ---- */
+.insp-dots {
+    position: absolute; bottom: 20px; right: 20px;
+    display: flex; gap: 6px; align-items: center; z-index: 10;
+}
+.insp-dot {
+    width: 8px; height: 8px; border-radius: 4px;
+    background: rgba(255,255,255,0.35); transition: all 0.3s;
+}
+.insp-dot.active { width: 18px; background: #E87722; }
+
+/* ---- Tout: Cycling Animation Slides ---- */
+.cycle-wrap { position: relative; width: 100%; height: 100%; }
+.cycle-slide {
+    position: absolute; inset: 0;
+    opacity: 0; transition: opacity 0.7s ease;
+    pointer-events: none;
+}
+.cycle-slide.visible { opacity: 1; pointer-events: auto; }
+
+/* ---- Nav Buttons ---- */
+.insp-nav {
+    width: 42px; height: 42px; border-radius: 50%;
+    border: 1.5px solid #E0DDD5; background: transparent;
+    display: flex; align-items: center; justify-content: center;
+    color: #1a1a1a; cursor: pointer; transition: all 0.2s;
+}
+.insp-nav:hover { background: #E87722; border-color: #E87722; color: #fff; }
+</style>
+
+<section style="padding: 4rem 0; background-color: #fff;">
+    <div class="container mx-auto px-6 lg:px-12">
+
+        {# Filter Tabs #}
+        <div style="display: flex; gap: 0.75rem; margin-bottom: 2rem; overflow-x: auto; padding-bottom: 4px; scrollbar-width: none;">
+            {% for tab in tabs %}
+                <button class="insp-tab{% if loop.first %} active{% endif %}"
+                        data-tab="{{ tab.id }}">{{ tab.label }}</button>
+            {% endfor %}
+        </div>
+
+        {# Section Header #}
+        <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 1rem; margin-bottom: 2rem;">
+            <div>
+                <div style="display: flex; align-items: center; gap: 0.8rem; margin-bottom: 0.5rem;">
+                    <div style="width: 36px; height: 3px; background: #E87722; border-radius: 2px;"></div>
+                    <p style="color: #E87722; font-size: 0.85rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; margin: 0;">Inspiration</p>
+                </div>
+                <h2 id="insp-title" style="font-size: clamp(2rem, 4vw, 2.8rem); font-weight: 800; color: #1a1a1a; margin: 0; line-height: 1.1;">
+                    Nos idées<br>d'<span style="color: #E87722;">ameublement</span>
+                </h2>
+            </div>
+            <div style="display: flex; align-items: center; gap: 1.2rem;">
+                <a href="{{ path('sylius_shop_product_index', {'slug': 'maison', '_locale': sylius.localeCode}) }}" style="color: #E87722; font-weight: 700; text-decoration: none; font-size: 1rem;">Voir toutes nos idées &rsaquo;</a>
+                <div style="display: flex; gap: 0.6rem;">
+                    <button class="insp-nav" id="insp-prev">
+                        <svg style="width:18px;height:18px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+                    </button>
+                    <button class="insp-nav" id="insp-next">
+                        <svg style="width:18px;height:18px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        {# ============================================================ #}
+        {# PANEL: TOUT (auto-cycling, 3 cards cycle through all cats)   #}
+        {# ============================================================ #}
+        <div class="insp-panel active" id="insp-panel-all" style="gap: 20px;">
+
+            {# Hero Card — cycles products from slot indices 0, 4, 8, 12 ... #}
+            <div class="insp-card insp-hero">
+                <div class="cycle-wrap" id="tout-hero">
+                    {% for idx, entry in all_products %}
+                        {% if idx % 3 == 0 %}
+                            {% set p = entry.product %}
+                            {% set imgPath = p.images|length > 0 ? p.images|first.path : null %}
+                            <div class="cycle-slide{% if idx == 0 %} visible{% endif %}" data-tout-hero="{{ idx // 3 }}">
+                                {% if imgPath %}
+                                    <img src="{{ imgPath|imagine_filter('sylius_shop_product_original') }}" alt="{{ p.name }}">
+                                {% else %}
+                                    <div style="width:100%;height:100%;background:linear-gradient(135deg,#e0ddd5,#c5bfb6);"></div>
+                                {% endif %}
+                                <div class="insp-overlay"></div>
+
+                                {# Hotspot #}
+                                <div class="hotspot" style="left: 38%; top: 52%;">
+                                    <div class="hotspot-ring"></div>
+                                    <div class="hotspot-dot"></div>
+                                    <div class="hotspot-tip">
+                                        <p class="tip-name">{{ p.name }}</p>
+                                        {% if p.variants|length > 0 %}
+                                            {% set v = p.variants|first %}
+                                            {% if v.channelPricings|length > 0 %}
+                                                <p class="tip-price">{{ (v.channelPricings|first.price / 100)|number_format(2, ',', ' ') }} €</p>
+                                            {% endif %}
+                                        {% endif %}
+                                    </div>
+                                </div>
+
+                                <div class="insp-content">
+                                    <p class="insp-room-label">{{ entry.room }}</p>
+                                    <h3 class="insp-name">{{ p.name }}</h3>
+                                    {% if p.variants|length > 0 %}
+                                        {% set v = p.variants|first %}
+                                        {% if v.channelPricings|length > 0 %}
+                                            <p class="insp-price">{{ (v.channelPricings|first.price / 100)|number_format(2, ',', ' ') }} €</p>
+                                        {% endif %}
+                                    {% endif %}
+                                    <a href="{{ path('sylius_shop_product_show', {'slug': p.slug, '_locale': sylius.localeCode}) }}" class="insp-btn">Voir la fiche produit &rsaquo;</a>
+                                </div>
+
+                                <div class="insp-dots" id="tout-dots">
+                                    {% set slideCountTout = (all_products|length / 3)|round(0, 'ceil') %}
+                                    {% for d in 0..(slideCountTout > 0 ? slideCountTout - 1 : 0) %}
+                                        <div class="insp-dot{% if d == 0 %} active{% endif %}" data-dot="{{ d }}"></div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+
+            {# Side Card 1 — slot index 1, 5, 9 ... #}
+            <div class="insp-card insp-side">
+                <div class="cycle-wrap" id="tout-side1">
+                    {% for idx, entry in all_products %}
+                        {% if idx % 3 == 1 %}
+                            {% set p = entry.product %}
+                            {% set imgPath = p.images|length > 0 ? p.images|first.path : null %}
+                            <div class="cycle-slide{% if idx == 1 %} visible{% endif %}" data-tout-side1="{{ idx // 3 }}">
+                                {% if imgPath %}
+                                    <img src="{{ imgPath|imagine_filter('sylius_shop_product_original') }}" alt="{{ p.name }}">
+                                {% else %}
+                                    <div style="width:100%;height:100%;background:linear-gradient(135deg,#d5e0d5,#b6c5b6);"></div>
+                                {% endif %}
+                                <div class="insp-overlay"></div>
+                                <div class="insp-content">
+                                    <div class="insp-side-footer">
+                                        <div>
+                                            <p class="insp-room-label">{{ entry.room }}</p>
+                                            <h3 class="insp-name insp-name-sm">{{ p.name }}</h3>
+                                            {% if p.variants|length > 0 %}
+                                                {% set v = p.variants|first %}
+                                                {% if v.channelPricings|length > 0 %}
+                                                    <p class="insp-price insp-price-sm">{{ (v.channelPricings|first.price / 100)|number_format(2, ',', ' ') }} €</p>
+                                                {% endif %}
+                                            {% endif %}
+                                        </div>
+                                        <a href="{{ path('sylius_shop_product_show', {'slug': p.slug, '_locale': sylius.localeCode}) }}" class="insp-btn">Voir &rsaquo;</a>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+
+            {# Side Card 2 — slot index 2, 6, 10 ... #}
+            <div class="insp-card insp-side">
+                <div class="cycle-wrap" id="tout-side2">
+                    {% for idx, entry in all_products %}
+                        {% if idx % 3 == 2 %}
+                            {% set p = entry.product %}
+                            {% set imgPath = p.images|length > 0 ? p.images|first.path : null %}
+                            <div class="cycle-slide{% if idx == 2 %} visible{% endif %}" data-tout-side2="{{ idx // 3 }}">
+                                {% if imgPath %}
+                                    <img src="{{ imgPath|imagine_filter('sylius_shop_product_original') }}" alt="{{ p.name }}">
+                                {% else %}
+                                    <div style="width:100%;height:100%;background:linear-gradient(135deg,#d5d5e0,#b6b6c5);"></div>
+                                {% endif %}
+                                <div class="insp-overlay"></div>
+                                <div class="insp-content">
+                                    <div class="insp-side-footer">
+                                        <div>
+                                            <p class="insp-room-label">{{ entry.room }}</p>
+                                            <h3 class="insp-name insp-name-sm">{{ p.name }}</h3>
+                                            {% if p.variants|length > 0 %}
+                                                {% set v = p.variants|first %}
+                                                {% if v.channelPricings|length > 0 %}
+                                                    <p class="insp-price insp-price-sm">{{ (v.channelPricings|first.price / 100)|number_format(2, ',', ' ') }} €</p>
+                                                {% endif %}
+                                            {% endif %}
+                                        </div>
+                                        <a href="{{ path('sylius_shop_product_show', {'slug': p.slug, '_locale': sylius.localeCode}) }}" class="insp-btn">Voir &rsaquo;</a>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+
+        </div>
+
+        {# ============================================================ #}
+        {# PANELS: Salon / Chambre / Cuisine / Bureau / Extérieur        #}
+        {# ============================================================ #}
+        {% for tab in tabs %}
+            {% if tab.id != 'all' %}
+                {% set prods = tab.products %}
+                <div class="insp-panel" id="insp-panel-{{ tab.id }}" style="gap: 20px;">
+
+                    {# Hero card = product[0] with lifestyle hero bg image #}
+                    <div class="insp-card insp-hero">
+                        {% if prods|length > 0 %}
+                            {% set hero = prods[0] %}
+                            {% set heroImg = hero.images|length > 0 ? hero.images|first.path : null %}
+                            {% if heroImg %}
+                                <img src="{{ heroImg|imagine_filter('sylius_shop_product_original') }}" alt="{{ hero.name }}">
+                            {% else %}
+                                <div style="width:100%;height:100%;background:linear-gradient(135deg,#e0ddd5,#c5bfb6);"></div>
+                            {% endif %}
+                            <div class="insp-overlay"></div>
+
+                            {# Hotspot on product 0 #}
+                            <div class="hotspot" style="left: 38%; top: 50%;">
+                                <div class="hotspot-ring"></div>
+                                <div class="hotspot-dot"></div>
+                                <div class="hotspot-tip">
+                                    <p class="tip-name">{{ hero.name }}</p>
+                                    {% if hero.variants|length > 0 %}
+                                        {% set v = hero.variants|first %}
+                                        {% if v.channelPricings|length > 0 %}
+                                            <p class="tip-price">{{ (v.channelPricings|first.price / 100)|number_format(2, ',', ' ') }} €</p>
+                                        {% endif %}
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            {# Second hotspot on product 1 if available #}
+                            {% if prods|length > 1 %}
+                                {% set h2 = prods[1] %}
+                                <div class="hotspot" style="left: 72%; top: 38%;">
+                                    <div class="hotspot-ring" style="animation-delay: 1s;"></div>
+                                    <div class="hotspot-dot"></div>
+                                    <div class="hotspot-tip">
+                                        <p class="tip-name">{{ h2.name }}</p>
+                                        {% if h2.variants|length > 0 %}
+                                            {% set v2 = h2.variants|first %}
+                                            {% if v2.channelPricings|length > 0 %}
+                                                <p class="tip-price">{{ (v2.channelPricings|first.price / 100)|number_format(2, ',', ' ') }} €</p>
+                                            {% endif %}
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            {% endif %}
+
+                            <div class="insp-content">
+                                <p class="insp-room-label">{{ tab.label }} &middot; COUP DE CŒUR</p>
+                                <h3 class="insp-name">{{ hero.name }}</h3>
+                                {% if hero.variants|length > 0 %}
+                                    {% set v = hero.variants|first %}
+                                    {% if v.channelPricings|length > 0 %}
+                                        <p class="insp-price">{{ (v.channelPricings|first.price / 100)|number_format(2, ',', ' ') }} €</p>
+                                    {% endif %}
+                                {% endif %}
+                                <a href="{{ path('sylius_shop_product_show', {'slug': hero.slug, '_locale': sylius.localeCode}) }}" class="insp-btn">Voir la fiche produit &rsaquo;</a>
+                            </div>
+
+                            {# Pagination dots #}
+                            <div class="insp-dots">
+                                <div class="insp-dot active"></div>
+                                {% if prods|length > 1 %}<div class="insp-dot"></div>{% endif %}
+                                {% if prods|length > 2 %}<div class="insp-dot"></div>{% endif %}
+                            </div>
+                        {% else %}
+                            <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:#f3f4f6;">
+                                <p style="color:#9ca3af; font-size:1rem;">Aucun produit trouvé.</p>
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    {# Side Cards = products[1] and products[2] #}
+                    {% for i in [1, 2] %}
+                        <div class="insp-card insp-side">
+                            {% if prods[i] is defined %}
+                                {% set sp = prods[i] %}
+                                {% set sImg = sp.images|length > 0 ? sp.images|first.path : null %}
+                                {% if sImg %}
+                                    <img src="{{ sImg|imagine_filter('sylius_shop_product_original') }}" alt="{{ sp.name }}">
+                                {% else %}
+                                    <div style="width:100%;height:100%;background:linear-gradient(135deg,#e0ddd5,#c5bfb6);"></div>
+                                {% endif %}
+                                <div class="insp-overlay"></div>
+                                <div class="insp-content">
+                                    <div class="insp-side-footer">
+                                        <div style="flex:1; min-width: 0;">
+                                            <p class="insp-room-label">{{ tab.label }}</p>
+                                            <h3 class="insp-name insp-name-sm" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ sp.name }}</h3>
+                                            {% if sp.variants|length > 0 %}
+                                                {% set v = sp.variants|first %}
+                                                {% if v.channelPricings|length > 0 %}
+                                                    <p class="insp-price insp-price-sm">{{ (v.channelPricings|first.price / 100)|number_format(2, ',', ' ') }} €</p>
+                                                {% endif %}
+                                            {% endif %}
+                                        </div>
+                                        <a href="{{ path('sylius_shop_product_show', {'slug': sp.slug, '_locale': sylius.localeCode}) }}" class="insp-btn" style="flex-shrink:0; margin-left:12px;">Voir &rsaquo;</a>
+                                    </div>
+                                </div>
+                            {% else %}
+                                <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:#f9fafb;">
+                                    <p style="color:#9ca3af;font-size:0.9rem;">Voir plus de produits</p>
+                                </div>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+
+                </div>
+            {% endif %}
+        {% endfor %}
+
+    </div>
+</section>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+
+    // Tab switching
+    const tabs    = document.querySelectorAll('.insp-tab');
+    const panels  = document.querySelectorAll('.insp-panel');
+
+    tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            tabs.forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+            panels.forEach(p => p.classList.remove('active'));
+            const target = document.getElementById('insp-panel-' + tab.dataset.tab);
+            if (target) target.classList.add('active');
+
+            // stop/start Tout cycling
+            if (tab.dataset.tab === 'all') {
+                startCycling();
+            } else {
+                stopCycling();
+            }
+        });
+    });
+
+    // Tout: auto-cycling
+    const heroSlides  = document.querySelectorAll('[data-tout-hero]');
+    const side1Slides = document.querySelectorAll('[data-tout-side1]');
+    const side2Slides = document.querySelectorAll('[data-tout-side2]');
+    const dots        = document.querySelectorAll('#tout-dots .insp-dot');
+    const slideCount  = heroSlides.length;
+    let currentSlide  = 0;
+    let cycleInterval = null;
+
+    function showSlide(n) {
+        if (!slideCount) return;
+        currentSlide = (n + slideCount) % slideCount;
+
+        heroSlides .forEach(s => s.classList.remove('visible'));
+        side1Slides.forEach(s => s.classList.remove('visible'));
+        side2Slides.forEach(s => s.classList.remove('visible'));
+        dots       .forEach(d => d.classList.remove('active'));
+
+        const hs = document.querySelector('[data-tout-hero="'  + currentSlide + '"]');
+        const s1 = document.querySelector('[data-tout-side1="' + currentSlide + '"]');
+        const s2 = document.querySelector('[data-tout-side2="' + currentSlide + '"]');
+        const dt = dots[currentSlide];
+
+        if (hs) hs.classList.add('visible');
+        if (s1) s1.classList.add('visible');
+        if (s2) s2.classList.add('visible');
+        if (dt) dt.classList.add('active');
+    }
+
+    function startCycling() {
+        stopCycling();
+        if (slideCount < 2) return;
+        cycleInterval = setInterval(() => showSlide(currentSlide + 1), 5000);
+    }
+
+    function stopCycling() {
+        if (cycleInterval) { clearInterval(cycleInterval); cycleInterval = null; }
+    }
+
+    // Nav buttons
+    document.getElementById('insp-prev').addEventListener('click', () => {
+        const activeTab = document.querySelector('.insp-tab.active');
+        if (activeTab && activeTab.dataset.tab === 'all') showSlide(currentSlide - 1);
+    });
+    document.getElementById('insp-next').addEventListener('click', () => {
+        const activeTab = document.querySelector('.insp-tab.active');
+        if (activeTab && activeTab.dataset.tab === 'all') showSlide(currentSlide + 1);
+    });
+
+    // Start on load since "Tout" is default
+    startCycling();
+});
+</script>

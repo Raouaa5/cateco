@@ -1,0 +1,156 @@
+<section class="section-bons-plans" style="padding: 4rem 0 5rem 0; background-color: #ffffff;">
+    <div class="container-cateco" style="max-width: 1200px; margin: 0 auto; padding: 0 1rem;">
+        
+        {# Header: Title and Voir tout link #}
+        <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 3rem;">
+            <div style="display: flex; gap: 16px;">
+                <div style="width: 3px; background-color: #E87722; border-radius: 2px; align-self: stretch; flex-shrink: 0;"></div>
+                <div>
+                    <p style="color: #E87722; font-size: 0.85rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; margin: 0 0 0.5rem;">OFFRES DU MOMENT</p>
+                    <h2 style="color: #1A1A1A; font-size: 2.5rem; font-weight: 800; line-height: 1.1; margin: 0;">Nos derniers<br><span style="color: #E87722;">bons plans</span></h2>
+                </div>
+            </div>
+            <a href="{{ path('sylius_shop_product_index', {'slug': 'bons-plans', '_locale': sylius.localeCode}) }}" style="color: #E87722; font-weight: 700; text-decoration: none; display: flex; align-items: center; gap: 0.5rem;">
+                Voir tout <svg style="width: 18px; height: 18px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+            </a>
+        </div>
+
+        {# Product List #}
+        <div class="bons-plans-list" style="margin-bottom: 4rem;">
+            {% set products = get_bons_plans_products() %}
+
+            {% for product in products %}
+                {# Pricing Logic for Discounts (Mocking 20% if no channel pricing exists) #}
+                {% set original_price = 10000 %} {# 100.00 EUR fallback #}
+                {% set current_price = 8000 %}  {# 80.00 EUR fallback #}
+                
+                {# Search for variants and pricing #}
+                {% for variant in product.variants %}
+                    {% for pricing in variant.channelPricings %}
+                        {% if pricing.price is not null %}
+                            {% set current_price = pricing.price %}
+                            {% set original_price = pricing.originalPrice|default(pricing.price * 1.25)|round %}
+                        {% endif %}
+                    {% endfor %}
+                {% endfor %}
+
+                {% set price_formatted = (current_price / 100)|number_format(2, ',', ' ') %}
+                {% set original_formatted = (original_price / 100)|number_format(2, ',', ' ') %}
+                {% set eco = ((original_price - current_price) / 100)|round(2) %}
+                {% set discount_pct = ((1 - (current_price / original_price)) * 100)|round %}
+
+                <a href="{{ path('sylius_shop_product_show', {'slug': product.slug}) }}" class="bp-row" style="display: flex; align-items: center; border-bottom: 1px solid #EDEDED; padding: 2rem 0; position: relative; transition: all 0.3s ease; text-decoration: none;">
+                    {# Index #}
+                    <div class="bp-number" style="color: #D1D1D1; font-weight: 800; font-size: 1.4rem; width: 60px; flex-shrink: 0; transition: color 0.3s ease;">{{ "%02d"|format(loop.index) }}</div>
+                    
+                    {# Image #}
+                    <div style="background: #F4F2EE; border-radius: 12px; width: 110px; height: 110px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; padding: 10px; overflow: hidden; position: relative;">
+                        <span style="position: absolute; top: 8px; left: 8px; background: #E87722; color: #fff; font-size: 0.65rem; font-weight: 800; padding: 2px 6px; border-radius: 4px;">-{{ discount_pct }}%</span>
+                        {% if product.images|length > 0 %}
+                            {% set image_path = product.images.first.path %}
+                            <img src="{{ image_path[0:4] == 'http' ? image_path : asset('media/image/' ~ image_path) }}" alt="{{ product.name }}" style="max-width: 100%; max-height: 100%; object-fit: contain; mix-blend-mode: multiply;">
+                        {% else %}
+                            <img src="{{ asset('assets/shop/images/no-image.png') }}" alt="{{ product.name }}" style="max-width: 100%; max-height: 100%; object-fit: contain;">
+                        {% endif %}
+                    </div>
+
+                    {# Content #}
+                    <div style="margin-left: 2rem; flex: 1;">
+                        <p style="color: #E87722; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; margin: 0 0 0.4rem;">{{ product.mainTaxon ? product.mainTaxon.name|upper : 'OFFRE' }}</p>
+                        <h3 style="color: #1A1A1A; font-size: 1.35rem; font-weight: 800; margin: 0 0 0.2rem;">{{ product.name }}</h3>
+                        <p style="color: #777; font-size: 0.8rem; font-weight: 600; margin: 0 0 0.4rem; text-transform: uppercase;">Référence : {{ product.code }}</p>
+                        <p style="color: #777; font-size: 0.95rem; margin: 0;">{{ (product.shortDescription|default('Produit en promotion exclusive'))|slice(0, 80) ~ '...' }}</p>
+                    </div>
+
+                    {# Stock Progress (Mocking for now as per user request to keep the UI logic) #}
+                    <div style="margin: 0 3rem; width: 180px; flex-shrink: 0; text-align: center;">
+                        {% set remaining = random(3, 15) %}
+                        {% set total = 20 %}
+                        {% set progress = (remaining / total) * 100 %}
+                        <div style="background: #E0E0E0; height: 8px; border-radius: 4px; width: 100%; overflow: hidden; margin-bottom: 0.5rem;">
+                            <div style="background: #E87722; width: {{ progress }}%; height: 100%; border-radius: 4px;"></div>
+                        </div>
+                        <p style="color: #E87722; font-size: 0.8rem; font-weight: 800; margin: 0;">{{ remaining }} restants</p>
+                    </div>
+
+                    {# Price Block #}
+                    <div style="text-align: right; min-width: 150px; flex-shrink: 0;">
+                        <div style="display: flex; align-items: flex-start; justify-content: flex-end; gap: 0.5rem; margin-bottom: 0.25rem;">
+                            <span style="color: #E87722; font-size: 2rem; font-weight: 800; line-height: 1;">{{ price_formatted|split(',')[0] }}<span style="font-size: 1rem; margin-left: 2px;">{{ price_formatted|split(',')[1] is defined ? ',' ~ price_formatted|split(',')[1] : '' }} €</span></span>
+                            <span style="color: #D1D1D1; text-decoration: line-through; font-size: 1.1rem; font-weight: 500;">{{ original_formatted }} €</span>
+                        </div>
+                        <div style="display: inline-block; background: #FFF4EB; color: #E87722; font-size: 0.8rem; font-weight: 800; padding: 4px 10px; border-radius: 6px;">
+                            Économisez {{ eco }} €
+                        </div>
+                    </div>
+
+                    {# Right Arrow #}
+                    <div style="margin-left: 2rem; color: #D1D1D1;">
+                        <svg style="width: 24px; height: 24px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                    </div>
+                </a>
+            {% endfor %}
+        </div>
+
+        {# Newsletter Signup Banner #}
+        <div class="newsletter-banner" style="background-color: #F5F0E8; border-radius: 14px; padding: 2.5rem 2rem; display: grid; grid-template-columns: 1.2fr 1fr; gap: 3rem; align-items: center; position: relative; overflow: hidden;">
+            
+            {# Decorative Circle #}
+            <div style="position: absolute; top: -50px; right: -50px; width: 200px; height: 200px; background: rgba(232, 119, 34, 0.03); border-radius: 50%;"></div>
+            
+            {# Left Side #}
+            <div style="position: relative; z-index: 1;">
+                <div style="background: #E87722; width: 44px; height: 44px; border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem; box-shadow: 0 4px 12px rgba(232, 119, 34, 0.2);">
+                    <svg style="width: 22px; height: 22px; color: white;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                </div>
+                <h3 style="color: #1A1A1A; font-size: 1.8rem; font-weight: 800; margin: 0 0 0.75rem; line-height: 1.2;">Recevez nos bons plans<br><span style="color: #E87722;">en avant-première</span></h3>
+                <p style="color: #555; font-size: 1rem; margin: 0 0 1.5rem; max-width: 450px;">Soyez le premier informé de nos promotions, nouveautés et offres exclusives réservées aux abonnés.</p>
+                
+                <div style="display: flex; gap: 1.5rem; color: #1A1A1A; font-size: 0.9rem; font-weight: 700;">
+                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                        <span style="width: 6px; height: 6px; background: #E87722; border-radius: 50%;"></span> Offres exclusives
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                        <span style="width: 6px; height: 6px; background: #E87722; border-radius: 50%;"></span> Nouveautés en avant-première
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                        <span style="width: 6px; height: 6px; background: #E87722; border-radius: 50%;"></span> Sans spam
+                    </div>
+                </div>
+            </div>
+
+            {# Right Side - Form #}
+            <div style="position: relative; z-index: 1;">
+                <form action="{{ path('sylius_shop_register') }}" method="GET" style="display: grid; grid-template-columns: 1fr auto; gap: 0.75rem; margin-bottom: 1rem;" onsubmit="var re = /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/; if(!re.test(this.email.value)) { this.email.setCustomValidity('Veuillez entrer une adresse email valide'); this.email.reportValidity(); return false; } else { this.email.setCustomValidity(''); }">
+                    <input type="email" name="email" required placeholder="Votre adresse email..." style="height: 52px; padding: 0 1.5rem; border: 1.5px solid #E87722; border-radius: 12px; box-shadow: 0 0 0 3px rgba(232, 119, 34, 0.15); font-size: 1rem; color: #1A1A1A; outline: none; transition: all 0.2s ease; background: white;" oninput="this.setCustomValidity('')">
+                    <button type="submit" style="height: 52px; padding: 0 2rem; background: #E87722; color: white; border: none; border-radius: 12px; font-weight: 800; font-size: 1rem; cursor: pointer; transition: all 0.2s ease;">S'inscrire</button>
+                </form>
+                <p style="color: #AAA; font-size: 0.7rem; margin: 0; line-height: 1.4;">
+                    En vous inscrivant vous acceptez notre <a href="{{ path('app_privacy_policy') }}" style="color: #E87722; text-decoration: none;">politique de confidentialité</a>. <br> Désinscription à tout moment.
+                </p>
+            </div>
+
+        </div>
+
+    </div>
+</section>
+
+<style>
+    .bp-row:hover {
+        background-color: #fafafa;
+        transform: translateX(10px);
+    }
+    .bp-row:hover .bp-number {
+        color: #E87722 !important;
+    }
+    .bp-row:last-child {
+        border-bottom: none;
+    }
+    .newsletter-banner input:focus {
+        box-shadow: 0 0 0 5px rgba(232, 119, 34, 0.25) !important;
+    }
+    .newsletter-banner button:hover {
+        background-color: #D1661D !important;
+        transform: translateY(-2px);
+    }
+</style>

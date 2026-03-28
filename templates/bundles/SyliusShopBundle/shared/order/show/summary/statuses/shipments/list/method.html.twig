@@ -1,0 +1,18 @@
+{% set method = hookable_metadata.context.shipment.method %}
+{% set order = hookable_metadata.context.order %}
+{% import '@SyliusShop/shared/macro/money.html.twig' as money %}
+
+<div class="d-flex justify-content-between w-100 align-items-center">
+    <div {{ sylius_test_html_attribute('shipping-method', method.code) }} class="text-body-secondary fw-medium">
+        {{ method.name }}
+    </div>
+    
+    {# Cateco Custom Display: Output shipping price directly on the method row #}
+    <div class="fw-bold">
+        {% if order.shippingTotal == 0 %}
+            gratuit
+        {% else %}
+            {{ money.convertAndFormat(order.shippingTotal) }}
+        {% endif %}
+    </div>
+</div>

@@ -1,0 +1,14 @@
+{% set form = hookable_metadata.context.form|default(form) %}
+{% set prefixes = hookable_metadata.prefixes|default([])|merge(['sylius_shop.shared.form']) %}
+
+<div class="mb-4 cateco-checkout-billing-section">
+    <div class="h4 mb-4">{{ 'sylius.ui.shipping_address'|trans }}</div>
+
+    {# ── Address book component (radio cards + add link) ─────── #}
+    {{ component('sylius_shop:checkout:address:address_book', {field: 'billingAddress'}) }}
+
+    {# ── New address form. Left visible by default as requested. ──── #}
+    <div id="cateco-new-addr-form-billingAddress" class="cateco-new-addr-form">
+        {% hook 'address' with { _prefixes: prefixes, 'form': form.billingAddress, 'type': 'billing' } %}
+    </div>
+</div>

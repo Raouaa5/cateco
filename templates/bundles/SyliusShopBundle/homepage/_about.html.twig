@@ -1,65 +1,106 @@
 {#
-    Qui Sommes-Nous Section — White background, text/CTA left, magasin image right
+    Qui Sommes-Nous Section — Clean, modern layout with building image
 #}
 
-<section style="background-color: #ffffff; padding: 5rem 0; overflow: hidden;">
+<section style="padding: 1rem 0 4rem 0; background-color: #ffffff; overflow: hidden;">
     <div class="container mx-auto px-6 lg:px-12">
+        <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 4rem;">
 
-        <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 3rem;">
-
-            {# Left: Text content #}
-            <div style="flex: 1; min-width: 300px; max-width: 550px;">
-                <h2 style="font-size: clamp(2.5rem, 4vw, 3.5rem); font-weight: 800; color: #111827; margin: 0 0 1.5rem 0; line-height: 1.1; letter-spacing: -0.02em; white-space: nowrap;">
-                    Qui sommes-nous&nbsp;?
-                </h2>
+            {# Left: Text Content #}
+            <div style="flex: 1; min-width: 320px; max-width: 450px;">
                 
-                <p style="font-size: 1.1rem; color: #4b5563; line-height: 1.7; margin: 0 0 2rem 0;">
-                    Ouvert depuis 2003, Catéco est l'enseigne incontournable des guyanais dans l'équipement 
-                    des maisons, bricolage, jardinage et loisirs et tant d'autres secteurs. C'est le magasin 
-                    des bonnes affaires qui propose toujours des prix agressifs. Son catalogue 124&nbsp;pages 
+                {# Eyebrow label #}
+                <div style="display: inline-block; padding: 0.4rem 1.2rem; background-color: #F8F9FA; border-radius: 99px; margin-bottom: 1.5rem; border: 1px solid #E5E7EB;">
+                    <p style="color: #6B7280; font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; margin: 0;">Notre entreprise</p>
+                </div>
+
+                {# Headline #}
+                <h2 style="
+                    font-size: clamp(2.5rem, 4vw, 3.5rem);
+                    font-weight: 800;
+                    color: #111827;
+                    margin: 0 0 1.5rem 0;
+                    line-height: 1.1;
+                    letter-spacing: -0.02em;
+                ">Qui sommes-nous&nbsp;?</h2>
+
+                {# Decorative Line #}
+                <div style="width: 60px; height: 4px; background-color: #E87722; margin-bottom: 2rem; border-radius: 2px;"></div>
+
+                {# Body text #}
+                <p style="
+                    font-size: 1.1rem;
+                    color: #4B5563;
+                    line-height: 1.8;
+                    margin: 0 0 2.5rem 0;
+                ">
+                    Ouvert depuis 2003, Catéco est l'enseigne incontournable des guyanais dans l'équipement
+                    des maisons, bricolage, jardinage et loisirs et tant d'autres secteurs. C'est le magasin
+                    des bonnes affaires qui propose toujours des prix agressifs. Son catalogue 124&nbsp;pages
                     renouvelé régulièrement propose les produits les plus astucieux et malins.
                 </p>
-                
+
+                {# CTA Button #}
                 <a href="{{ path('app_about_us') }}"
                    style="
-                       display: inline-block;
-                       background-color: #40bdb8;
+                       display: inline-flex;
+                       align-items: center;
+                       gap: 0.8rem;
+                       background-color: #E87722;
                        color: #ffffff;
                        font-weight: 700;
                        font-size: 1rem;
-                       padding: 0.8rem 1.8rem;
-                       border-radius: 9999px;
+                       padding: 1rem 2.2rem;
+                       border-radius: 8px;
                        text-decoration: none;
-                       box-shadow: 0 4px 10px rgba(64, 189, 184, 0.3);
-                       transition: all 0.3s ease;
+                       box-shadow: 0 4px 6px -1px rgba(232, 119, 34, 0.1), 0 2px 4px -1px rgba(232, 119, 34, 0.06);
+                       transition: all 0.2s ease-in-out;
                    "
-                   onmouseover="this.style.backgroundColor='#34a49f'; this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 15px rgba(64, 189, 184, 0.4)'"
-                   onmouseout="this.style.backgroundColor='#40bdb8'; this.style.transform=''; this.style.boxShadow='0 4px 10px rgba(64, 189, 184, 0.3)'">
+                   onmouseover="this.style.backgroundColor='#d46517'; this.style.transform='translateY(-2px)'; this.style.boxShadow='0 10px 15px -3px rgba(232, 119, 34, 0.2), 0 4px 6px -2px rgba(232, 119, 34, 0.1)'"
+                   onmouseout="this.style.backgroundColor='#E87722'; this.style.transform=''; this.style.boxShadow='0 4px 6px -1px rgba(232, 119, 34, 0.1), 0 2px 4px -1px rgba(232, 119, 34, 0.06)'">
                     En savoir plus
+                    <svg style="width:18px;height:18px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                    </svg>
                 </a>
             </div>
 
-            {# Right: Magasin image with modern styling (made slightly larger) #}
-            <div style="flex: 1; min-width: 350px; display: flex; justify-content: flex-end;">
+            {# Right: Building Image #}
+            <div style="flex: 1; min-width: 320px; max-width: 500px; position: relative;">
+                
+                {# Image container with modern styling and increased height #}
                 <div style="
                     position: relative;
-                    width: 100%;
-                    max-width: 600px;
-                    border-radius: 1.5rem;
+                    border-radius: 16px;
                     overflow: hidden;
-                    box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-                    transform: perspective(1000px) rotateY(-5deg);
-                    transition: transform 0.5s ease;
+                    height: 350px;
+                    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+                    transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
                 "
-                onmouseover="this.style.transform='perspective(1000px) rotateY(0deg) scale(1.02)'"
-                onmouseout="this.style.transform='perspective(1000px) rotateY(-5deg)'">
-                    <img src="{{ asset('assets/shop/images/magasincateco.jpg') }}"
-                         alt="Magasin Catéco"
-                         style="width: 100%; height: auto; display: block; object-fit: cover;">
+                onmouseover="this.style.transform='scale(1.03) translateY(-10px)'"
+                onmouseout="this.style.transform='scale(1) translateY(0)'">
+                    <img src="{{ asset('assets/shop/images/cateco_cayenne.png') }}"
+                         alt="Catéco Building"
+                         style="width: 100%; height: 100%; display: block; object-fit: cover;">
+                    
+                    {# Subtle gradient overlay at the bottom for image depth #}
+                    <div style="position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.3) 0%, transparent 30%); pointer-events: none;"></div>
                 </div>
+
+                {# Decorative background accent #}
+                <div style="
+                    position: absolute;
+                    bottom: -20px;
+                    right: -20px;
+                    width: 70%;
+                    height: 70%;
+                    background-color: #F3F4F6;
+                    border-radius: 16px;
+                    z-index: -1;
+                "></div>
+
             </div>
 
         </div>
-
     </div>
 </section>
