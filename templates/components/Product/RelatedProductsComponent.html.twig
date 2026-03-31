@@ -1,6 +1,6 @@
 <div class="container mb-6" role="region" aria-labelledby="related-products-heading">
     <div style="margin-bottom: 2.5rem; display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 1.5rem;">
-        <h2 id="related-products-heading" style="font-size: 2rem; font-weight: 700; color: #111827;">Articles similaires</h2>
+        <h2 id="related-products-heading" style="font-size: 2rem; font-weight: 700; color: #111827;">{{ this.title }}</h2>
         
         {# Carousel Navigation Arrows #}
         {% if related_products is not empty and related_products|length > 1 %}

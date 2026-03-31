@@ -1,0 +1,10 @@
+<div class="container mt-4 mb-5">
+    {% hook 'content' %}
+    
+    {% set firstItem = hookable_metadata.context.cart.items|first %}
+    {% if firstItem %}
+        <div class="cart-suggested-products" style="margin-top: 60px; padding-top: 20px;">
+            {{ component('App\\Twig\\Component\\Product\\RelatedProductsComponent', { product: firstItem.product, title: 'Vous pourriez aussi aimer', limit: 50, configuration: { product_template: '@SyliusShop/product/common/cart_suggestion_card.html.twig' } }) }}
+        </div>
+    {% endif %}
+</div>

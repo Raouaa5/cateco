@@ -1,6 +1,5 @@
-{#
-    Redesigned Product Card for Cateco
-#}
+{# Cart-specific card template - replaces the inline add-to-cart with a link to product page
+   to avoid Live Component nesting conflicts on the cart page #}
 
 {% set cheapest_variant = product|sylius_resolve_variant %}
 {% if cheapest_variant is null and product.variants is not empty %}
@@ -8,13 +7,9 @@
 {% endif %}
 
 {% set price = 0 %}
-{% set original_price = 0 %}
-{% set has_discount = false %}
 
 {% if cheapest_variant is not null %}
     {% set price = cheapest_variant|sylius_calculate_price({'channel': sylius.channel}) %}
-    {% set original_price = cheapest_variant|sylius_calculate_original_price({'channel': sylius.channel}) %}
-    {% set has_discount = original_price > price %}
 {% endif %}
 
 <div class="cateco-product-card d-flex flex-column h-100" style="background: #ffffff; border-radius: 12px; overflow: hidden; border: 1px solid #E0DDD5; transition: transform 0.2s, box-shadow 0.2s;" {{ sylius_test_html_attribute('product', product.code) }}>
@@ -22,12 +17,6 @@
     {# Image Area #}
     <div style="background: #F5F0E8; position: relative; height: 240px; display: flex; align-items: center; justify-content: center; overflow: hidden; padding: 0.5rem;">
         
-        <button type="button" 
-                class="wishlist-heart-btn"
-                style="position: absolute; top: 12px; right: 12px; background: #fff; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border: none; color: #E87722; cursor: pointer; z-index: 2;">
-            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
-        </button>
-
         <a href="{{ path('sylius_shop_product_show', {'slug': product.slug, '_locale': sylius.localeCode}) }}" style="display:block;width:100%;height:100%; text-align: center;">
             {% if product.images is not empty %}
                 {% set img = product.images.first %}
@@ -35,9 +24,9 @@
                 <img src="{{ img_src }}"
                      alt="{{ product.name }}"
                      style="width: 100%; height: 100%; object-fit: contain; mix-blend-mode: multiply;"
-                     onerror="this.style.display='none';this.parentNode.parentNode.querySelector('.no-img-placeholder').style.display='flex';">
+                     onerror="this.style.display='none';">
             {% else %}
-                <div class="no-img-placeholder" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:#d1d5db;">
+                <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:#d1d5db;">
                     <svg xmlns="http://www.w3.org/2000/svg" style="width:48px;height:48px;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
                 </div>
             {% endif %}
@@ -54,35 +43,19 @@
         
         <div class="mt-auto pt-2">
             {% if cheapest_variant is not null %}
-                <div style="font-size: 1.25rem; font-weight: 800; color: #E87722;">
+                <div style="font-size: 1.25rem; font-weight: 800; color: #E87722; margin-bottom: 0.75rem;">
                     {{ price|sylius_format_money(sylius.currencyCode) }}
                 </div>
             {% endif %}
             
-            <div class="mt-3">
-                {% if cheapest_variant is not null %}
-                    {% set is_out_of_stock = product.enabledVariants.empty() or (product.simple and not sylius_inventory_is_available(cheapest_variant)) %}
-                    <div class="{{ is_out_of_stock ? 'cateco-product-card-out-of-stock' : '' }}">
-                        {{ component('sylius_shop:product:add_to_cart_form', {
-                            'product': product,
-                            'variant': cheapest_variant,
-                            'template': '@SyliusShop/product/common/add_to_cart_form.html.twig',
-                            'key': product.id|default(random())
-                        }) }}
-
-                        {% if is_out_of_stock %}
-                            <style>
-                                .cateco-product-card-out-of-stock button[type="submit"] {
-                                    background-color: #F5F4F0 !important;
-                                    color: #A09E99 !important;
-                                    cursor: not-allowed !important;
-                                    pointer-events: none !important;
-                                }
-                            </style>
-                        {% endif %}
-                    </div>
-                {% endif %}
-            </div>
+            <a href="{{ path('sylius_shop_product_show', {'slug': product.slug, '_locale': sylius.localeCode}) }}"
+               class="btn-add-to-cart-link"
+               style="display:flex; align-items:center; justify-content:center; gap:8px; text-decoration:none;">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" style="width:18px;height:18px;">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
+                </svg>
+                Voir le produit
+            </a>
         </div>
     </div>
 </div>

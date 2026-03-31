@@ -23,7 +23,7 @@ final class SearchController extends AbstractController
     public function search(Request $request): Response
     {
         $phrase = (string) $request->query->get('search', '');
-        
+
         if ('' === $phrase) {
             return $this->redirectToRoute('sylius_shop_homepage');
         }

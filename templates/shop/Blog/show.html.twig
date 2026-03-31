@@ -36,7 +36,7 @@
 
             {# Excerpt (Optional) #}
             {% if post.excerpt %}
-                <p style="font-size: 1.35rem; font-weight: 500; color: #374151; line-height: 1.8; margin-bottom: 2.5rem; padding-left: 1.5rem; border-left: 4px solid #f59e0b;">
+                <p style="font-size: 1.35rem; font-weight: 500; color: #111827; line-height: 1.8; margin-bottom: 2.5rem; padding-left: 1.5rem; border-left: 5px solid #E87722;">
                     {{ post.excerpt }}
                 </p>
             {% endif %}
@@ -49,9 +49,9 @@
 
         {# Back to blog #}
         <div style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid #e5e7eb;">
-            <a href="{{ path('app_blog_index') }}" style="display: inline-flex; align-items: center; gap: 0.5rem; color: #2c8a86; font-weight: 700; text-decoration: none; font-size: 1.1rem; transition: gap 0.2s;" onmouseover="this.style.gap='0.9rem'" onmouseout="this.style.gap='0.5rem'">
+            <a href="{{ path('app_blog_index') }}" style="display: inline-flex; align-items: center; gap: 0.6rem; color: #E87722; font-weight: 800; text-decoration: none; font-size: 1.1rem; transition: transform 0.2s, color 0.2s;" onmouseover="this.style.transform='translateX(-5px)'; this.style.color='#d66a1f'" onmouseout="this.style.transform='translateX(0)'; this.style.color='#E87722'">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M7 16l-4-4m0 0l4-4m-4 4h18" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M7 16l-4-4m0 0l4-4m-4 4h18" />
                 </svg>
                 Retour au blog
             </a>
@@ -97,7 +97,7 @@
     }
 
     .blog-content a {
-        color: #f59e0b;
+        color: #E87722;
         text-decoration: underline;
     }
 

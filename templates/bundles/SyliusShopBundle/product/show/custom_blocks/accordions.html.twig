@@ -1,0 +1,59 @@
+<div class="accordion cateco-product-accordion" id="pdpAccordion">
+  {# Détails #}
+  <div class="accordion-item" style="border: none; border-bottom: 0.5px solid #F0EDE8; background: transparent;">
+    <h2 class="accordion-header" id="headingDetails">
+      <button class="accordion-button shadow-none px-0" type="button" data-bs-toggle="collapse" data-bs-target="#collapseDetails" aria-expanded="true" aria-controls="collapseDetails" style="background: transparent; font-weight: 800; font-size: 1.1rem; color: #1A1A1A;">
+        Détails du produit
+      </button>
+    </h2>
+    <div id="collapseDetails" class="accordion-collapse collapse show" aria-labelledby="headingDetails" data-bs-parent="#pdpAccordion">
+      <div class="accordion-body px-0 pt-0 pb-4 text-muted" style="line-height: 1.6;">
+        {{ product.description|raw|default('Aucune description disponible pour ce produit.') }}
+      </div>
+    </div>
+  </div>
+
+  {# Livraison & retours #}
+  <div class="accordion-item" style="border: none; border-bottom: 0.5px solid #F0EDE8; background: transparent;">
+    <h2 class="accordion-header" id="headingLivraison">
+      <button class="accordion-button collapsed shadow-none px-0" type="button" data-bs-toggle="collapse" data-bs-target="#collapseLivraison" aria-expanded="false" aria-controls="collapseLivraison" style="background: transparent; font-weight: 800; font-size: 1.1rem; color: #1A1A1A;">
+        Livraison & retours
+      </button>
+    </h2>
+    <div id="collapseLivraison" class="accordion-collapse collapse" aria-labelledby="headingLivraison" data-bs-parent="#pdpAccordion">
+      <div class="accordion-body px-0 pt-0 pb-4 text-muted">
+        Retrait gratuit en magasin Catéco Cayenne. Livraison standard en Guyane sous 2 à 4 jours ouvrés. Retour possible sous 30 jours, dans l'emballage d'origine.
+      </div>
+    </div>
+  </div>
+
+  {# Avis clients #}
+  <div class="accordion-item" style="border: none; border-bottom: 0.5px solid #F0EDE8; background: transparent;">
+    <h2 class="accordion-header" id="headingAvis">
+      <button class="accordion-button collapsed shadow-none px-0" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAvis" aria-expanded="false" aria-controls="collapseAvis" style="background: transparent; font-weight: 800; font-size: 1.1rem; color: #1A1A1A;">
+        Avis clients ({{ product.acceptedReviews|length }})
+      </button>
+    </h2>
+    <div id="collapseAvis" class="accordion-collapse collapse" aria-labelledby="headingAvis" data-bs-parent="#pdpAccordion">
+      <div class="accordion-body px-0 pt-0 pb-4">
+        {# Instead of rebuilding reviews, we hook the reviews list natively #}
+        {% hook 'sylius_shop.product.show.content.info.overview.accordion.reviews.content' %}
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+.cateco-product-accordion .accordion-button::after {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%231a1a1a'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
+    background-color: #F5F4F0;
+    border-radius: 50%;
+    padding: 0.6rem;
+    background-size: 50%;
+    background-position: center;
+}
+.cateco-product-accordion .accordion-button:not(.collapsed)::after {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23E87722'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
+    transform: rotate(-180deg);
+}
+</style>

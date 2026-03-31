@@ -1,0 +1,20 @@
+{# Custom Add Review Link / Star Rating #}
+{% set product = hookable_metadata.context.product|default(product|default(null)) %}
+<div class="cateco-product-rating d-flex align-items-center gap-3 mb-4" style="font-size: 0.95rem; color: #4a5568;">
+    <div class="d-flex text-warning">
+        {# Default static stars for now #}
+        {% for i in 1..5 %}
+            <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24" style="color: {% if product.averageRating >= i %}#E87722{% else %}#E0DDD5{% endif %}"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg>
+        {% endfor %}
+    </div>
+    
+    {% set reviews_count = product.acceptedReviews|length %}
+    <span class="fw-semibold">{{ reviews_count }} avis</span>
+    
+    <a href="{{ path('sylius_shop_product_review_create', {'slug': product.slug, '_locale': sylius.localeCode}) }}" 
+       style="color: #E87722; font-weight: 600; text-decoration: none; border-bottom: 1px solid #E87722; padding-bottom: 1px;">
+       + Ajouter votre avis
+    </a>
+</div>
+
+<hr style="border: none; border-top: 1px solid #E0DDD5; margin: 2rem 0; opacity: 0.6;">

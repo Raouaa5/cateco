@@ -1,43 +1,204 @@
 {# Rendered with \Sylius\Bundle\ShopBundle\Twig\Component\Product\AddToCartFormComponent #}
-
+{% set product = hookable_metadata.context.product|default(product|default(null)) %}
 {% import '@SyliusShop/shared/macro/loader.html.twig' as loader %}
-
 {% form_theme form '@SyliusShop/form/theme.html.twig' %}
 
-<div class="position-relative" {{ attributes }}>
-    {% set is_out_of_stock = product.enabledVariants.empty() or (product.simple and not sylius_inventory_is_available(product.enabledVariants.first)) %}
-    
-    {% if is_out_of_stock %}
-        <div class="mb-3 d-flex align-items-center" {{ sylius_test_html_attribute('product-out-of-stock') }}>
-            <svg xmlns="http://www.w3.org/2000/svg" class="me-2" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f97316" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="12" r="10"></circle>
-                <line x1="4.93" y1="4.93" x2="19.07" y2="19.07"></line>
-            </svg>
-            <span class="fw-bold" style="color: #4a5568;">Rupture de stock</span>
+<div class="position-relative cateco-add-to-cart-wrapper" {{ attributes }}>
+    {# Determine stock status securely #}
+    {% set selected_variant = hookable_metadata.context.variant|default(null) %}
+    {% set is_out_of_stock = true %}
+    {% set stock_quantity = 0 %}
+
+    {% if selected_variant is not null %}
+        {% set stock_quantity = selected_variant.onHand - selected_variant.onHold %}
+        {% set is_out_of_stock = (stock_quantity <= 0) or (not sylius_inventory_is_available(selected_variant)) %}
+    {% elseif product.simple and product.variants.first is not empty %}
+        {% set stock_quantity = product.variants.first.onHand - product.variants.first.onHold %}
+        {% set is_out_of_stock = (stock_quantity <= 0) or (not sylius_inventory_is_available(product.variants.first)) %}
+    {% else %}
+        {# For variant products with no selection yet, we check if ANY variant has stock #}
+        {% set found_available = false %}
+        {% for variant in product.enabledVariants %}
+            {% set v_stock = variant.onHand - variant.onHold %}
+            {% if v_stock > 0 and sylius_inventory_is_available(variant) %}
+                {% set found_available = true %}
+                {% set stock_quantity = stock_quantity + v_stock %}
+            {% endif %}
+        {% endfor %}
+        {% set is_out_of_stock = not found_available %}
+    {% endif %}
+
+    {# Stock Status Pill #}
+    {% if not is_out_of_stock %}
+        <div class="d-inline-flex align-items-center mb-4 px-3 py-2 rounded-pill" style="background-color: #e8f5e9; color: #2e7d32; font-weight: 600; font-size: 0.9rem;">
+            <span style="display:inline-block; width:8px; height:8px; background-color:#4CAF50; border-radius:50%; margin-right:8px;"></span>
+            En stock — expédition sous 24h
+        </div>
+    {% else %}
+        <div class="d-inline-flex align-items-center mb-4 px-3 py-2 rounded-pill" style="background-color: #FDECEA; color: #b02020; font-weight: 600; font-size: 0.9rem;">
+            <span style="display:inline-block; width:8px; height:8px; background-color:#b02020; border-radius:50%; margin-right:8px;"></span>
+            Rupture de stock — disponible prochainement
         </div>
     {% endif %}
 
+    {# Reference (SKU) #}
+    <div class="cateco-sku mb-4" style="color: #767676; font-size: 0.85rem; font-weight: 500; font-family: 'Inter', sans-serif; margin-top: -0.5rem;">
+        Réf. <strong>{{ product.code }}</strong>
+    </div>
+
     {{ loader.render() }}
-    <div class="my-4 cateco-product-show-add-to-cart" {{ sylius_test_html_attribute('product-selecting-variant') }}>
-        {{ form_start(form, {'attr': {'data-action': 'live#action:prevent live#$render', 'data-live-action-param': 'addToCart'}}) }}
+    
+    <div class="cateco-product-show-add-to-cart" {{ sylius_test_html_attribute('product-selecting-variant') }}>
+        {{ form_start(form, {'attr': {'data-action': 'live#action:prevent live#$render', 'data-live-action-param': 'addToCart', 'class': 'd-flex flex-column gap-3'}}) }}
+        
         {{ form_errors(form) }}
 
-        {% hook 'add_to_cart' with { product, form } %}
+        {# Explicitly render JUST the variant options since we manually render quantity and submit below #}
+        {% if not is_out_of_stock %}
+            <div class="cateco-variants-container mb-3">
+                {% if form.cartItem.variant is defined %}
+                    {{ form_row(form.cartItem.variant, {'label': false}) }}
+                {% endif %}
+                
+                {% if form.cartItem.options is defined %}
+                    {% for option in form.cartItem.options %}
+                        {{ form_row(option) }}
+                    {% endfor %}
+                {% endif %}
+            </div>
+        {% endif %}
 
         {{ form_row(form._token) }}
         
-        {% if is_out_of_stock %}
-            <style>
-                .cateco-product-show-add-to-cart button[type="submit"] {
-                    background-color: #cbd5e1 !important;
-                    border-color: #cbd5e1 !important;
-                    color: white !important;
-                    cursor: not-allowed !important;
-                    pointer-events: none !important;
-                }
-            </style>
-        {% endif %}
+        {# Quantity + Submit Button Row #}
+        <div class="d-flex align-items-center gap-3 w-100 flex-wrap mt-2">
+            
+            {% if not is_out_of_stock %}
+                <div class="d-flex align-items-center" style="gap: 15px;">
+                    {# Custom quantity Input #}
+                    <div style="background: #ffffff; border-radius: 8px; display: flex; align-items: center; border: 1px solid #E0DDD5; overflow: hidden; height: 50px;">
+                        <button type="button" class="btn fw-bold px-3 cateco-stepper-btn fs-4" onclick="this.nextElementSibling.stepDown()">−</button>
+                        {{ form_widget(form.cartItem.quantity, {'attr': {'class': 'form-control text-center border-0 h-100 p-0 fs-5 fw-bold', 'style': 'width: 100px; max-height: unset; background-color: transparent; color: #1a1a1a; border-radius: 8px;'}}) }}
+                        <button type="button" class="btn fw-bold px-3 cateco-stepper-btn fs-4" onclick="this.previousElementSibling.stepUp()">+</button>
+                    </div>
+                    {% if stock_quantity > 0 and stock_quantity < 100 %}
+                        <div style="color: #E87722; font-weight: 700; line-height: 1.2;">
+                            {{ stock_quantity }}<br><span style="font-size: 0.8rem; font-weight: 600;">en stock</span>
+                        </div>
+                    {% endif %}
+                </div>
+            {% endif %}
+
+            <div class="d-flex gap-2 w-100 flex-column">
+                <div class="d-flex gap-2">
+                    {% if not is_out_of_stock %}
+                        <button type="submit" class="btn cateco-cart-btn px-5 btn-lg d-flex align-items-center justify-content-center gap-2" style="background-color: #E87722; color: #fff; border-radius: 8px; font-weight: 700; border: none; height: 50px; transition: all 0.2s;">
+                            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                            Ajouter au panier
+                        </button>
+                    {% else %}
+                        <button type="button" disabled class="btn w-100 lg d-flex align-items-center justify-content-center gap-2" style="background-color: #D0CCC5; color: #fff; border-radius: 8px; font-weight: 700; border: none; height: 50px; cursor: not-allowed; pointer-events: auto;">
+                            Ajouter au panier
+                        </button>
+                    {% endif %}
+                    
+                    {# Wishlist Heart Button #}
+                    <button type="button" class="btn d-flex align-items-center justify-content-center cateco-wishlist-btn" onclick="this.classList.toggle('active')" style="border: 1px solid #E0DDD5; border-radius: 8px; min-width: 30px; height: 50px; background: #fff; color: #1A1A1A; transition: all 0.2s;">
+                        <svg width="24" height="24" fill="transparent" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="transition: fill 0.2s;"><path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
+                    </button>
+                </div>
+
+                {# Notify me when available UI #}
+                {% if is_out_of_stock %}
+                    <div class="cateco-notify-me-container mt-4 pt-3" style="border-top: 1px solid #F0EFEA;">
+                        <div class="form-check mb-3 d-flex align-items-start gap-2" style="padding-left: 0;">
+                            <input class="form-check-input" type="checkbox" id="catecoNotifyTerms" style="width: 20px; height: 20px; border: 1px solid #A09E99; cursor: pointer; float: none; margin-top: 2px;">
+                            <label class="form-check-label" for="catecoNotifyTerms" style="font-size: 0.85rem; color: #1A1A1A; cursor: pointer; line-height: 1.4;">
+                                J'accepte les <a href="#" style="color: #E87722; text-decoration: none; font-weight: 600;">conditions générales</a> et<br>
+                                la <a href="#" style="color: #E87722; text-decoration: none; font-weight: 600;">politique de confidentialité</a>
+                            </label>
+                        </div>
+                        <button type="button" class="btn w-100 py-3 d-flex align-items-center justify-content-center" style="background-color: #E87722; color: #fff; border-radius: 0; font-weight: 800; border: none; text-transform: uppercase; font-size: 0.95rem; letter-spacing: 0.5px; transition: background-color 0.2s;">
+                            PRÉVENEZ-MOI LORSQUE LE PRODUIT EST DISPONIBLE
+                        </button>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
 
         {{ form_end(form, {'render_rest': false}) }}
     </div>
 </div>
+
+<style>
+.cateco-stepper-btn {
+    background: transparent;
+    color: #4a5568 !important;
+    border: none;
+    height: 100%;
+}
+.cateco-stepper-btn:hover {
+    color: #E87722 !important;
+}
+.cateco-cart-btn:hover {
+    background-color: #D66B1E !important;
+    border-color: #D66B1E !important;
+    color: #fff !important;
+}
+.cateco-wishlist-btn svg {
+    fill: transparent;
+}
+.cateco-wishlist-btn:hover {
+    border-color: #E87722 !important;
+    color: #E87722 !important;
+}
+.cateco-wishlist-btn.active {
+    border-color: #E87722 !important;
+    color: #E87722 !important;
+    background-color: #FFF9F5 !important;
+}
+.cateco-wishlist-btn.active svg {
+    fill: #E87722;
+}
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0; 
+}
+input[type=number] {
+    -moz-appearance: textfield;
+}
+
+/* Variant Pill Styles (transforming Sylius ChoiceType radios) */
+.cateco-variants-container .form-check {
+    display: inline-block;
+    padding-left: 0;
+    margin-right: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+.cateco-variants-container .form-check-input {
+    display: none;
+}
+.cateco-variants-container .form-check-label {
+    padding: 0.4rem 1.2rem;
+    border: 1px solid #E0DDD5;
+    border-radius: 50rem;
+    background: #fff;
+    color: #1A1A1A;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    user-select: none;
+}
+.cateco-variants-container .form-check-input:checked + .form-check-label {
+    border-color: #E87722;
+    background-color: #FFF0E0;
+    color: #E87722;
+}
+.cateco-variants-container select.form-select {
+    border: 1px solid #E0DDD5;
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    font-weight: 600;
+}
+</style>

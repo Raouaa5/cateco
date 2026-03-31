@@ -1,0 +1,36 @@
+{% import '@SyliusShop/shared/macro/loader.html.twig' as loader %}
+
+<style>
+.cart-main-grid {
+    display: grid;
+    grid-template-columns: 1fr 420px;
+    gap: 16px;
+    align-items: start;
+}
+@media (max-width: 991px) {
+    .cart-main-grid {
+        grid-template-columns: 1fr;
+    }
+}
+.cart-right-sticky-box {
+    background: #fff;
+    border-radius: 14px;
+    border: 0.5px solid #E0DDD5;
+    padding: 20px;
+    position: sticky;
+    top: 0;
+    margin-top: -20px;
+    display: flex;
+    flex-direction: column;
+}
+</style>
+
+<div class="cart-main-grid">
+    <div class="position-relative" style="padding-left: 6px;">
+        {{ loader.render() }}
+        {% hook 'general#left' %}
+    </div>
+    <div class="cart-right-sticky-box position-relative">
+        {% hook 'general#right' %}
+    </div>
+</div>

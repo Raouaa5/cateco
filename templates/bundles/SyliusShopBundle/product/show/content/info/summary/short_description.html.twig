@@ -1,0 +1,8 @@
+{# This override removes the default SKU display from the short_description hook #}
+{% set product = hookable_metadata.context.product|default(product|default(null)) %}
+
+{% if product.shortDescription is not empty %}
+    <div class="mb-3">
+        {{ product.shortDescription|raw }}
+    </div>
+{% endif %}

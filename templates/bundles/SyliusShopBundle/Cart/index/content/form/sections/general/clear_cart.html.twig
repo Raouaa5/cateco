@@ -1,0 +1,17 @@
+<div style="text-align: right; margin-top: 12px;">
+    <button
+        type="button"
+        data-action="live#action:prevent"
+        data-live-action-param="clearCart"
+        style="font-size: 11px; color: #C0BBB4; background: none; border: none; padding: 0; cursor: pointer; display: inline-flex; align-items: center; gap: 4px; transition: color 0.2s;"
+        onmouseover="this.style.color='#b02020'" onmouseout="this.style.color='#C0BBB4'"
+        {{ sylius_test_html_attribute('clear-cart') }}
+    >
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+            <rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect>
+            <path d="M10 10l4 4m0 -4l-4 4"></path>
+        </svg>
+        Vider le panier
+    </button>
+</div>

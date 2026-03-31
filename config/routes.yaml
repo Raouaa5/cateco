@@ -37,6 +37,13 @@ sylius_shop_product_show:
         _locale: ^[A-Za-z]{2,4}(_([A-Za-z]{4}|[0-9]{3}))?(_([A-Za-z]{2}|[0-9]{3}))?$
         slug: .+
 
+sylius_shop_product_review:
+    resource: "@SyliusShopBundle/Resources/config/routing/product_review.yml"
+    prefix: /{_locale}/products/{slug}/reviews
+    requirements:
+        _locale: ^[A-Za-z]{2,4}(_([A-Za-z]{4}|[0-9]{3}))?(_([A-Za-z]{2}|[0-9]{3}))?$
+        slug: .+
+
 app_about_us:
     path: /{_locale}/qui-sommes-nous
     methods: [GET]

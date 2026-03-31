@@ -1,0 +1,118 @@
+<style>
+.c-checkout-btn {
+    width: 100%;
+    background: #E87722;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 800;
+    padding: 14px;
+    border-radius: 10px;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+.c-checkout-btn:hover {
+    background: #C85F00;
+}
+.c-checkout-btn svg {
+    width: 18px;
+    height: 18px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+}
+
+.c-continue-btn {
+    width: 100%;
+    background: #fff;
+    color: #888;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 10px;
+    border-radius: 10px;
+    border: 1.5px solid #E0DDD5;
+    margin-bottom: 16px;
+    cursor: pointer;
+    display: block;
+    text-align: center;
+    text-decoration: none;
+    transition: 0.2s;
+}
+.c-continue-btn:hover {
+    border-color: #E87722;
+    color: #E87722;
+}
+
+.c-pay-methods {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    margin-bottom: 10px;
+}
+.c-pay-pill {
+    background: #F5F4F0;
+    border: 0.5px solid #E0DDD5;
+    border-radius: 5px;
+    padding: 4px 8px;
+    font-size: 9px;
+    font-weight: 700;
+    color: #888;
+}
+
+.c-secure-note {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+}
+.c-secure-note svg {
+    width: 11px;
+    height: 11px;
+    stroke: #aaa;
+    fill: none;
+    stroke-width: 2;
+}
+.c-secure-note span {
+    font-size: 10px;
+    color: #aaa;
+}
+</style>
+
+<div>
+    <button type="submit" class="c-checkout-btn" {{ sylius_test_html_attribute('cart-checkout-button') }}>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+           <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+           <rect x="3" y="5" width="18" height="14" rx="3"></rect>
+           <line x1="3" y1="10" x2="21" y2="10"></line>
+           <line x1="7" y1="15" x2="7.01" y2="15"></line>
+           <line x1="11" y1="15" x2="13" y2="15"></line>
+        </svg>
+        {{ 'sylius.ui.checkout'|trans }}
+    </button>
+    
+    <a href="javascript:history.back();" class="c-continue-btn">
+        Continuer mes achats
+    </a>
+    
+    <div class="c-pay-methods">
+        <div class="c-pay-pill">VISA</div>
+        <div class="c-pay-pill">Mastercard</div>
+        <div class="c-pay-pill">PayPal</div>
+        <div class="c-pay-pill">Virement</div>
+    </div>
+    
+    <div class="c-secure-note">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+            <rect x="5" y="11" width="14" height="10" rx="2" />
+            <circle cx="12" cy="16" r="1" />
+            <path d="M8 11v-4a4 4 0 0 1 8 0v4" />
+        </svg>
+        <span>Paiement 100% sécurisé</span>
+    </div>
+</div>

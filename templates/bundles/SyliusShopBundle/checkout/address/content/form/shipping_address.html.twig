@@ -1,13 +1,51 @@
+{% set form = hookable_metadata.context.form %}
 {% set prefixes = hookable_metadata.prefixes|default([])|merge(['sylius_shop.shared.form']) %}
 
-<div class="mb-4 cateco-checkout-shipping-section {% if not hookable_metadata.context.is_diffrent_address %}d-none {% endif %}">
-    <div class="h4 mb-4">{{ 'sylius.ui.shipping_address'|trans }}</div>
-
+<div class="mb-4 cateco-checkout-shipping-section {% if form.differentShippingAddress is not defined or not form.differentShippingAddress.vars.data %}d-none {% endif %}" id="cateco-checkout-shipping-section">
     {# ── Address book component (radio cards + add link) ─────── #}
-    {{ component('sylius_shop:checkout:address:address_book', {field: 'shippingAddress'}) }}
+    {{ component('sylius_shop:checkout:address:address_book', {
+        field: 'shippingAddress', 
+        template: '@SyliusShop/checkout/address/content/form/addresses/address/address_book.html.twig'
+    }) }}
 
     {# ── New address form. Left visible by default as requested. ──── #}
-    <div id="cateco-new-addr-form-shippingAddress" class="cateco-new-addr-form">
-        {% hook 'address' with { _prefixes: prefixes, 'form': hookable_metadata.context.form.shippingAddress, 'type': 'shipping' } %}
+    <div id="cateco-new-addr-form-shippingAddress" class="cateco-new-addr-form mt-4 p-4" style="border: 1px solid #e0ddd5; border-radius: 8px; background: #fff;">
+        <div class="mb-4 fw-bold" style="color: #e87722; font-size: 16px; display: flex; align-items: center; gap: 8px;">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="width: 20px; height: 20px;">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125" />
+            </svg>
+            Nouvelle adresse
+        </div>
+        
+        <div class="row">
+            <div class="col-12 col-md-6 mb-3">
+                {{ form_row(form.shippingAddress.firstName, {'attr': {'placeholder': 'Votre prénom', 'class': 'form-control', 'style': 'border: 1px solid #E0DDD5; border-radius: 6px; padding: 12px; font-size: 14px;'}, 'label_attr': {'class': 'form-label fw-bold', 'style': 'font-size: 13px; color: #4A4A4A;'}}) }}
+            </div>
+            <div class="col-12 col-md-6 mb-3">
+                {{ form_row(form.shippingAddress.lastName, {'attr': {'placeholder': 'Votre nom', 'class': 'form-control', 'style': 'border: 1px solid #E0DDD5; border-radius: 6px; padding: 12px; font-size: 14px;'}, 'label_attr': {'class': 'form-label fw-bold', 'style': 'font-size: 13px; color: #4A4A4A;'}}) }}
+            </div>
+            
+            <div class="col-12 mb-3">
+                {{ form_row(form.shippingAddress.company, {'label': 'Société (optionnel)', 'attr': {'placeholder': 'Nom de votre société', 'class': 'form-control', 'style': 'border: 1px solid #E0DDD5; border-radius: 6px; padding: 12px; font-size: 14px;'}, 'label_attr': {'class': 'form-label fw-bold', 'style': 'font-size: 13px; color: #4A4A4A;'}}) }}
+            </div>
+            
+            <div class="col-12 mb-3">
+                {{ form_row(form.shippingAddress.street, {'attr': {'placeholder': 'Numéro et nom de rue', 'class': 'form-control', 'style': 'border: 1px solid #E0DDD5; border-radius: 6px; padding: 12px; font-size: 14px;'}, 'label_attr': {'class': 'form-label fw-bold', 'style': 'font-size: 13px; color: #4A4A4A;'}}) }}
+            </div>
+            
+            <div class="col-12 col-md-6 mb-3">
+                {{ form_row(form.shippingAddress.countryCode, {'attr': {'class': 'form-select', 'style': 'border: 1px solid #E0DDD5; border-radius: 6px; padding: 12px; font-size: 14px;'}, 'label_attr': {'class': 'form-label fw-bold', 'style': 'font-size: 13px; color: #4A4A4A;'}}) }}
+            </div>
+            <div class="col-12 col-md-6 mb-3">
+                {{ form_row(form.shippingAddress.city, {'attr': {'placeholder': 'Votre ville', 'class': 'form-control', 'style': 'border: 1px solid #E0DDD5; border-radius: 6px; padding: 12px; font-size: 14px;'}, 'label_attr': {'class': 'form-label fw-bold', 'style': 'font-size: 13px; color: #4A4A4A;'}}) }}
+            </div>
+            
+            <div class="col-12 col-md-6 mb-3">
+                {{ form_row(form.shippingAddress.postcode, {'attr': {'placeholder': 'Ex: 97300', 'class': 'form-control', 'style': 'border: 1px solid #E0DDD5; border-radius: 6px; padding: 12px; font-size: 14px;'}, 'label_attr': {'class': 'form-label fw-bold', 'style': 'font-size: 13px; color: #4A4A4A;'}}) }}
+            </div>
+            <div class="col-12 col-md-6 mb-3">
+                {{ form_row(form.shippingAddress.phoneNumber, {'attr': {'placeholder': '+33 6 XX XX XX XX', 'class': 'form-control', 'style': 'border: 1px solid #E0DDD5; border-radius: 6px; padding: 12px; font-size: 14px;'}, 'label_attr': {'class': 'form-label fw-bold', 'style': 'font-size: 13px; color: #4A4A4A;'}}) }}
+            </div>
+        </div>
     </div>
 </div>

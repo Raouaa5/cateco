@@ -1,0 +1,213 @@
+{% import "@SyliusShop/shared/macro/money.html.twig" as money %}
+
+<style>
+.cart-item-card {
+    background: #fff;
+    border-radius: 14px;
+    border: 0.5px solid #E0DDD5;
+    padding: 20px 24px;
+    margin-bottom: 16px;
+    transition: border-color 0.2s;
+    display: flex;
+    flex-wrap: wrap; /* responsive */
+    gap: 20px;
+    align-items: center;
+}
+.cart-item-card:hover {
+    border-color: #E87722;
+}
+.c-thumbnail {
+    width: 100px;
+    height: 100px;
+    border-radius: 10px;
+    background-color: #F5F0E8;
+    border: 0.5px solid #E0DDD5;
+    object-fit: cover;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+.c-info-block {
+    flex: 1;
+    min-width: 150px;
+}
+.c-category {
+    text-transform: uppercase;
+    font-size: 10px;
+    font-weight: 700;
+    color: #E87722;
+    letter-spacing: 0.08em;
+    margin-bottom: 4px;
+}
+.c-title {
+    font-size: 15px;
+    font-weight: 800;
+    color: #1A1A1A;
+    margin-bottom: 3px;
+}
+.c-ref {
+    font-size: 11px;
+    color: #aaa;
+    margin-bottom: 10px;
+}
+.c-badges {
+    display: flex;
+    gap: 6px;
+}
+.c-badge-club {
+    background: #FFF0E0;
+    color: #B85A00;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 3px 9px;
+    border-radius: 4px;
+}
+.c-badge-stock {
+    background: #e8f5e9;
+    color: #2e7d32;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 3px 9px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+.c-badge-stock::before {
+    content: "";
+    display: block;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background-color: #4CAF50;
+}
+.c-qty-wrap {
+    display: flex;
+    align-items: center;
+}
+.c-qty-stepper {
+    border: 1.5px solid #E0DDD5;
+    border-radius: 8px;
+    overflow: hidden;
+    display: flex;
+    height: 36px;
+}
+.c-qty-btn {
+    width: 36px;
+    height: 36px;
+    background: #F5F4F0;
+    font-size: 16px;
+    font-weight: 700;
+    color: #1A1A1A;
+    border: none;
+    cursor: pointer;
+    transition: 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+}
+.c-qty-btn:hover {
+    background: #E87722;
+    color: #fff;
+}
+.c-qty-stepper input[type=number] {
+    width: 42px;
+    height: 36px;
+    text-align: center;
+    border: none;
+    border-left: 1px solid #E0DDD5;
+    border-right: 1px solid #E0DDD5;
+    font-size: 13px;
+    font-weight: 700;
+    outline: none;
+    background: #fff;
+    padding: 0;
+    margin: 0;
+}
+.c-price-del {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: space-between;
+    align-self: stretch;
+    min-width: 80px;
+}
+.c-price {
+    font-size: 20px;
+    font-weight: 800;
+    color: #E87722;
+}
+.c-delete {
+    font-size: 11px;
+    color: #C0BBB4;
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    transition: color 0.2s;
+}
+.c-delete:hover {
+    color: #b02020;
+}
+.c-delete svg {
+    width: 12px;
+    height: 12px;
+    stroke: currentColor;
+    fill: none;
+    stroke-width: 2;
+}
+</style>
+
+{% for index, form_item in hookable_metadata.context.form.items %}
+    {% set item = form_item.vars.data %}
+    
+    <div class="cart-item-card" {{ sylius_test_html_attribute('cart-item', index) }} {{ sylius_test_html_attribute('cart-item-product-row', item.productName) }}>
+        <div class="c-thumbnail">
+            {{ component('sylius_shop:main_image', {
+                product: item.variant.hasImages ? item.variant : item.product,
+                class: "w-100 h-100",
+                filter: 'sylius_shop_product_thumbnail'
+            }) }}
+        </div>
+        
+        <div class="c-info-block">
+            <div class="c-category">{{ item.product.mainTaxon.name|default('PRODUIT') }}</div>
+            <div class="c-title">{{ item.productName }}</div>
+            <div class="c-ref">Réf: {{ item.variant.code|default(item.product.code) }}</div>
+            <div class="c-badges">
+                <div class="c-badge-club">Prix Club</div>
+                <div class="c-badge-stock">En stock</div>
+            </div>
+        </div>
+        
+        <div class="c-qty-wrap">
+            <div class="c-qty-stepper">
+                <button type="button" class="c-qty-btn" onclick="const i = this.nextElementSibling; i.value = Math.max(1, parseInt(i.value) - 1); i.dispatchEvent(new Event('change', {bubbles: true}));">-</button>
+                {{ form_widget(form_item.quantity, {'attr': {'data-action': 'live#action', 'data-live-action-param': 'saveCart'}}) }}
+                <button type="button" class="c-qty-btn" onclick="const i = this.previousElementSibling; i.value = parseInt(i.value) + 1; i.dispatchEvent(new Event('change', {bubbles: true}));">+</button>
+            </div>
+        </div>
+        
+        <div class="c-price-del">
+            <div class="c-price">{{ money.convertAndFormat(item.unitPrice) }}</div>
+            <button class="c-delete" type="button" data-action="live#action:prevent" data-live-action-param="removeItem" data-live-index-param="{{ index }}" {{ sylius_test_html_attribute('remove-cart-item') }}>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                    <path d="M4 7l16 0"></path>
+                    <path d="M10 11l0 6"></path>
+                    <path d="M14 11l0 6"></path>
+                    <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"></path>
+                    <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"></path>
+                </svg>
+                Supprimer
+            </button>
+        </div>
+        <div class="d-none">{{ form_rest(form_item) }}</div>
+    </div>
+{% endfor %}

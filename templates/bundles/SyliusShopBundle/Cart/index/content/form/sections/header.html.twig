@@ -1,0 +1,105 @@
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700;800&display=swap');
+body {
+    background-color: #F5F4F0 !important;
+    font-family: 'DM Sans', sans-serif !important;
+}
+.cart-header-block {
+    padding: 20px 0 8px 0;
+    margin-bottom: 20px;
+}
+.cart-header-title {
+    color: #1A1A1A;
+    font-size: 30px;
+    font-weight: 800;
+    line-height: 1.2;
+    margin: 0 0 6px 0;
+    font-family: 'DM Sans', sans-serif;
+}
+.cart-header-subtitle {
+    color: #E87722;
+    font-size: 13px;
+    font-weight: 400;
+    margin: 0 0 24px 0;
+    font-family: 'DM Sans', sans-serif;
+}
+.cart-steps-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    max-width: 520px;
+}
+.step-item {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    flex-shrink: 0;
+}
+.step-circle {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 800;
+    flex-shrink: 0;
+}
+.step-label {
+    font-size: 12px;
+    white-space: nowrap;
+    font-family: 'DM Sans', sans-serif;
+}
+.step-item.active .step-circle {
+    background-color: #E87722;
+    color: #fff;
+}
+.step-item.active .step-label {
+    color: #E87722;
+    font-weight: 700;
+}
+.step-item.inactive .step-circle {
+    background-color: #E0DDD5;
+    color: #888;
+}
+.step-item.inactive .step-label {
+    color: #aaa;
+    font-weight: 400;
+}
+.step-line {
+    height: 1.5px;
+    background-color: #E0DDD5;
+    flex: 1;
+    margin: 0 8px;
+    min-width: 20px;
+}
+</style>
+
+<div class="cart-header-block">
+    <h1 class="cart-header-title">Votre panier</h1>
+    <div class="cart-header-subtitle">Modifier vos articles, ajouter un code promotionnel ou procéder au paiement</div>
+
+    <div class="cart-steps-container">
+        <div class="step-item active">
+            <div class="step-circle">1</div>
+            <span class="step-label">Panier</span>
+        </div>
+        <div class="step-line"></div>
+        <div class="step-item inactive">
+            <div class="step-circle">2</div>
+            <span class="step-label">Livraison</span>
+        </div>
+        <div class="step-line"></div>
+        <div class="step-item inactive">
+            <div class="step-circle">3</div>
+            <span class="step-label">Paiement</span>
+        </div>
+        <div class="step-line"></div>
+        <div class="step-item inactive">
+            <div class="step-circle">4</div>
+            <span class="step-label">Confirmation</span>
+        </div>
+    </div>
+</div>

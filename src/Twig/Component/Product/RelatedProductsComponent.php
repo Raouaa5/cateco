@@ -22,6 +22,8 @@ class RelatedProductsComponent
 
     public int $limit = self::DEFAULT_LIMIT;
 
+    public string $title = 'Articles similaires';
+
     /** @var ProductInterface */
     public ProductInterface $product;
 

@@ -2,7 +2,7 @@ services:
   php:
     image: ghcr.io/sylius/sylius-php:8.3-alpine
     volumes:
-      - .:/srv/sylius
+      - .:/srv/sylius:delegated
       - ./php.ini:/usr/local/etc/php/conf.d/custom.ini:ro
     expose:
       - "9000"
@@ -37,7 +37,7 @@ services:
     ports:
       - "8080:80"
     volumes:
-      - .:/srv/sylius:ro
+      - .:/srv/sylius:delegated,ro
       - ./nginx.conf:/etc/nginx/conf.d/default.conf  # ← CONFIG CUSTOM
     depends_on:
       - php

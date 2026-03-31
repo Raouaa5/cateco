@@ -1,14 +1,45 @@
-{% set form = hookable_metadata.context.form|default(form) %}
+{% set form = hookable_metadata.context.form %}
 {% set prefixes = hookable_metadata.prefixes|default([])|merge(['sylius_shop.shared.form']) %}
 
 <div class="mb-4 cateco-checkout-billing-section">
-    <div class="h4 mb-4">{{ 'sylius.ui.shipping_address'|trans }}</div>
 
     {# ── Address book component (radio cards + add link) ─────── #}
-    {{ component('sylius_shop:checkout:address:address_book', {field: 'billingAddress'}) }}
+    {{ component('sylius_shop:checkout:address:address_book', {
+        field: 'billingAddress', 
+        template: '@SyliusShop/checkout/address/content/form/addresses/address/address_book.html.twig'
+    }) }}
 
     {# ── New address form. Left visible by default as requested. ──── #}
-    <div id="cateco-new-addr-form-billingAddress" class="cateco-new-addr-form">
-        {% hook 'address' with { _prefixes: prefixes, 'form': form.billingAddress, 'type': 'billing' } %}
+    <div id="cateco-new-addr-form-billingAddress" class="cateco-new-addr-form mt-4 p-4" style="border: 1px solid #e0ddd5; border-radius: 8px; background: #fff;">
+        <div class="row">
+            <div class="col-12 col-md-6 mb-3">
+                {{ form_row(form.billingAddress.firstName, {'attr': {'placeholder': 'Votre prénom', 'class': 'form-control', 'style': 'border: 1px solid #E0DDD5; border-radius: 6px; padding: 12px; font-size: 14px;'}, 'label_attr': {'class': 'form-label fw-bold', 'style': 'font-size: 13px; color: #4A4A4A;'}}) }}
+            </div>
+            <div class="col-12 col-md-6 mb-3">
+                {{ form_row(form.billingAddress.lastName, {'attr': {'placeholder': 'Votre nom', 'class': 'form-control', 'style': 'border: 1px solid #E0DDD5; border-radius: 6px; padding: 12px; font-size: 14px;'}, 'label_attr': {'class': 'form-label fw-bold', 'style': 'font-size: 13px; color: #4A4A4A;'}}) }}
+            </div>
+            
+            <div class="col-12 mb-3">
+                {{ form_row(form.billingAddress.company, {'label': 'Société (optionnel)', 'attr': {'placeholder': 'Nom de votre société', 'class': 'form-control', 'style': 'border: 1px solid #E0DDD5; border-radius: 6px; padding: 12px; font-size: 14px;'}, 'label_attr': {'class': 'form-label fw-bold', 'style': 'font-size: 13px; color: #4A4A4A;'}}) }}
+            </div>
+            
+            <div class="col-12 mb-3">
+                {{ form_row(form.billingAddress.street, {'attr': {'placeholder': 'Numéro et nom de rue', 'class': 'form-control', 'style': 'border: 1px solid #E0DDD5; border-radius: 6px; padding: 12px; font-size: 14px;'}, 'label_attr': {'class': 'form-label fw-bold', 'style': 'font-size: 13px; color: #4A4A4A;'}}) }}
+            </div>
+            
+            <div class="col-12 col-md-6 mb-3">
+                {{ form_row(form.billingAddress.countryCode, {'attr': {'class': 'form-select', 'style': 'border: 1px solid #E0DDD5; border-radius: 6px; padding: 12px; font-size: 14px;'}, 'label_attr': {'class': 'form-label fw-bold', 'style': 'font-size: 13px; color: #4A4A4A;'}}) }}
+            </div>
+            <div class="col-12 col-md-6 mb-3">
+                {{ form_row(form.billingAddress.city, {'attr': {'placeholder': 'Votre ville', 'class': 'form-control', 'style': 'border: 1px solid #E0DDD5; border-radius: 6px; padding: 12px; font-size: 14px;'}, 'label_attr': {'class': 'form-label fw-bold', 'style': 'font-size: 13px; color: #4A4A4A;'}}) }}
+            </div>
+            
+            <div class="col-12 col-md-6 mb-3">
+                {{ form_row(form.billingAddress.postcode, {'attr': {'placeholder': 'Ex: 97300', 'class': 'form-control', 'style': 'border: 1px solid #E0DDD5; border-radius: 6px; padding: 12px; font-size: 14px;'}, 'label_attr': {'class': 'form-label fw-bold', 'style': 'font-size: 13px; color: #4A4A4A;'}}) }}
+            </div>
+            <div class="col-12 col-md-6 mb-3">
+                {{ form_row(form.billingAddress.phoneNumber, {'attr': {'placeholder': '+33 6 XX XX XX XX', 'class': 'form-control', 'style': 'border: 1px solid #E0DDD5; border-radius: 6px; padding: 12px; font-size: 14px;'}, 'label_attr': {'class': 'form-label fw-bold', 'style': 'font-size: 13px; color: #4A4A4A;'}}) }}
+            </div>
+        </div>
     </div>
 </div>

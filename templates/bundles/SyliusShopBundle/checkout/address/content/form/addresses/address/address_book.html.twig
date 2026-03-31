@@ -4,6 +4,20 @@
 #}
 
 {% if addresses is not empty %}
+    {% set unique_addresses = [] %}
+    {% set seen_fingerprints = [] %}
+    {% for address in addresses %}
+        {# Create a fingerprint of the address details #}
+        {% set fingerprint = (address.firstName|default('')) ~ '|' ~ (address.lastName|default('')) ~ '|' ~ (address.company|default('')) ~ '|' ~ (address.street|default('')) ~ '|' ~ (address.postcode|default('')) ~ '|' ~ (address.city|default('')) ~ '|' ~ (address.countryCode|default('')) %}
+        {% set fingerprint = fingerprint|trim|lower %}
+        
+        {% if fingerprint not in seen_fingerprints %}
+            {% set seen_fingerprints = seen_fingerprints|merge([fingerprint]) %}
+            {% set unique_addresses = unique_addresses|merge([address]) %}
+        {% endif %}
+    {% endfor %}
+
+    {% if unique_addresses is not empty %}
     <div {{ attributes }} class="cateco-address-book mb-4">
     
         {# ── STYLES FOR THE RADIO CARDS ──────── #}
@@ -23,7 +37,7 @@
         {# ── Store address data in JS for instant frontend prepopulation ──────── #}
         <script>
         window.catecoAddressesData_{{ field }} = {
-            {% for address in addresses %}
+            {% for address in unique_addresses %}
             "{{ address.id }}": {
                 firstName: "{{ address.firstName|e('js') }}",
                 lastName: "{{ address.lastName|e('js') }}",
@@ -40,7 +54,7 @@
 
         {# ── Radio cards (Natively binding data-model to trigger LiveComponent) ──── #}
         <div class="cateco-address-cards" id="cateco-address-cards-{{ field }}">
-            {% for address in addresses %}
+            {% for address in unique_addresses %}
                 <label class="cateco-address-card {{ loop.first ? 'selected' : '' }}"
                        for="addr_{{ field }}_{{ address.id }}">
                     <input type="radio"
@@ -157,4 +171,5 @@
         </script>
 
     </div>
+    {% endif %}
 {% endif %}

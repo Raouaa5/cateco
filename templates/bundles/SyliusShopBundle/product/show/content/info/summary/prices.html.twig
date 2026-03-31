@@ -1,21 +1,44 @@
-{% set variant = hookable_metadata.context.variant|default(null) %}
+{% set product = hookable_metadata.context.product|default(product|default(null)) %}
+{% set variant = hookable_metadata.context.variant|default(variant|default(null)) %}
 
-{# Even if a variant isn't available for purchase (stock), we still want to show the price of the first variant #}
-{% set product = hookable_metadata.context.product|default(null) %}
-{% if variant is null and product is not null and product.variants is not empty %}
-    {% set variant = product.variants.first %}
+{% if variant is null and product is not null %}
+    {% set variant = product|sylius_resolve_variant %}
+    {# Hard fallback if resolution fails (e.g. out of stock but still want to show price) #}
+    {% if variant is null and product.variants.first is defined %}
+        {% set variant = product.variants.first %}
+    {% endif %}
 {% endif %}
 
 {% if variant is not null %}
-    {% set has_discount = variant|sylius_has_discount({'channel': sylius.channel}) %}
-    {% set days = sylius.channel.channelPriceHistoryConfig.lowestPriceForDiscountedProductsCheckingPeriod %}
-    {% set has_lowest_price = variant|sylius_has_lowest_price({'channel': sylius.channel}) %}
-
-    <div class="mb-3 pb-1">
-        {% hook 'prices' with { variant, has_discount, has_lowest_price, days } %}
-    </div>
+    {% set price = variant|sylius_calculate_price({'channel': sylius.channel}) %}
+    {% set original_price = variant|sylius_calculate_original_price({'channel': sylius.channel}) %}
+    {# If calculate_price fails for the resolved variant, try first variant again #}
+    {% if price is null and product.variants.first is defined %}
+         {% set price = product.variants.first|sylius_calculate_price({'channel': sylius.channel}) %}
+         {% set original_price = product.variants.first|sylius_calculate_original_price({'channel': sylius.channel}) %}
+    {% endif %}
+    {% set has_discount = price is not null and original_price is not null and original_price > price %}
 {% else %}
-    <div class="mb-3 pb-1" {{ sylius_test_html_attribute('product-price', 'sylius.ui.unavailable'|trans ) }}>
-        {{ 'sylius.ui.unavailable'|trans }}
+    {% set price = null %}
+    {% set has_discount = false %}
+{% endif %}
+
+{% if price is not null %}
+    <div class="cateco-product-price-container mb-4 d-flex align-items-center gap-3" {{ sylius_test_html_attribute('product-price') }}>
+        <div class="cateco-price" style="color: #E87722; font-size: 34px; font-weight: 800; line-height: 1;">
+            {{ price|sylius_format_money(sylius.currencyCode) }}
+        </div>
+        
+        {% if has_discount %}
+            <div class="cateco-old-price" style="color: #A09E99; font-size: 20px; text-decoration: line-through; font-weight: 600;" {{ sylius_test_html_attribute('product-original-price') }}>
+                {{ original_price|sylius_format_money(sylius.currencyCode) }}
+            </div>
+            
+            {# Discount Badge #}
+            {% set discount_percent = (((original_price - price) / original_price) * 100)|round %}
+            <div class="cateco-discount-badge" style="background: #FFF0E0; color: #E87722; padding: 4px 10px; border-radius: 50rem; font-weight: 700; font-size: 14px;">
+                -{{ discount_percent }}%
+            </div>
+        {% endif %}
     </div>
 {% endif %}

@@ -5,36 +5,36 @@
 {% block content %}
 <div class="club-cateco-page">
     {# Hero Section #}
-    <section class="club-hero" style="background: white; padding: 2rem 0; color: white; position: relative; overflow: hidden; min-height: 500px; display: flex; align-items: center;">
-        {# Slanted Background - Logic: Parallel upward slant, cropped to let card sit on white at the bottom #}
-        <div class="hero-slant-bg" style="position: absolute; top: 0; left: 0; width: 78%; height: 100%; background: #f97316; clip-path: polygon(0 15%, 100% 0, 88% 82%, 0 100%); z-index: 1;"></div>
+    <section class="club-hero" style="background: white; padding: 4rem 0 2rem; color: #111827; position: relative; overflow: hidden; min-height: 500px; display: flex; align-items: center; font-family: 'Outfit', sans-serif;">
+        {# Slanted Background - Sand Tone (Slightly increased top height as requested) #}
+        <div class="hero-slant-bg" style="position: absolute; top: 0; left: 0; width: 80%; height: 100%; background: #F5F0E8; clip-path: polygon(0 18%, 100% 3%, 88% 85%, 0 100%); z-index: 1;"></div>
         
         {# Main Container - Using standard container for better safe margins - Grid 1.1fr 0.9fr #}
         <div class="container mx-auto px-8 md:px-12" style="position: relative; z-index: 10; width: 100%; max-width: 1400px; display: grid; grid-template-columns: 1.1fr 0.9fr; align-items: center; min-height: 500px;">
             
             {# Left Column: Text Content #}
             <div style="padding-right: 2rem; position: relative; margin-top: 0.5rem;">
-                <h1 style="font-size: clamp(1.8rem, 4.2vw, 4rem); font-weight: 900; line-height: 1.05; margin-bottom: 2rem; letter-spacing: -0.02em; color: white;">
+                <h1 style="font-size: clamp(1.8rem, 4.2vw, 4rem); font-weight: 900; line-height: 1.05; margin-bottom: 2rem; letter-spacing: -0.02em; color: #111827;">
                     Rejoignez dès<br>maintenant le Club<br>Catéco
                 </h1>
                 <div style="display: flex; flex-direction: column; gap: 1rem; margin-bottom: 2rem;">
-                    <div style="display: flex; align-items: flex-start; gap: 0.75rem; font-size: 1.1rem; font-weight: 500; color: white;">
-                        <svg style="width: 22px; height: 22px; flex-shrink: 0; margin-top: 3px; color: #17716c;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="4" d="M5 13l4 4L19 7"/></svg>
+                    <div style="display: flex; align-items: flex-start; gap: 0.75rem; font-size: 1.1rem; font-weight: 600; color: #4b5563;">
+                        <svg style="width: 22px; height: 22px; flex-shrink: 0; margin-top: 2px; color: #E87722;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="4" d="M5 13l4 4L19 7"/></svg>
                         <span>Profitez de nombreux avantages et de prix club tout au long de l’année en créant votre compte web</span>
                     </div>
-                    <div style="display: flex; align-items: flex-start; gap: 0.75rem; font-size: 1.1rem; font-weight: 500; color: white;">
-                        <svg style="width: 22px; height: 22px; flex-shrink: 0; margin-top: 3px; color: #17716c;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="4" d="M5 13l4 4L19 7"/></svg>
+                    <div style="display: flex; align-items: flex-start; gap: 0.75rem; font-size: 1.1rem; font-weight: 600; color: #4b5563;">
+                        <svg style="width: 22px; height: 22px; flex-shrink: 0; margin-top: 2px; color: #E87722;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="4" d="M5 13l4 4L19 7"/></svg>
                         <span>Carte de fidélité GRATUITE valable dans tous les magasins Catéco et sur le site web </span>
                     </div>
                 </div>
-                <a href="{{ path('sylius_shop_register') }}" class="btn-club-primary" style="display: inline-block; background: #17716c; color: white; padding: 0.9rem 2.2rem; border-radius: 40px; font-weight: 800; font-size: 1.15rem; text-decoration: none; box-shadow: 0 10px 25px rgba(0,0,0,0.15); transition: all 0.2s;">
+                <a href="{{ path('sylius_shop_register') }}" class="btn-club-primary" style="display: inline-block; background: #E87722; color: white; padding: 0.75rem 2rem; border-radius: 40px; font-weight: 800; font-size: 1.1rem; text-decoration: none; box-shadow: 0 10px 25px rgba(232,119,34,0.3); transition: all 0.2s;">
                     Je crée mon compte
                 </a>
             </div>
 
             {# Right Column: Loyalty Card - Larger based on user manual edit #}
             <div style="display: flex; justify-content: flex-end; align-items: center; position: relative;">
-                <div style="width: 155%; max-width: 8000px; transform: rotate(-1deg) translateX(-5%) translateY(-3%); filter: drop-shadow(0 30px 60px rgba(0,0,0,0.35));">
+                <div style="width: 155%; max-width: 8000px; transform: rotate(4deg) translateX(-5%) translateY(-3%); filter: drop-shadow(0 30px 60px rgba(0,0,0,0.35));">
                     <img src="{{ asset('assets/shop/images/carte de fidelite.png') }}" alt="Carte Fidelite Catéco" style="width: 100%; height: auto; display: block;">
                 </div>
             </div>
@@ -48,7 +48,7 @@
             {# Left Column: Image with decoration #}
             <div style="flex: 1; min-width: 320px; max-width: 650px; position: relative; padding-top: 120px; padding-right: 40px;">
                 {# Decorative orange box #}
-                <div style="position: absolute; top: 80px; right: 0; width: 85%; height: 85%; background: #f97316; border-radius: 40px; z-index: 1;"></div>
+                <div style="position: absolute; top: 80px; right: 0; width: 85%; height: 85%; background: #E87722; border-radius: 40px; z-index: 1;"></div>
                 {# Image #}
                 <img src="{{ asset('assets/shop/images/rejoignez-club.jpg') }}" alt="Shopping" style="width: 100%; border-radius: 30px; box-shadow: 0 20px 50px rgba(0,0,0,0.15); position: relative; z-index: 2;">
             </div>
@@ -56,30 +56,30 @@
             {# Right Column: Text - Perfectly aligned top with image #}
             <div style="flex: 1; min-width: 320px; padding-top: 40px;"> 
                 <h2 style="font-size: 3.2rem; font-weight: 900; color: #111827; margin-bottom: 2rem; line-height: 1.1; margin-top: 0;">Pourquoi rejoindre le Club ?</h2>
-                <div style="font-size: 1.1rem; color: #374151; line-height: 1.5; display: flex; flex-direction: column; gap: 0;">
-                    <p style="font-weight: 800; margin-bottom: 0;">En devenant membre, bénéficiez des Prix Club tout au long de l’année.</p>
-                    <p style="margin-bottom: 0;">Votre fidélité est précieuse pour nous, c’est pourquoi nous vous proposons des offres exclusives qui vous permettront de maximiser votre pouvoir d’achat. Vous accédez à des réductions régulières, des offres spéciales, des avant-premières et bien plus encore.</p>
-                    <p style="margin-bottom: 0;">Rejoindre le Club Catéco, c’est non seulement faire des économies sur tous vos achats, mais aussi profiter de promotions qui ne sont réservées qu’aux membres de notre programme de fidélité.</p>
-                    <p style="margin-bottom: 1.5rem;">L'adhésion au programme Catéco est simple, rapide et surtout GRATUITE. Il vous suffit de vous inscrire sur notre site internet pour commencer à profiter de ses nombreux avantages. À chaque achat, vous cumulez des points convertibles en bons d’achat.</p>
+                <div style="font-size: 1.15rem; color: #4b5563; line-height: 1.6; display: flex; flex-direction: column; gap: 1.25rem;">
+                    <p style="font-weight: 600; color: #111827;">En devenant membre, bénéficiez des Prix Club tout au long de l’année.</p>
+                    <p>Votre fidélité est précieuse pour nous, c’est pourquoi nous vous proposons des offres exclusives qui vous permettront de maximiser votre pouvoir d’achat. Vous accédez à des réductions régulières, des offres spéciales, des avant-premières et bien plus encore.</p>
+                    <p>Rejoindre le Club Catéco, c’est non seulement faire des économies sur tous vos achats, mais aussi profiter de promotions qui ne sont réservées qu’aux membres de notre programme de fidélité.</p>
+                    <p>L'adhésion au programme Catéco est simple, rapide et surtout GRATUITE. Il vous suffit de vous inscrire sur notre site internet pour commencer à profiter de ses nombreux avantages. À chaque achat, vous cumulez des points convertibles en bons d’achat.</p>
                 </div>
                 
-                {# Button - Resized even smaller #}
-                <a href="{{ path('sylius_shop_register') }}" style="display: inline-block; background: #f8a436ff; color: white; padding: 0.7rem 1.8rem; border-radius: 20px; font-weight: 600; font-size: 1.05rem; text-decoration: none; box-shadow: 0 5px 15px rgba(248,164,54,0.3); transition: all 0.2s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
+                {# Button - Resized and lowered #}
+                <a href="{{ path('sylius_shop_register') }}" style="display: inline-block; background: #E87722; color: white; padding: 0.7rem 1.6rem; border-radius: 40px; font-weight: 700; font-size: 1rem; text-decoration: none; box-shadow: 0 5px 15px rgba(232,119,34,0.3); transition: all 0.2s; margin-top: 1.5rem;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
                     J’en profite !
                 </a>
             </div>
         </div>
     </section>
 
-    {# Advantages Section - Refined Fonts and Margins #}
-    <section style="padding: 8rem 0 6rem 0; background-color: #fce7d2;">
+    {# Advantages Section - Gray Trust Background #}
+    <section style="padding: 6rem 0 9rem 0; background-color: #f3f4f7;">
         <div class="container mx-auto px-4 text-center">
-            <h2 style="font-size: 2.75rem; font-weight: 900; color: #111827; margin-bottom: 2rem;">Vos avantages</h2>
+            <h2 style="font-size: 2.75rem; font-weight: 900; color: #111827; margin-bottom: 0.75rem;">Vos avantages</h2>
             <p style="font-size: 1.15rem; color: #374151; margin-bottom: 2.5rem;">En devenant membre du Club Catéco, vous bénéficiez d’avantages exclusifs.</p>
             
             {# Moved Button - Resized smaller #}
             <div style="margin-bottom: 4rem;">
-                <a href="{{ path('sylius_shop_register') }}" style="display: inline-block; background: #f8a436ff; color: white; padding: 0.75rem 2.2rem; border-radius: 999px; font-weight: 800; text-decoration: none; font-size: 1.15rem; box-shadow: 0 8px 20px rgba(249,115,22,0.2);">J’adhère</a>
+                <a href="{{ path('sylius_shop_register') }}" style="display: inline-block; background: #E87722; color: white; padding: 0.75rem 2.2rem; border-radius: 999px; font-weight: 800; text-decoration: none; font-size: 1.1rem; box-shadow: 0 8px 20px rgba(232,119,34,0.2);">J’adhère</a>
             </div>
             
             <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; margin-bottom: 4rem;">
@@ -116,7 +116,7 @@
     </section>
    
     {# Section: Comment ça fonctionne ? #}
-    <section class="py-32 bg-white">
+    <section style="padding-top: 9rem; padding-bottom: 6rem; background-color: white;">
         <div class="container mx-auto px-4 text-center">
             <h2 style="font-size: 2.5rem; font-weight: 900; margin-bottom: 4rem;">Comment ça fonctionne ?</h2>
             
@@ -124,7 +124,7 @@
                 {# Step 1 #}
                 <div style="background: white; border-radius: 30px; overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.08); display: flex; flex-direction: column; height: 100%;">
                     <div style="background-image: url('{{ asset('assets/shop/images/panier.png') }}'); background-size: cover; background-position: center; height: 18rem; padding: 1rem; color: white; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.5rem; position: relative;">
-                        <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(249,115,22,0.4); z-index: 1;"></div>
+                        <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(232,119,34,0.3); z-index: 1;"></div>
                         <span style="font-size: 1.8rem; font-weight: 900; position: relative; z-index: 2;">JE</span>
                         <span style="font-size: 1.8rem; font-weight: 900; position: relative; z-index: 2;">CAGNOTE</span>
                     </div>
@@ -135,7 +135,7 @@
                 {# Step 2 #}
                 <div style="background: white; border-radius: 30px; overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.08); display: flex; flex-direction: column; height: 100%;">
                     <div style="background-image: url('{{ asset('assets/shop/images/pig.png') }}'); background-size: cover; background-position: center; height: 18rem; padding: 1rem; color: white; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.2rem; position: relative;">
-                        <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(249,115,22,0.4); z-index: 1;"></div>
+                        <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(232,119,34,0.3); z-index: 1;"></div>
                         <span style="font-size: 2.2rem; font-weight: 900; position: relative; z-index: 2;">1€</span>
                         <span style="font-size: 1.5rem; font-weight: 800; position: relative; z-index: 2;">=</span>
                         <span style="font-size: 1.8rem; font-weight: 900; position: relative; z-index: 2;">1 POINT</span>
@@ -147,7 +147,7 @@
                 {# Step 3 #}
                 <div style="background: white; border-radius: 30px; overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.08); display: flex; flex-direction: column; height: 100%;">
                     <div style="background-image: url('{{ asset('assets/shop/images/panier.png') }}'); background-size: cover; background-position: center; height: 18rem; padding: 1rem; color: white; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.2rem; position: relative;">
-                        <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(249,115,22,0.4); z-index: 1;"></div>
+                        <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(232,119,34,0.3); z-index: 1;"></div>
                         <span style="font-size: 1.8rem; font-weight: 900; position: relative; z-index: 2;">100 POINT</span>
                         <span style="font-size: 1.5rem; font-weight: 800; position: relative; z-index: 2;">=</span>
                         <span style="font-size: 1.8rem; font-weight: 900; position: relative; z-index: 2;">5€</span>
@@ -161,7 +161,7 @@
     </section>
 
     {# Section: Votre carte personnelle et dématérialisée #}
-    <section class="py-32" style="background-color: #ffffffff; overflow: hidden;">
+    <section style="padding-top: 6rem; padding-bottom: 8rem; background-color: #ffffffff; overflow: hidden;">
         <div class="container mx-auto px-4">
             <div style="display: flex; flex-direction: row; flex-wrap: wrap; align-items: center; gap: 4rem;">
                 {# Left Column: Text #}
@@ -175,15 +175,15 @@
                     </div>
                     
                     <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
-                        <a href="{{ path('sylius_shop_register') }}" style="background: #f8a436ff; color: white; padding: 0.75rem 1.8rem; border-radius: 999px; font-weight: 800; text-decoration: none; font-size: 1rem; box-shadow: 0 8px 15px rgba(248,164,54,0.2);">Je crée mon compte</a>
-                        <a href="{{ path('sylius_shop_login') }}" style="background: transparent; border: 2px solid #f8a436ff; color: #f8a436ff; padding: 0.75rem 1.8rem; border-radius: 999px; font-weight: 800; text-decoration: none; font-size: 1rem;">Je me connecte</a>
+                        <a href="{{ path('sylius_shop_register') }}" style="background: #E87722; color: white; padding: 0.7rem 1.6rem; border-radius: 999px; font-weight: 800; text-decoration: none; font-size: 1rem; box-shadow: 0 8px 15px rgba(232,119,34,0.2);">Je crée mon compte</a>
+                        <a href="{{ path('sylius_shop_login') }}" style="background: transparent; border: 2px solid #E87722; color: #E87722; padding: 0.7rem 1.6rem; border-radius: 999px; font-weight: 800; text-decoration: none; font-size: 1rem;">Je me connecte</a>
                     </div>
                 </div>
                 
                 {# Right Column: Image with decoration #}
                 <div style="flex: 1; min-width: 320px; position: relative; padding: 60px;">
                     {# Decorative orange box #}
-                    <div style="position: absolute; top: 0; right: 0; width: 80%; height: 90%; background: #f8a436ff; border-radius: 40px; z-index: 1;"></div>
+                    <div style="position: absolute; top: 0; right: 0; width: 80%; height: 90%; background: #E87722; opacity: 0.9; border-radius: 40px; z-index: 1;"></div>
                     {# Image #}
                     <img src="{{ asset('assets/shop/images/fidelite_mobile_app_img.png') }}" alt="Catéco Wallet" style="max-width: 100%; height: auto; position: relative; z-index: 2; filter: drop-shadow(0 20px 40px rgba(0,0,0,0.15));">
                 </div>
@@ -199,9 +199,9 @@
             <div style="display: flex; flex-direction: column; gap: 1rem;">
                 {# FAQ Item 1 #}
                 <div class="faq-item" style="background: white; border-radius: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.02); overflow: hidden;">
-                    <button onclick="toggleFaq(this)" style="width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 1.5rem 2rem; background: none; border: none; cursor: pointer; text-align: left; transition: all 0.3s;">
+                    <button onclick="toggleFaq(this)" style="width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 1rem 2rem; background: none; border: none; cursor: pointer; text-align: left; transition: all 0.3s;">
                         <span style="font-size: 1.25rem; font-weight: 800; color: #111827;">Comment rejoindre le Club ?</span>
-                        <div class="faq-icon" style="width: 24px; height: 24px; background: #f97316; border-radius: 50%; color: white; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; font-weight: 900; flex-shrink: 0; transition: transform 0.3s;">+</div>
+                        <div class="faq-icon" style="width: 24px; height: 24px; background: #E87722; border-radius: 50%; color: white; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; font-weight: 900; flex-shrink: 0; transition: transform 0.3s;">+</div>
                     </button>
                     <div class="faq-content" style="max-height: 0; opacity: 0; transition: all 0.4s ease-out; overflow: hidden; background: #fff;">
                         <div style="padding: 0 2rem 2rem 2rem; color: #4b5563; line-height: 1.6; font-size: 1.1rem;">
@@ -218,9 +218,9 @@
 
                 {# FAQ Item 2 #}
                 <div class="faq-item" style="background: white; border-radius: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.02); overflow: hidden;">
-                    <button onclick="toggleFaq(this)" style="width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 1.5rem 2rem; background: none; border: none; cursor: pointer; text-align: left; transition: all 0.3s;">
+                    <button onclick="toggleFaq(this)" style="width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 1rem 2rem; background: none; border: none; cursor: pointer; text-align: left; transition: all 0.3s;">
                         <span style="font-size: 1.25rem; font-weight: 800; color: #111827;">Comment j’utilise mes points ?</span>
-                        <div class="faq-icon" style="width: 24px; height: 24px; background: #f97316; border-radius: 50%; color: white; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; font-weight: 900; flex-shrink: 0; transition: transform 0.3s;">+</div>
+                        <div class="faq-icon" style="width: 24px; height: 24px; background: #E87722; border-radius: 50%; color: white; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; font-weight: 900; flex-shrink: 0; transition: transform 0.3s;">+</div>
                     </button>
                     <div class="faq-content" style="max-height: 0; opacity: 0; transition: all 0.4s ease-out; overflow: hidden; background: #fff;">
                         <div style="padding: 0 2rem 2rem 2rem; color: #4b5563; line-height: 1.6; font-size: 1.1rem;">
@@ -232,9 +232,9 @@
 
                 {# FAQ Item 3 #}
                 <div class="faq-item" style="background: white; border-radius: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.02); overflow: hidden;">
-                    <button onclick="toggleFaq(this)" style="width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 1.5rem 2rem; background: none; border: none; cursor: pointer; text-align: left; transition: all 0.3s;">
+                    <button onclick="toggleFaq(this)" style="width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 1rem 2rem; background: none; border: none; cursor: pointer; text-align: left; transition: all 0.3s;">
                         <span style="font-size: 1.25rem; font-weight: 800; color: #111827;">Est-ce que mes points expirent ?</span>
-                        <div class="faq-icon" style="width: 24px; height: 24px; background: #f97316; border-radius: 50%; color: white; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; font-weight: 900; flex-shrink: 0; transition: transform 0.3s;">+</div>
+                        <div class="faq-icon" style="width: 24px; height: 24px; background: #E87722; border-radius: 50%; color: white; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; font-weight: 900; flex-shrink: 0; transition: transform 0.3s;">+</div>
                     </button>
                     <div class="faq-content" style="max-height: 0; opacity: 0; transition: all 0.4s ease-out; overflow: hidden; background: #fff;">
                         <div style="padding: 0 2rem 2rem 2rem; color: #4b5563; line-height: 1.6; font-size: 1.1rem;">
@@ -246,9 +246,9 @@
 
                 {# FAQ Item 4 #}
                 <div class="faq-item" style="background: white; border-radius: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.02); overflow: hidden;">
-                    <button onclick="toggleFaq(this)" style="width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 1.5rem 2rem; background: none; border: none; cursor: pointer; text-align: left; transition: all 0.3s;">
+                    <button onclick="toggleFaq(this)" style="width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 1rem 2rem; background: none; border: none; cursor: pointer; text-align: left; transition: all 0.3s;">
                         <span style="font-size: 1.25rem; font-weight: 800; color: #111827;">Puis-je transférer mes points ?</span>
-                        <div class="faq-icon" style="width: 24px; height: 24px; background: #f97316; border-radius: 50%; color: white; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; font-weight: 900; flex-shrink: 0; transition: transform 0.3s;">+</div>
+                        <div class="faq-icon" style="width: 24px; height: 24px; background: #E87722; border-radius: 50%; color: white; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; font-weight: 900; flex-shrink: 0; transition: transform 0.3s;">+</div>
                     </button>
                     <div class="faq-content" style="max-height: 0; opacity: 0; transition: all 0.4s ease-out; overflow: hidden; background: #fff;">
                         <div style="padding: 0 2rem 2rem 2rem; color: #4b5563; line-height: 1.6; font-size: 1.1rem;">
@@ -260,9 +260,9 @@
 
                 {# FAQ Item 5 #}
                 <div class="faq-item" style="background: white; border-radius: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.02); overflow: hidden;">
-                    <button onclick="toggleFaq(this)" style="width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 1.5rem 2rem; background: none; border: none; cursor: pointer; text-align: left; transition: all 0.3s;">
+                    <button onclick="toggleFaq(this)" style="width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 1rem 2rem; background: none; border: none; cursor: pointer; text-align: left; transition: all 0.3s;">
                         <span style="font-size: 1.25rem; font-weight: 800; color: #111827;">Y a-t-il une limite de points ?</span>
-                        <div class="faq-icon" style="width: 24px; height: 24px; background: #f97316; border-radius: 50%; color: white; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; font-weight: 900; flex-shrink: 0; transition: transform 0.3s;">+</div>
+                        <div class="faq-icon" style="width: 24px; height: 24px; background: #E87722; border-radius: 50%; color: white; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; font-weight: 900; flex-shrink: 0; transition: transform 0.3s;">+</div>
                     </button>
                     <div class="faq-content" style="max-height: 0; opacity: 0; transition: all 0.4s ease-out; overflow: hidden; background: #fff;">
                         <div style="padding: 0 2rem 2rem 2rem; color: #4b5563; line-height: 1.6; font-size: 1.1rem;">
@@ -273,9 +273,9 @@
 
                 {# FAQ Item 6 #}
                 <div class="faq-item" style="background: white; border-radius: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.02); overflow: hidden;">
-                    <button onclick="toggleFaq(this)" style="width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 1.5rem 2rem; background: none; border: none; cursor: pointer; text-align: left; transition: all 0.3s;">
+                    <button onclick="toggleFaq(this)" style="width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 1rem 2rem; background: none; border: none; cursor: pointer; text-align: left; transition: all 0.3s;">
                         <span style="font-size: 1.25rem; font-weight: 800; color: #111827;">L’adhésion au Club Catéco est-elle gratuite ?</span>
-                        <div class="faq-icon" style="width: 24px; height: 24px; background: #f97316; border-radius: 50%; color: white; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; font-weight: 900; flex-shrink: 0; transition: transform 0.3s;">+</div>
+                        <div class="faq-icon" style="width: 24px; height: 24px; background: #E87722; border-radius: 50%; color: white; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; font-weight: 900; flex-shrink: 0; transition: transform 0.3s;">+</div>
                     </button>
                     <div class="faq-content" style="max-height: 0; opacity: 0; transition: all 0.4s ease-out; overflow: hidden; background: #fff;">
                         <div style="padding: 0 2rem 2rem 2rem; color: #4b5563; line-height: 1.6; font-size: 1.1rem;">
@@ -287,9 +287,9 @@
 
                 {# FAQ Item 7 #}
                 <div class="faq-item" style="background: white; border-radius: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.02); overflow: hidden;">
-                    <button onclick="toggleFaq(this)" style="width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 1.5rem 2rem; background: none; border: none; cursor: pointer; text-align: left; transition: all 0.3s;">
+                    <button onclick="toggleFaq(this)" style="width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 1rem 2rem; background: none; border: none; cursor: pointer; text-align: left; transition: all 0.3s;">
                         <span style="font-size: 1.25rem; font-weight: 800; color: #111827;">Comment retrouver ma carte de fidélité dans mon Wallet ?</span>
-                        <div class="faq-icon" style="width: 24px; height: 24px; background: #f97316; border-radius: 50%; color: white; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; font-weight: 900; flex-shrink: 0; transition: transform 0.3s;">+</div>
+                        <div class="faq-icon" style="width: 24px; height: 24px; background: #E87722; border-radius: 50%; color: white; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; font-weight: 900; flex-shrink: 0; transition: transform 0.3s;">+</div>
                     </button>
                     <div class="faq-content" style="max-height: 0; opacity: 0; transition: all 0.4s ease-out; overflow: hidden; background: #fff;">
                         <div style="padding: 0 2rem 2rem 2rem; color: #4b5563; line-height: 1.6; font-size: 1.1rem;">
@@ -307,7 +307,7 @@
                 </div>
                 {# Legal Mentions Link #}
                 <div style="text-align: center; margin-top: 0.5rem;">
-                    <a href="https://stlaurent.cateco.fr/img/cms/CGU_PROGRAMM2.pdf" target="_blank" class="faq-legal-link" style="color: #f97316; font-weight: 700; text-decoration: none; font-size: 1.1rem;">Retrouvez les détails et mentions légales ici</a>
+                    <a href="https://stlaurent.cateco.fr/img/cms/CGU_PROGRAMM2.pdf" target="_blank" class="faq-legal-link" style="color: #E87722; font-weight: 700; text-decoration: none; font-size: 1.1rem;">Retrouvez les détails et mentions légales ici</a>
                 </div>
 
             </div>
@@ -353,8 +353,10 @@
 </script>
 
 <style>
+    @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&display=swap');
+    
     .club-cateco-page { font-family: 'Outfit', sans-serif; }
-    .btn-club-primary:hover { transform: translateY(-3px); filter: brightness(1.1); }
+    .btn-club-primary:hover { transform: translateY(-3px); background-color: #d66a1f !important; }
     .btn-club-outline:hover { background: #f97316; color: white; }
     .advantage-card { transition: transform 0.3s ease; }
     .advantage-card:hover { transform: translateY(-10px); }

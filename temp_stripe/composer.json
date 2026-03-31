@@ -1,0 +1,12 @@
+{
+    "name": "raoua/temp_stripe",
+    "authors": [
+        {
+            "name": "Raoua Belmabrouk",
+            "email": "raouabelmabrouk50@gmail.com"
+        }
+    ],
+    "require": {
+        "flux-se/sylius-payum-stripe-plugin": "^2.0"
+    }
+}

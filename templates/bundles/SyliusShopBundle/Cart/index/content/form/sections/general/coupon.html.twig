@@ -1,0 +1,116 @@
+<style>
+.c-coupon-block {
+    background: #fff;
+    border-radius: 14px;
+    border: 0.5px solid #E0DDD5;
+    padding: 16px;
+    margin-top: 12px;
+}
+.c-coupon-label-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+.c-coupon-label-row svg {
+    stroke: #E87722;
+    fill: none;
+    stroke-width: 2;
+    width: 14px;
+    height: 14px;
+}
+.c-coupon-label-text {
+    font-size: 11px;
+    font-weight: 700;
+    color: #1A1A1A;
+}
+.c-coupon-input-row {
+    display: flex;
+    gap: 8px;
+}
+.c-coupon-input {
+    flex: 1;
+    height: 38px;
+    border: 1.5px solid #E0DDD5;
+    border-radius: 8px;
+    padding: 0 14px;
+    font-size: 12px;
+    background: #F5F4F0;
+    outline: none;
+    transition: 0.2s;
+    color: #1A1A1A;
+}
+.c-coupon-input:focus {
+    border-color: #E87722;
+    background: #fff;
+    box-shadow: 0 0 0 3px rgba(232,119,34,0.1);
+}
+.c-coupon-btn {
+    height: 38px;
+    background: #1A1A1A;
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 0 18px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: 0.2s;
+}
+.c-coupon-btn:hover {
+    background: #E87722;
+}
+.c-club-hint {
+    background: #FFF8F0;
+    border: 0.5px solid #F5C89A;
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin-top: 10px;
+    font-size: 11px;
+    color: #888;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.c-club-hint-icon {
+    width: 16px;
+    height: 16px;
+    fill: #E87722;
+    flex-shrink: 0;
+}
+</style>
+
+{% set form = hookable_metadata.context.form %}
+
+<div class="c-coupon-block">
+    <div class="c-coupon-label-row">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M7 7m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+            <path d="M19 19m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+            <path d="M8.5 8.5l9 9" />
+        </svg>
+        <span class="c-coupon-label-text">Code promotionnel ou coupon de réduction</span>
+    </div>
+    
+    <div class="c-coupon-input-row">
+        {{ form_widget(form.promotionCoupon, {
+            'attr': {
+                'class': 'c-coupon-input',
+                'placeholder': 'Entrer votre code...',
+                'data-action': 'live#action',
+                'data-action-name': 'prevent|saveCart'
+            }
+        }) }}
+        <button type="button" class="c-coupon-btn" data-action="live#action:prevent" data-live-action-param="saveCart">Appliquer</button>
+    </div>
+    
+    <div class="c-club-hint">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="c-club-hint-icon">
+            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+            <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
+            <path d="M12 9h.01" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M11 12h1v4h1" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Membres Club Catéco — votre réduction de -10% est appliquée automatiquement à la commande.
+    </div>
+</div>

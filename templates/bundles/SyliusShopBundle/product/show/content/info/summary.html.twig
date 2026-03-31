@@ -1,0 +1,19 @@
+{# Rendered with \Sylius\Bundle\ShopBundle\Twig\Component\Product\ProductSummaryComponent #}
+
+<div class="col-12 col-lg-6 cateco-pdp-right mt-3 mt-lg-5" style="background: #ffffff; padding: 2.5rem; border-radius: 14px; border-left: 0.5px solid #E0DDD5; box-shadow: 0 4px 20px rgba(0,0,0,0.02); margin-top: 6rem !important;" {{ attributes }}>
+    <div {{ sylius_test_html_attribute('product-box') }}>
+        {# This executes the child hooks of summary: title, rating, prices, add_to_cart #}
+        {% hook 'summary' %}
+    </div>
+
+    {# Club Catéco Strip #}
+    {% include '@SyliusShop/product/show/custom_blocks/club_strip.html.twig' ignore missing %}
+
+    {# Trust Badges (Custom) #}
+    {% include '@SyliusShop/product/show/custom_blocks/trust_badges.html.twig' ignore missing %}
+
+    {# Accordions moved from left column to right column #}
+    <div class="cateco-pdp-accordions mt-5">
+        {% include '@SyliusShop/product/show/custom_blocks/accordions.html.twig' ignore missing %}
+    </div>
+</div>

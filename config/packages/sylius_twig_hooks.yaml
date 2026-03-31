@@ -16,3 +16,46 @@ sylius_twig_hooks:
                 enabled: false
             content:
                 enabled: false
+        # Disable generic suggested products on cart page
+        'sylius_shop.cart.index.content':
+            suggested_products:
+                enabled: false
+        # Disable Mollie Cart Subscription Columns
+        'sylius_shop.cart.index.content.form.sections.general.items.head':
+            recurring:
+                enabled: false
+        'sylius_shop.cart.index.content.form.sections.general.items.body':
+            recurring_settings:
+                enabled: false
+
+                
+        # Forcibly configure Sylius 2 to use legacy manual overrides for Address Checkout Forms
+        'sylius_shop.checkout.address.content.form.addresses#billing_required':
+            billing_address:
+                template: '@SyliusShop/checkout/address/content/form/billing_address.html.twig'
+                priority: 200
+            different_shipping_address:
+                template: '@SyliusShop/checkout/address/content/form/addresses/different_address.html.twig'
+                configuration: { type: 'shipping', field: 'differentShippingAddress' }
+                priority: 100
+            shipping_address:
+                template: '@SyliusShop/checkout/address/content/form/shipping_address.html.twig'
+                priority: 0
+
+        'sylius_shop.checkout.address.content.form.addresses#shipping_required':
+            shipping_address:
+                template: '@SyliusShop/checkout/address/content/form/shipping_address.html.twig'
+                priority: 200
+            different_billing_address:
+                template: '@SyliusShop/checkout/address/content/form/addresses/different_address.html.twig'
+                configuration: { type: 'billing', field: 'differentBillingAddress' }
+                priority: 100
+            billing_address:
+                template: '@SyliusShop/checkout/address/content/form/billing_address.html.twig'
+                priority: 0
+
+        # Enable sidebar on Address Checkout Step
+        'sylius_shop.checkout.address.sidebar':
+            summary:
+                template: '@SyliusShop/checkout/address/sidebar.html.twig'
+                priority: 100

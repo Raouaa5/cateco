@@ -1,0 +1,83 @@
+{# Cart Sidebar Content - rendered inside the sylius_shop:cart:widget component #}
+{# This template has access to 'cart' variable #}
+<div {{ attributes }}>
+{% if cart and cart.items is not empty %}
+    {# Items list #}
+    <div class="cart-sidebar-items">
+        {% for item in cart.items %}
+            <div class="cart-item-row">
+                {# Product image #}
+                <div>
+                    {% set variant = item.variant %}
+                    {% set product = variant.product %}
+                    {% if product.images is not empty %}
+                        {% set img = product.images.first %}
+                        {% set img_src = img.path[0:4] == 'http' ? img.path : img.path|imagine_filter('sylius_shop_product_original') %}
+                        <img
+                            src="{{ img_src }}"
+                            alt="{{ product.name }}"
+                            class="cart-item-img"
+                            onerror="this.src='/assets/shop/images/no-image.png'"
+                        >
+                    {% else %}
+                        <div class="cart-item-img" style="display:flex;align-items:center;justify-content:center;background:#f5f5f5;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="none" viewBox="0 0 24 24" stroke="#ccc">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                            </svg>
+                        </div>
+                    {% endif %}
+                </div>
+
+                {# Product info #}
+                <div class="cart-item-info">
+                    <div class="cart-item-name" title="{{ item.productName }}">{{ item.productName }}</div>
+                    <div class="cart-item-qty-price">
+                        {{ item.quantity }} × {{ item.unitPrice | sylius_format_money(sylius.currencyCode, sylius.localeCode) }}
+                    </div>
+                </div>
+
+                {# Remove button - posts to cart page then reloads sidebar #}
+                <button
+                    type="button"
+                    class="cart-remove-btn"
+                    title="Supprimer"
+                    data-remove-item-id="{{ item.id }}"
+                    onclick="removeCartItem({{ item.id }}, this)"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+        {% endfor %}
+    </div>
+
+    {# Footer with total and action buttons #}
+    <div class="cart-sidebar-footer">
+        <div class="cart-total-row">
+            <span class="cart-total-label">{{ cart.items|length }} article{{ cart.items|length > 1 ? 's' : '' }}</span>
+            <span class="cart-total-value">{{ cart.total | sylius_format_money(sylius.currencyCode, sylius.localeCode) }}</span>
+        </div>
+        <div class="cart-actions">
+            <a href="{{ path('sylius_shop_cart_summary') }}" class="cart-btn-secondary">
+                Panier
+            </a>
+            <a href="{{ path('sylius_shop_checkout_start') }}" class="cart-btn-primary">
+                Commander
+            </a>
+        </div>
+    </div>
+
+{% else %}
+    {# Empty cart state #}
+    <div class="cart-empty">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
+        </svg>
+        <p>Votre panier est vide</p>
+        <a href="{{ path('sylius_shop_homepage') }}" onclick="toggleCartSidebar()" style="display:inline-block; margin-top:0.5rem; padding: 0.75rem 1.5rem; background: #E87722; color: white; border-radius: 50px; font-weight: 700; font-size: 0.9rem; text-decoration: none; box-shadow: 0 4px 12px rgba(232,119,34,0.3);">
+            Découvrir nos produits
+        </a>
+    </div>
+{% endif %}
+</div>

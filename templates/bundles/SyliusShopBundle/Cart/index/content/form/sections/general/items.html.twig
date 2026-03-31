@@ -1,0 +1,4 @@
+{# Override to remove table structure and use modern card layout #}
+<div class="cart-items-container d-flex flex-column gap-3" {{ sylius_test_html_attribute('cart-items') }}>
+    {% hook 'items' %}
+</div>
