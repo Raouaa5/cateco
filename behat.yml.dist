@@ -12,10 +12,10 @@ default:
         DMore\ChromeExtension\Behat\ServiceContainer\ChromeExtension: ~
         Robertfausk\Behat\PantherExtension: ~
 
-#        FriendsOfBehat\MinkDebugExtension:
-#            directory: etc/build
-#            clean_start: false
-#            screenshot: true
+        FriendsOfBehat\MinkDebugExtension:
+            directory: etc/build
+            clean_start: false
+            screenshot: true
 
         Behat\MinkExtension:
             files_path: "%paths.base%/vendor/sylius/sylius/src/Sylius/Behat/Resources/fixtures/"
@@ -36,7 +36,7 @@ default:
                 panther:
                     panther:
                         manager_options:
-                            connection_timeout_in_ms: 5000
+                            connection_timeout_in_ms: 30000
                             request_timeout_in_ms: 120000
                             chromedriver_arguments:
                                 - --log-path=etc/build/chromedriver.log
@@ -62,6 +62,10 @@ default:
                                 - --disable-dev-tools
                                 - --disable-extensions
                                 - --disable-password-manager-leak-detection
+                                - --remote-debugging-port=0
+                                - --memory-pressure-off
+                                - --enable-crash-reporter=false
+                                - --disable-crash-reporter
             show_auto: false
 
         FriendsOfBehat\SymfonyExtension: ~

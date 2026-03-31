@@ -7,7 +7,7 @@ namespace App\Repository;
 use Sylius\Component\Core\Model\ChannelInterface;
 use Sylius\Component\Core\Model\ProductInterface;
 use Sylius\Component\Core\Model\TaxonInterface;
-use Doctrine\ORM\Query\Expr\OrderBy;
+
 
 /** @phpstan-ignore missingType.generics */
 class ProductRepository extends \Sylius\Bundle\CoreBundle\Doctrine\ORM\ProductRepository
@@ -64,23 +64,6 @@ class ProductRepository extends \Sylius\Bundle\CoreBundle\Doctrine\ORM\ProductRe
             }
         } else {
             $queryBuilder = parent::createShopListQueryBuilder($channel, $taxon, $locale, $sorting, $includeAllDescendants);
-        }
-
-        /** @var OrderBy[] $orderByParts */
-        $orderByParts = $queryBuilder->getDQLPart('orderBy');
-        $queryBuilder->resetDQLPart('orderBy');
-        
-        $queryBuilder->addOrderBy('SIZE(o.images)', 'DESC');
-        
-        foreach ($orderByParts as $orderBy) {
-            foreach ($orderBy->getParts() as $part) {
-                $sortPart = (string) $part;
-                $bits = explode(' ', trim($sortPart));
-                $field = $bits[0];
-                $direction = isset($bits[1]) ? strtoupper($bits[1]) : 'ASC';
-                
-                $queryBuilder->addOrderBy($field, $direction);
-            }
         }
 
         return $queryBuilder;
