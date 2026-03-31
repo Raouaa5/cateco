@@ -91,6 +91,7 @@ class ProductsExtension extends AbstractExtension
             'Balai autonettoyant',
         ];
 
+        /** @var array<ProductInterface> $products */
         $products = [];
 
         // Fetch by slug
@@ -139,6 +140,7 @@ class ProductsExtension extends AbstractExtension
                    ->setParameter('ids', $existingIds);
             }
 
+            /** @var array<ProductInterface> $extras */
             $extras = $qb->getQuery()->getResult();
             foreach ($extras as $extra) {
                 if (count($products) >= 4) break;
@@ -165,7 +167,9 @@ class ProductsExtension extends AbstractExtension
            ->setParameter('taxonCode', $taxonSlug)
            ->setMaxResults($limit);
 
-        return $qb->getQuery()->getResult();
+        /** @var array<ProductInterface> $result */
+        $result = $qb->getQuery()->getResult();
+        return $result;
     }
 
     /** @return array<ProductInterface> */
@@ -181,14 +185,17 @@ class ProductsExtension extends AbstractExtension
            ->setParameter('codes', $codes)
            ->setParameter('enabled', true);
 
+        /** @var array<ProductInterface> $results */
         $results = $qb->getQuery()->getResult();
 
         // Preserve the requested order
+        /** @var array<string, ProductInterface> $indexed */
         $indexed = [];
         foreach ($results as $product) {
             $indexed[$product->getCode()] = $product;
         }
 
+        /** @var array<ProductInterface> $ordered */
         $ordered = [];
         foreach ($codes as $code) {
             if (isset($indexed[$code])) {
