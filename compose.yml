@@ -56,7 +56,7 @@ services:
      image: node:20-alpine
      working_dir: /srv/sylius
      volumes:
-     - .:/srv/sylius
+     - .:/srv/sylius:delegated
      command: tail -f /dev/null
   mailhog:
      image: axllent/mailpit
