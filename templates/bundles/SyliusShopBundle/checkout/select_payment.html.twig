@@ -1,0 +1,43 @@
+{% extends '@SyliusShop/checkout/common/layout.html.twig' %}
+
+{% set active_step = 'select_payment' %}
+{% set prefixes = ['sylius_shop.checkout'] %}
+
+{% block title %}
+    {{ 'sylius.ui.payment'|trans }} | {{ parent() }}
+{% endblock %}
+
+{% block content %}
+    <style>
+        @media (min-width: 1200px) {
+            .container { max-width: 1320px !important; }
+        }
+    </style>
+
+    {# Steps header — step 4 active #}
+    {{ include('@SyliusShop/checkout/common/checkout_header_steps.html.twig', {active: 4}) }}
+
+    {# Two-column layout identical to address and shipping pages #}
+    <div class="d-flex flex-column flex-lg-row custom-checkout-grid">
+        <div class="flex-grow-1 custom-checkout-main">
+            {% hook 'select_payment' with { _prefixes: prefixes, active_step, form, order } %}
+        </div>
+        <div class="custom-checkout-sidebar mt-4 mt-lg-0">
+            {{ include('@SyliusShop/checkout/address/sidebar.html.twig') }}
+        </div>
+    </div>
+
+    <style>
+        .custom-checkout-grid { gap: 1.5rem; }
+        .custom-checkout-sidebar { width: 100%; }
+        @media (min-width: 992px) {
+            .custom-checkout-sidebar { width: 380px; flex-shrink: 0; }
+            .custom-checkout-grid { gap: 2rem; }
+        }
+        @media (min-width: 1200px) {
+            .custom-checkout-grid { gap: 2.5rem; }
+        }
+    </style>
+{% endblock %}
+
+{% block sidebar %}{% endblock %}

@@ -1,5 +1,33 @@
-{% import '@SyliusShop/shared/buttons.html.twig' as buttons %}
+<style>
+.c-checkout-confirm-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    padding: 18px 24px;
+    background: #E87722;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+    margin-top: 8px;
+    margin-bottom: 32px;
+}
+.c-checkout-confirm-btn:hover {
+    background: #d66a1a;
+}
+.c-checkout-confirm-btn:active {
+    transform: scale(0.99);
+}
+</style>
 
-<div class="mt-4 mb-5 text-end">
-    {{ buttons.submit('sylius.ui.place_order'|trans, 'confirmation-button', null, 'btn-primary px-4 py-2 shadow-sm') }}
-</div>
+<button type="submit" class="c-checkout-confirm-btn" id="sylius-checkout-complete-submit">
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+    </svg>
+    Confirmer la commande
+</button>

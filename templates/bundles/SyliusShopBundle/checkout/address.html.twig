@@ -1,0 +1,33 @@
+{% extends '@SyliusShop/checkout/common/layout.html.twig' %}
+
+{% set prefixes = ['sylius_shop.checkout'] %}
+{% set active_step = 'address' %}
+
+{% block title %}
+    {{ 'sylius.ui.address'|trans }} | {{ parent() }}
+{% endblock %}
+
+{% block content %}
+    <style>
+        /* Expand the checkout container width to allow both cards to be wider */
+        @media (min-width: 1200px) {
+            .container { max-width: 1320px !important; }
+        }
+    </style>
+
+    {# Custom full-width steps header #}
+    {{ include('@SyliusShop/checkout/common/checkout_header_steps.html.twig', {active: 2}) }}
+
+    {# Custom 2-column grid inside the flexed content block #}
+    <div class="row">
+        <div class="col-12 col-lg-8 pe-lg-2">
+            {% hook 'address' with { _prefixes: prefixes, active_step, form, order } %}
+        </div>
+        <div class="col-12 col-lg-4 ps-lg-2 mt-4 mt-lg-0">
+            {{ include('@SyliusShop/checkout/address/sidebar.html.twig') }}
+        </div>
+    </div>
+{% endblock %}
+
+{# Remove default sidebar to allow content col to expand to 100% #}
+{% block sidebar %}{% endblock %}

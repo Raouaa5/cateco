@@ -1,6 +1,11 @@
 {% import "@SyliusShop/shared/macro/money.html.twig" as money %}
 
 <style>
+.c-checkout-sidebar-sticky-wrapper {
+    position: sticky;
+    top: 150px; /* Leaves enough room for the sticky site header */
+    z-index: 10;
+}
 .c-checkout-summary-card {
     background: #ffffff;
     border: 0.5px solid #F0EDE8;
@@ -86,8 +91,9 @@
 }
 </style>
 
-<div class="c-checkout-summary-card">
-    <div class="c-summary-header">
+<div class="c-checkout-sidebar-sticky-wrapper">
+    <div class="c-checkout-summary-card">
+        <div class="c-summary-header">
         <div class="c-summary-title">Résumé de la commande</div>
     </div>
     
@@ -99,9 +105,9 @@
     <div class="c-summary-row">
         <div class="c-summary-label">Frais de livraison</div>
         {% if order.shippingTotal > 0 %}
-            <div class="c-summary-val">{{ money.convertAndFormat(order.shippingTotal) }}</div>
+            <div class="c-summary-val" id="summary-shipping-cost">{{ money.convertAndFormat(order.shippingTotal) }}</div>
         {% else %}
-            <div class="c-summary-free">Gratuit</div>
+            <div class="c-summary-val c-summary-free" id="summary-shipping-cost">Gratuit</div>
         {% endif %}
     </div>
     
@@ -112,7 +118,7 @@
     
     <div class="c-summary-total-wrap">
         <div class="c-summary-total-lbl">Total</div>
-        <div class="c-summary-total-val">{{ money.convertAndFormat(order.total) }}</div>
+        <div class="c-summary-total-val" id="summary-total-cost" data-items-total="{{ order.itemsTotal }}">{{ money.convertAndFormat(order.total) }}</div>
     </div>
     
     <div class="c-secure-payment">
@@ -129,3 +135,4 @@
     </svg>
     Retourner au panier
 </a>
+</div>

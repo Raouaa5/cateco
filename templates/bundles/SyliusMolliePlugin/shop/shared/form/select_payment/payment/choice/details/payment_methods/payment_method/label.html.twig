@@ -1,0 +1,23 @@
+<div class="cateco-pay-logo">
+    {% set label_lower = hookable_metadata.context.choice.label|lower %}
+    {% set val_lower = hookable_metadata.context.choice.value|lower %}
+    {% if 'wero' in label_lower or 'ideal' in label_lower or 'wero' in val_lower %}
+        <div style="background:#FFD000;border-radius:6px;width:48px;height:32px;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:11px;color:#333;letter-spacing:-0.5px;">WERO</div>
+    {% else %}
+        {% set image = hookable_metadata.context.choice.attr['image']|default(false) %}
+        {% if image %}
+            {% if 'http:' not in image and 'https:' not in image and '.svg' not in image %}
+                {% set image = image|imagine_filter('sylius_original') %}
+            {% endif %}
+            <img class="online-payment__image" src="{{ image }}" alt="payment_image" style="max-height: 24px; object-fit: contain;">
+        {% else %}
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="#888" stroke-width="1.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2z"/>
+            </svg>
+        {% endif %}
+    {% endif %}
+</div>
+
+<div class="cateco-pay-info" style="flex:1;">
+    <div class="cateco-pay-name" style="font-weight: 700; font-size: 0.95rem; color: #2c2c2c;">{{ hookable_metadata.context.choice.label }}</div>
+</div>

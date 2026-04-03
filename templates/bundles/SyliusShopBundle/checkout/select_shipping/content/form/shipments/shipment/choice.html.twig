@@ -34,7 +34,7 @@
     .cateco-shipping-item:has(input:checked) {
         background: #fff;
         position: relative;
-        z-index: 1; /* Bring selected item border above */
+        z-index: 1;
     }
     .cateco-shipping-radio-col {
         width: 40px;
@@ -89,7 +89,7 @@
         background: #fff;
     }
     .cateco-radio:checked {
-        border-color: #f97316; /* Tailwind orange-500 */
+        border-color: #f97316;
     }
     .cateco-radio:checked::after {
         content: "";
@@ -133,7 +133,10 @@
         {% set method = form.method.vars.choices[key].data %}
         {% set is_chronopost = ('chronopost' in method.name|lower) %}
 
-        <label class="cateco-shipping-item" {{ sylius_test_html_attribute('shipping-item') }} for="{{ choice_form.vars.id }}">
+        <label class="cateco-shipping-item" {{ sylius_test_html_attribute('shipping-item') }}
+               for="{{ choice_form.vars.id }}"
+               data-fee="{{ fee }}"
+               data-shipping-card>
             <div class="cateco-shipping-radio-col">
                 <input type="radio"
                        id="{{ choice_form.vars.id }}"
@@ -147,7 +150,6 @@
                 {% if is_chronopost %}
                     <img src="https://e7.pngegg.com/pngimages/79/8/png-clipart-chronopost-logistics-logo-delivery-brand-small-cube-blue-angle.png" alt="Chronopost">
                 {% else %}
-                    {# Invisible placeholder space so alignment matches Chronopost perfectly #}
                     <div style="width: 40px; height: 40px;"></div>
                 {% endif %}
             </div>
@@ -175,8 +177,6 @@
 </div>
 
 {# ── Order Notes Section ───────────────────────────────────── #}
-{# Since Sylius LiveComponent doesn't naturally look for 'notes' on the shipping type, #}
-{# we will pass it as a generic input. In a real Sylius setup, we would need a FormExtension on SelectShippingType. #}
 <div class="cateco-order-notes">
     <label for="cateco-order-notes-input">
         Si vous voulez nous laisser un message à propos de votre commande, merci de bien vouloir renseigner dans le champ ci-contre

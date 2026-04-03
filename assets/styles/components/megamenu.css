@@ -1,0 +1,408 @@
+/* =============================================================================
+   CATECO MEGA-MENU & MOBILE CATEGORIES DRAWER — Component Styles
+   ============================================================================= */
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+   DESKTOP MEGA-MENU
+   ═══════════════════════════════════════════════════════════════════════════════ */
+
+.cateco-megamenu-wrapper {
+    background-color: #ffffff;
+    border-bottom: 3px solid #e5e7eb;
+    font-family: inherit;
+    width: 100%;
+    margin-bottom: 0;
+}
+
+.cateco-nav-container {
+    position: relative;
+    width: 100%;
+    max-width: 1600px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+/* Top-level list — strictly one horizontal line */
+.cateco-menu-list {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    gap: 0;
+    flex-wrap: nowrap;
+    min-width: max-content;
+}
+
+.cateco-menu-item { position: static; }
+
+/* Top-level link */
+.cateco-menu-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 1rem 0.6rem;
+    color: #4b5563;
+    font-weight: 700;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    text-decoration: none;
+    letter-spacing: 0.02em;
+    transition: all 0.2s;
+    border-bottom: 1px solid transparent;
+    margin-bottom: 0;
+    white-space: nowrap;
+    border-radius: 8px 8px 0 0;
+}
+.cateco-menu-item:hover .cateco-menu-link {
+    background-color: var(--cat-color) !important;
+    color: white !important;
+}
+.cateco-menu-item:hover .cateco-menu-link svg { color: white !important; }
+
+/* Mega-menu dropdown panel — full width */
+.cateco-megamenu-panel {
+    visibility: hidden;
+    opacity: 0;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    width: 100%;
+    background: #f8f9fa;
+    border-radius: 0 0 12px 12px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+    padding: 2rem;
+    display: flex;
+    justify-content: space-between;
+    gap: 3rem;
+    transition: opacity 0.2s ease, visibility 0s ease 0.15s;
+    pointer-events: none;
+    z-index: 1000;
+    cursor: default;
+}
+.cateco-menu-item:hover .cateco-megamenu-panel {
+    visibility: visible;
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+    transition: opacity 0.2s ease, visibility 0s ease 0s;
+}
+
+/* Invisible hover-bridge so cursor can move to the dropdown without it closing */
+.cateco-menu-item::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 0;
+    width: 100%;
+    height: 8px;
+    display: block;
+}
+
+/* Sub-category column */
+.cateco-megamenu-links {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    align-content: start;
+}
+
+/* Two-column grid when there are > 3 children */
+.cateco-megamenu-links.two-cols {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-auto-flow: column;
+    grid-template-rows: repeat(5, auto);
+    gap: 0.75rem 3rem;
+    align-content: start;
+}
+
+/* Sub-category link */
+.cateco-sub-link {
+    display: inline-flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    color: #374151;
+    font-weight: 700;
+    font-size: 0.85rem;
+    text-decoration: none;
+    transition: color 0.2s;
+    line-height: 1.3;
+}
+.cateco-sub-link:hover { color: #111827; }
+
+/* Coloured square bullet */
+.cateco-sub-bullet {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 2px;
+    flex-shrink: 0;
+    margin-top: 5px;
+}
+
+/* Featured image card (right side of panel) */
+.cateco-megamenu-featured {
+    width: 320px;
+    height: 180px;
+    border-radius: 12px;
+    overflow: hidden;
+    position: relative;
+    flex-shrink: 0;
+    text-decoration: none;
+    display: block;
+}
+.cateco-megamenu-featured img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+.cateco-megamenu-featured:hover img { transform: scale(1.05); }
+
+.cateco-megamenu-featured-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to right, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.2) 100%);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 1.5rem;
+    color: white;
+}
+
+.featured-title {
+    font-size: 1.5rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    margin: 0 0 0.5rem 0;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+    text-align: center;
+    color: #ffffff !important;
+}
+
+.featured-cta {
+    font-size: 0.85rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    border-bottom: 2px solid transparent;
+    padding-bottom: 2px;
+}
+
+/* Chevron that rotates on hover */
+.chevron-down {
+    width: 12px;
+    height: 12px;
+    transition: transform 0.3s;
+}
+.cateco-menu-item:hover .chevron-down { transform: rotate(180deg); }
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+   MOBILE / TABLET CATEGORIES BAR  (≤ 1024px)
+   ═══════════════════════════════════════════════════════════════════════════════ */
+
+/* Hidden on desktop */
+.cateco-mobile-categories-bar { display: none !important; }
+
+@media (max-width: 1024px) {
+    /* Hide the desktop mega-menu bar */
+    .cateco-megamenu-wrapper { display: none !important; }
+
+    /* Show the mobile categories strip */
+    .cateco-mobile-categories-bar {
+        display: flex !important;
+        align-items: center !important;
+        background: #ffffff !important;
+        border-bottom: 3px solid #e5e7eb !important;
+        padding: 0 1rem !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+    }
+
+    .cateco-mobile-categories-btn {
+        display: inline-flex !important;
+        align-items: center !important;
+        gap: 10px !important;
+        padding: 0.75rem 1.25rem !important;
+        background: none !important;
+        border: none !important;
+        cursor: pointer !important;
+        color: #374151 !important;
+        font-weight: 700 !important;
+        font-size: 0.9rem !important;
+        font-family: inherit !important;
+        transition: color 0.2s !important;
+        text-decoration: none !important;
+    }
+    .cateco-mobile-categories-btn:hover { color: #E87722 !important; }
+    .cateco-mobile-categories-btn svg   { width: 20px !important; height: 20px !important; flex-shrink: 0 !important; }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+   MOBILE CATEGORIES SLIDE-IN DRAWER
+   ═══════════════════════════════════════════════════════════════════════════════ */
+
+#cat-drawer-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.45);
+    z-index: 110000;
+    backdrop-filter: blur(3px);
+}
+#cat-drawer-overlay.open { display: block; }
+
+#cat-drawer {
+    position: fixed;
+    top: 0;
+    left: -100%;
+    width: min(360px, 90vw);
+    height: 100vh;
+    background: #fff;
+    z-index: 110001;
+    box-shadow: 4px 0 30px rgba(0,0,0,0.18);
+    display: flex;
+    flex-direction: column;
+    transition: left 0.32s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+}
+#cat-drawer.open { left: 0; }
+
+.cat-drawer-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 1.25rem;
+    border-bottom: 2px solid #f3f4f6;
+    flex-shrink: 0;
+    background: #fff;
+}
+
+.cat-drawer-title {
+    font-size: 1rem;
+    font-weight: 800;
+    color: #111827;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin: 0;
+}
+
+.cat-drawer-close {
+    background: #f3f4f6;
+    border: none;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: #374151;
+    transition: background 0.2s;
+    flex-shrink: 0;
+}
+.cat-drawer-close:hover { background: #e5e7eb; }
+
+.cat-drawer-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 0.5rem 0;
+}
+
+/* ── Accordion item ─────────────────────────────────────────────────────────── */
+
+.cat-accordion-item { border-bottom: 1px solid #f3f4f6; }
+
+.cat-accordion-trigger {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    text-align: left;
+    text-decoration: none;
+    gap: 10px;
+    transition: background 0.15s;
+}
+.cat-accordion-trigger:hover { background: #f9fafb; text-decoration: none; }
+
+.cat-accordion-label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex: 1;
+    min-width: 0;
+    padding: 0.9rem 0 0.9rem 1.25rem;
+    text-decoration: none;
+}
+
+.cat-accordion-dot  { width: 10px; height: 10px; border-radius: 3px; flex-shrink: 0; }
+
+.cat-accordion-name {
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: #1f2937;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.cat-accordion-chevron {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+    color: #9ca3af;
+    transition: transform 0.25s ease;
+}
+.cat-accordion-item.open .cat-accordion-chevron { transform: rotate(180deg); }
+
+/* ── Subcategory list (animated collapse) ───────────────────────────────────── */
+
+.cat-accordion-children {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+    background: #f9fafb;
+}
+.cat-accordion-item.open .cat-accordion-children { max-height: 600px; }
+
+.cat-sub-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0.65rem 1.25rem 0.65rem 2.5rem;
+    color: #4b5563;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: color 0.15s, background 0.15s;
+}
+.cat-sub-link:hover { color: #1f2937; background: #f3f4f6; text-decoration: none; }
+
+.cat-sub-bullet-sm { width: 6px; height: 6px; border-radius: 2px; flex-shrink: 0; }
+
+/* ── Simple link (no children) ──────────────────────────────────────────────── */
+
+.cat-accordion-simple-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0.9rem 1.25rem;
+    color: #1f2937;
+    font-weight: 700;
+    font-size: 0.9rem;
+    text-decoration: none;
+    border-bottom: 1px solid #f3f4f6;
+    transition: background 0.15s;
+}
+.cat-accordion-simple-link:hover { background: #f9fafb; text-decoration: none; }

@@ -1,0 +1,66 @@
+{% set method = hookable_metadata.context.method %}
+{% set form = hookable_metadata.context.form %}
+{% set n = method.name|lower %}
+{% set is_carte = ('carte' in n or 'card' in n or 'bancaire' in n or 'credit' in n) %}
+
+<style>
+/* CSS definitions for the individual option wrappers */
+.cateco-payment-option {
+    border: 2px solid #e8e4de;
+    border-radius: 10px;
+    padding: 14px 18px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    transition: border-color 0.2s, background 0.2s;
+    background: #fff;
+    width: 100%;
+}
+.cateco-payment-option:hover { border-color: #E87722; background: #fffbf7; }
+.cateco-payment-option.is-selected { border-color: #E87722; background: #fff8f2; }
+
+/* Override Sylius default card/label styles inside our wrapper if needed */
+.cateco-payment-option .card { border: none !important; background: transparent !important; margin: 0 !important; box-shadow: none !important; }
+.cateco-payment-option .card-body { padding: 0 !important; }
+
+/* Style the radio inside */
+.cateco-pay-radio {
+    appearance: none; -webkit-appearance: none;
+    width: 20px; height: 20px; border: 2px solid #ccc;
+    border-radius: 50%; outline: none; cursor: pointer;
+    position: relative; flex-shrink: 0; background: #fff;
+    transition: border-color 0.2s;
+    margin: 0;
+}
+.cateco-pay-radio:checked { border-color: #E87722; }
+.cateco-pay-radio:checked::after {
+    content: ""; position: absolute; top: 3px; left: 3px;
+    width: 10px; height: 10px; background: #E87722; border-radius: 50%;
+}
+
+.cateco-pay-logo {
+    width: 48px; height: 32px;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.cateco-pay-logo svg { color: #999; }
+.cateco-pay-name { font-weight: 700; font-size: 0.95rem; color: #E87722; flex: 1; margin-right: auto; }
+.cateco-card-logos { display: flex; align-items: center; gap: 5px; }
+.cateco-card-badge {
+    color: #fff; font-size: 9px; font-weight: 800;
+    padding: 3px 6px; border-radius: 3px;
+    letter-spacing: 0.02em; text-transform: uppercase;
+}
+
+/* Mollie sub-methods area (iDEAL | Wero etc.) */
+.online-online-payment__container,
+[class*="mollie"],
+[class*="payment-method"] {
+    /* No padding here, we let the inner .cateco-payment-option handle it */
+}
+</style>
+
+<div {{ sylius_test_html_attribute('payment-item') }}>
+    {% hook 'details' %}
+</div>

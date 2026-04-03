@@ -1,0 +1,232 @@
+{% import '@SyliusShop/shared/macro/money.html.twig' as money %}
+
+{# At this hook level, 'form' is the individual payment form (Payment #1, #2, etc.) #}
+{% set form = hookable_metadata.context.form %}
+
+<style>
+/* ─── Payment Card Container ─────────────────────────────── */
+.cateco-payment-card {
+    background: #ffffff;
+    border: 1px solid #e8e4de;
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+.cateco-payment-card-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #2c2c2c;
+    margin-bottom: 1.25rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #f0ede8;
+}
+.cateco-payment-card-title svg { color: #E87722; }
+
+/* ─── Individual Payment Option ──────────────────────────── */
+.cateco-payment-option {
+    border: 2px solid #e8e4de;
+    border-radius: 10px;
+    padding: 14px 18px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    transition: border-color 0.2s, background 0.2s;
+    background: #fff;
+}
+.cateco-payment-option:hover { border-color: #E87722; background: #fffbf7; }
+.cateco-payment-option.is-selected { border-color: #E87722; background: #fff8f2; }
+
+/* ─── Custom Radio ───────────────────────────────────────── */
+.cateco-pay-radio {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 20px;
+    height: 20px;
+    border: 2px solid #ccc;
+    border-radius: 50%;
+    outline: none;
+    cursor: pointer;
+    position: relative;
+    flex-shrink: 0;
+    background: #fff;
+    transition: border-color 0.2s;
+}
+.cateco-pay-radio:checked { border-color: #E87722; }
+.cateco-pay-radio:checked::after {
+    content: "";
+    position: absolute;
+    top: 3px; left: 3px;
+    width: 10px; height: 10px;
+    background: #E87722;
+    border-radius: 50%;
+}
+
+/* ─── Method logo area ───────────────────────────────────── */
+.cateco-pay-logo {
+    width: 52px; height: 36px;
+    border-radius: 6px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+.cateco-pay-logo img { max-width: 100%; max-height: 100%; object-fit: contain; }
+
+/* ─── Method name + description ─────────────────────────── */
+.cateco-pay-info { flex: 1; }
+.cateco-pay-name { font-weight: 700; font-size: 0.95rem; color: #2c2c2c; }
+.cateco-pay-desc { font-size: 0.82rem; color: #888; margin-top: 2px; }
+
+/* ─── Card logos (VISA/MC/AMEX) ──────────────────────────── */
+.cateco-card-logos { display: flex; align-items: center; gap: 5px; flex-shrink: 0; }
+.cateco-card-badge {
+    background: #1a1f71; color: #fff;
+    font-size: 9px; font-weight: 800;
+    padding: 3px 6px; border-radius: 3px;
+    letter-spacing: 0.02em; text-transform: uppercase;
+}
+.cateco-card-badge.amex { background: #2E77BC; }
+.cateco-card-badge.mc {
+    background: linear-gradient(90deg, #eb001b 50%, #f79e1b 50%);
+}
+
+/* ─── Section Label ─────────────────────────────────────── */
+.cateco-section-label {
+    font-size: 10px; font-weight: 800;
+    letter-spacing: 0.12em; color: #aaa;
+    text-transform: uppercase;
+    margin: 1.25rem 0 0.6rem;
+}
+
+/* ─── Security badge ─────────────────────────────────────── */
+.cateco-secure-badge {
+    background: #f0faf0;
+    border: 1px solid #b8e6b8;
+    border-radius: 8px;
+    padding: 10px 14px;
+    display: flex; align-items: center; gap: 8px;
+    font-size: 0.82rem; color: #2e7d32; font-weight: 600;
+    margin-top: 1.25rem;
+}
+</style>
+
+{# ── Separate methods into "carte" vs "réseau" ──────────── #}
+{% set carte_choices = [] %}
+{% set reseau_choices = [] %}
+
+{% for key, choice_form in form.method %}
+    {% set method = form.method.vars.choices[key].data %}
+    {% set name_lower = method.name|lower %}
+    {% if 'carte' in name_lower or 'card' in name_lower or 'bancaire' in name_lower or 'credit' in name_lower %}
+        {% set carte_choices = carte_choices|merge([{key: key}]) %}
+    {% else %}
+        {% set reseau_choices = reseau_choices|merge([{key: key}]) %}
+    {% endif %}
+{% endfor %}
+
+<div class="cateco-payment-card">
+
+    {# ── Card Title ───────────────────────────────────────── #}
+    <div class="cateco-payment-card-title">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect>
+            <line x1="1" y1="10" x2="23" y2="10"></line>
+        </svg>
+        Paiement #1
+    </div>
+
+    {{ form_errors(form.method) }}
+
+    {# ── Carte Bancaire options ───────────────────────────── #}
+    {% for item in carte_choices %}
+        {% set choice_form = form.method[item.key] %}
+        {% set method = form.method.vars.choices[item.key].data %}
+        <label class="cateco-payment-option {{ choice_form.vars.checked ? 'is-selected' : '' }}"
+               for="{{ choice_form.vars.id }}">
+            <input type="radio"
+                   class="cateco-pay-radio"
+                   id="{{ choice_form.vars.id }}"
+                   name="{{ choice_form.vars.full_name }}"
+                   value="{{ choice_form.vars.value }}"
+                   {% if choice_form.vars.checked %}checked="checked"{% endif %}>
+            <div class="cateco-pay-logo">
+                <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="none" viewBox="0 0 24 24" stroke="#999" stroke-width="1.5">
+                    <rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect>
+                    <line x1="1" y1="10" x2="23" y2="10"></line>
+                </svg>
+            </div>
+            <div class="cateco-pay-info">
+                <div class="cateco-pay-name">{{ method.name }}</div>
+                {% if method.description %}<div class="cateco-pay-desc">{{ method.description }}</div>{% endif %}
+            </div>
+            <div class="cateco-card-logos">
+                <span class="cateco-card-badge" style="background:#1a1f71;">VISA</span>
+                <span class="cateco-card-badge mc">MC</span>
+                <span class="cateco-card-badge amex">AMEX</span>
+            </div>
+        </label>
+    {% endfor %}
+
+    {# ── Réseau / other options ───────────────────────────── #}
+    {% if reseau_choices|length > 0 %}
+        <div class="cateco-section-label">Choisissez votre réseau</div>
+
+        {% for item in reseau_choices %}
+            {% set choice_form = form.method[item.key] %}
+            {% set method = form.method.vars.choices[item.key].data %}
+            {% set name_lower = method.name|lower %}
+            {% set is_wero = 'wero' in name_lower or 'ideal' in name_lower %}
+
+            <label class="cateco-payment-option {{ choice_form.vars.checked ? 'is-selected' : '' }}"
+                   for="{{ choice_form.vars.id }}">
+                <input type="radio"
+                       class="cateco-pay-radio"
+                       id="{{ choice_form.vars.id }}"
+                       name="{{ choice_form.vars.full_name }}"
+                       value="{{ choice_form.vars.value }}"
+                       {% if choice_form.vars.checked %}checked="checked"{% endif %}>
+                <div class="cateco-pay-logo">
+                    {% if is_wero %}
+                        <img src="https://e7.pngegg.com/pngimages/79/8/png-clipart-chronopost-logistics-logo-delivery-brand-small-cube-blue-angle.png"
+                             alt="Wero"
+                             style="display:none"
+                             id="wero-img-placeholder">
+                        {# Use Wero yellow square logo #}
+                        <div style="background:#FFD000; border-radius:6px; width:48px; height:32px; display:flex; align-items:center; justify-content:center; font-weight:900; font-size:11px; color:#333; letter-spacing:-0.5px;">WERO</div>
+                    {% else %}
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="#888" stroke-width="1.5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2z" />
+                        </svg>
+                    {% endif %}
+                </div>
+                <div class="cateco-pay-info">
+                    <div class="cateco-pay-name">{{ method.name }}</div>
+                    {% if method.description %}<div class="cateco-pay-desc">{{ method.description }}</div>{% endif %}
+                </div>
+            </label>
+        {% endfor %}
+    {% endif %}
+
+    {# ── Security badge ───────────────────────────────────── #}
+    <div class="cateco-secure-badge">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+        </svg>
+        Paiement 100% sécurisé — données protégées par SSL 256-bit
+    </div>
+</div>
+
+<script>
+document.addEventListener('change', function(e) {
+    if (!e.target.classList.contains('cateco-pay-radio')) return;
+    document.querySelectorAll('.cateco-payment-option').forEach(function(o){ o.classList.remove('is-selected'); });
+    e.target.closest('.cateco-payment-option').classList.add('is-selected');
+});
+</script>

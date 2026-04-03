@@ -3,10 +3,22 @@
 
 <div class="mb-4 cateco-checkout-shipping-section {% if form.differentShippingAddress is not defined or not form.differentShippingAddress.vars.data %}d-none {% endif %}" id="cateco-checkout-shipping-section">
     {# ── Address book component (radio cards + add link) ─────── #}
-    {{ component('sylius_shop:checkout:address:address_book', {
-        field: 'shippingAddress', 
-        template: '@SyliusShop/checkout/address/content/form/addresses/address/address_book.html.twig'
-    }) }}
+    <div class="px-4 pt-4 pb-2 mb-4" style="border: 1px solid #E0DDD5; border-radius: 8px; background: #fff;">
+        <div class="mb-3 fw-bold" style="color: #1A1A1A; font-size: 16px; display: flex; align-items: center; gap: 8px;">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="width: 20px; height: 20px; color: #e87722;">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
+            </svg>
+            Adresse de livraison
+        </div>
+        <hr style="border-top: 1px solid #F0EDE8; margin: 0 -1.5rem 1.25rem -1.5rem; opacity: 1;">
+
+        {# ── Address book component (radio cards + add link) ─────── #}
+        {{ component('sylius_shop:checkout:address:address_book', {
+            field: 'shippingAddress', 
+            template: '@SyliusShop/checkout/address/content/form/addresses/address/address_book.html.twig'
+        }) }}
+    </div>
 
     {# ── New address form. Left visible by default as requested. ──── #}
     <div id="cateco-new-addr-form-shippingAddress" class="cateco-new-addr-form mt-4 p-4" style="border: 1px solid #e0ddd5; border-radius: 8px; background: #fff;">

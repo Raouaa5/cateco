@@ -1,9 +1,9 @@
 {# Cart Sidebar Content - rendered inside the sylius_shop:cart:widget component #}
 {# This template has access to 'cart' variable #}
-<div {{ attributes }}>
+<div {{ attributes }} style="display: flex; flex-direction: column; flex: 1; min-height: 0; overflow: hidden;">
 {% if cart and cart.items is not empty %}
     {# Items list #}
-    <div class="cart-sidebar-items">
+    <div class="cart-sidebar-items" style="flex: 1; overflow-y: auto;">
         {% for item in cart.items %}
             <div class="cart-item-row">
                 {# Product image #}
@@ -53,7 +53,7 @@
     </div>
 
     {# Footer with total and action buttons #}
-    <div class="cart-sidebar-footer">
+    <div class="cart-sidebar-footer" style="flex-shrink: 0; background: white; z-index: 10;">
         <div class="cart-total-row">
             <span class="cart-total-label">{{ cart.items|length }} article{{ cart.items|length > 1 ? 's' : '' }}</span>
             <span class="cart-total-value">{{ cart.total | sylius_format_money(sylius.currencyCode, sylius.localeCode) }}</span>

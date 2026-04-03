@@ -1,0 +1,110 @@
+{% extends '@SyliusShop/checkout/common/layout.html.twig' %}
+
+{% set active_step = 'select_shipping' %}
+{% set prefixes = ['sylius_shop.checkout'] %}
+
+{% block title %}
+    {{ 'sylius.ui.shipping'|trans }} | {{ parent() }}
+{% endblock %}
+
+{% block content %}
+    <style>
+        /* Expand the checkout container width to allow both cards to be wider */
+        @media (min-width: 1200px) {
+            .container { max-width: 1320px !important; }
+        }
+    </style>
+
+    {# Custom full-width steps header #}
+    {{ include('@SyliusShop/checkout/common/checkout_header_steps.html.twig', {active: 3}) }}
+
+    {# Custom Flex Layout: Left side grows, right side stays exactly 380px to protect sidebar size #}
+    <div class="d-flex flex-column flex-lg-row custom-checkout-grid">
+        <div class="flex-grow-1 custom-checkout-main">
+            {% hook 'select_shipping' with { _prefixes: prefixes, active_step, form, order } %}
+        </div>
+        <div class="custom-checkout-sidebar mt-4 mt-lg-0">
+            {{ include('@SyliusShop/checkout/address/sidebar.html.twig') }}
+        </div>
+    </div>
+
+    <style>
+        .custom-checkout-grid { gap: 1.5rem; }
+        .custom-checkout-sidebar { width: 100%; }
+        
+        @media (min-width: 992px) {
+            .custom-checkout-sidebar {
+                width: 380px;
+                flex-shrink: 0;
+            }
+            .custom-checkout-grid { gap: 2rem; }
+        }
+        @media (min-width: 1200px) {
+            .custom-checkout-grid { gap: 2.5rem; }
+        }
+    </style>
+{% endblock %}
+
+{# Remove default sidebar to allow content col to expand to 100% #}
+{% block sidebar %}{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        function formatCurrency(amountInCents, currency) {
+            // Sylius stores amounts as integers in the smallest currency unit (e.g. cents)
+            var amount = amountInCents / 100;
+            try {
+                return new Intl.NumberFormat('fr-FR', {
+                    style: 'currency',
+                    currency: currency || 'EUR'
+                }).format(amount);
+            } catch(e) {
+                return '\u20ac' + amount.toFixed(2);
+            }
+        }
+
+        function updateSidebar(feeInCents) {
+            var shippingEl = document.getElementById('summary-shipping-cost');
+            var totalEl    = document.getElementById('summary-total-cost');
+            if (!shippingEl || !totalEl) return;
+
+            var itemsTotal = parseInt(totalEl.dataset.itemsTotal || 0, 10);
+            var newTotal   = itemsTotal + feeInCents;
+
+            if (feeInCents === 0) {
+                shippingEl.textContent = 'Gratuit';
+                shippingEl.style.color = '#4CAF50';
+                shippingEl.style.fontWeight = '700';
+            } else {
+                shippingEl.textContent = formatCurrency(feeInCents);
+                shippingEl.style.color = '';
+                shippingEl.style.fontWeight = '';
+            }
+
+            totalEl.textContent = formatCurrency(newTotal);
+        }
+
+        // Listen for any radio input inside a shipping card
+        document.addEventListener('change', function (e) {
+            var input = e.target;
+            if (input.type !== 'radio') return;
+
+            // Walk up to find the card with data-fee
+            var card = input.closest('[data-shipping-card]');
+            if (!card) return;
+
+            var fee = parseInt(card.dataset.fee || 0, 10);
+            updateSidebar(fee);
+        });
+
+        // Run once on page load for the pre-selected method
+        var checked = document.querySelector('[data-shipping-card] input[type="radio"]:checked');
+        if (checked) {
+            var card = checked.closest('[data-shipping-card]');
+            if (card) updateSidebar(parseInt(card.dataset.fee || 0, 10));
+        }
+    });
+    </script>
+{% endblock %}

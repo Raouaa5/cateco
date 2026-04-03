@@ -1,0 +1,44 @@
+{% set form = hookable_metadata.context.form %}
+{% set method = hookable_metadata.context.method %}
+{% set n = method.name|lower %}
+{% set is_carte = ('carte' in n or 'card' in n or 'bancaire' in n or 'credit' in n) %}
+
+<label class="cateco-payment-option {{ form.vars.checked ? 'is-selected' : '' }}" for="{{ form.vars.id }}" style="margin-bottom: 20px;">
+    <input type="radio"
+           value="{{ form.vars.value }}"
+           id="{{ form.vars.id }}"
+           name="{{ form.vars.full_name }}"
+           class="cateco-pay-radio mollie-payments"
+           {% if form.vars.checked %}checked="checked"{% endif %}
+           {{ sylius_test_html_attribute('payment-method-select') }}>
+
+    <div class="cateco-pay-logo">
+        <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="none" viewBox="0 0 24 24" stroke="#999" stroke-width="1.5">
+            <rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect>
+            <line x1="1" y1="10" x2="23" y2="10"></line>
+        </svg>
+    </div>
+    
+    <div class="cateco-pay-info" style="display:flex; flex-direction:column; justify-content:center;">
+        <div class="cateco-pay-name" style="margin:0;">{{ method.name }}</div>
+        {% if method.description %}<div class="cateco-pay-desc" style="margin-top:2px;">{{ method.description }}</div>{% endif %}
+    </div>
+
+    {% if is_carte %}
+        <div class="cateco-card-logos" style="margin-left: auto;">
+            <img src="https://freepngimg.com/download/credit_card/25630-8-credit-card-visa-and-master-card-hd.png" 
+                 alt="Visa Mastercard" 
+                 style="height: 22px; object-fit: contain;">
+        </div>
+    {% endif %}
+</label>
+
+{# JavaScript listener to switch active states for the Master Radio AND Sub-radios, keeping visual sync #}
+<script>
+document.addEventListener('change', function(e) {
+    if (!e.target.classList.contains('cateco-pay-radio') && !e.target.classList.contains('online-payment__input')) return;
+    document.querySelectorAll('.cateco-payment-option').forEach(function(o){ o.classList.remove('is-selected'); });
+    let opt = e.target.closest('.cateco-payment-option');
+    if (opt) opt.classList.add('is-selected');
+});
+</script>

@@ -1,0 +1,160 @@
+{# templates/bundles/SyliusShopBundle/checkout/common/steps.html.twig #}
+{% set active = active|default(2) %}
+
+<style>
+.checkout-steps-wrapper {
+    background: #ffffff;
+    border: 0.5px solid #F0EDE8;
+    border-radius: 8px;
+    padding: 12px 24px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.c-step {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.c-step-circle {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 11px;
+}
+.c-step-circle.completed {
+    border: 1.5px solid #4CAF50;
+    color: #4CAF50;
+    background: #ffffff;
+}
+.c-step-circle.active {
+    background: #E87722;
+    color: #ffffff;
+}
+.c-step-circle.pending {
+    background: #F5F4F0;
+    color: #A09E99;
+}
+.c-step-label {
+    font-weight: 700;
+    font-size: 12.5px;
+}
+.c-step-label.completed { color: #4CAF50; }
+.c-step-label.active { color: #E87722; }
+.c-step-label.pending { color: #A09E99; font-weight: 600; }
+.c-step-line {
+    flex: 1;
+    height: 2px;
+    margin: 0 16px;
+}
+.c-step-line.completed { background: #4CAF50; }
+.c-step-line.pending { background: #E0DDD5; }
+
+/* Responsive tweaks for steps */
+@media (max-width: 768px) {
+    .checkout-steps-wrapper { 
+        padding: 12px 16px; 
+    }
+    .c-step {
+        flex-direction: column;
+        gap: 4px;
+    }
+    .c-step-label { 
+        font-size: 10px;
+        text-align: center;
+    }
+    .c-step-line { 
+        margin: 0 8px;
+    }
+    .c-step-circle {
+        width: 20px;
+        height: 20px;
+        font-size: 10px;
+    }
+}
+@media (max-width: 480px) {
+    .checkout-steps-wrapper {
+        padding: 10px;
+    }
+    .c-step-label { 
+        display: none; 
+    }
+    .c-step-line {
+        margin: 0 4px;
+    }
+}
+</style>
+
+<div class="checkout-steps-wrapper">
+    
+    {# 1. Panier (Completed) #}
+    <div class="c-step">
+        <div class="c-step-circle {% if active > 1 %}completed{% else %}active{% endif %}">
+            {% if active > 1 %}
+                <svg style="width: 12px; height: 12px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+            {% else %}
+                1
+            {% endif %}
+        </div>
+        <span class="c-step-label {% if active > 1 %}completed{% else %}active{% endif %}">Panier</span>
+    </div>
+    
+    <div class="c-step-line {% if active > 1 %}completed{% else %}pending{% endif %}"></div>
+    
+    {# 2. Adresse (Active/Completed) #}
+    <div class="c-step">
+        <div class="c-step-circle {% if active > 2 %}completed{% elseif active == 2 %}active{% else %}pending{% endif %}">
+            {% if active > 2 %}
+                <svg style="width: 12px; height: 12px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+            {% else %}
+                2
+            {% endif %}
+        </div>
+        <span class="c-step-label {% if active > 2 %}completed{% elseif active == 2 %}active{% else %}pending{% endif %}">Adresse</span>
+    </div>
+
+    <div class="c-step-line {% if active > 2 %}completed{% else %}pending{% endif %}"></div>
+
+    {# 3. Expédition (Pending/Active/Completed) #}
+    <div class="c-step">
+        <div class="c-step-circle {% if active > 3 %}completed{% elseif active == 3 %}active{% else %}pending{% endif %}">
+            {% if active > 3 %}
+                <svg style="width: 12px; height: 12px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+            {% else %}
+                3
+            {% endif %}
+        </div>
+        <span class="c-step-label {% if active > 3 %}completed{% elseif active == 3 %}active{% else %}pending{% endif %}">Expédition</span>
+    </div>
+
+    <div class="c-step-line {% if active > 3 %}completed{% else %}pending{% endif %}"></div>
+
+    {# 4. Paiement (Pending/Active/Completed) #}
+    <div class="c-step">
+        <div class="c-step-circle {% if active > 4 %}completed{% elseif active == 4 %}active{% else %}pending{% endif %}">
+            {% if active > 4 %}
+                <svg style="width: 12px; height: 12px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+            {% else %}
+                4
+            {% endif %}
+        </div>
+        <span class="c-step-label {% if active > 4 %}completed{% elseif active == 4 %}active{% else %}pending{% endif %}">Paiement</span>
+    </div>
+
+    <div class="c-step-line {% if active > 4 %}completed{% else %}pending{% endif %}"></div>
+
+    {# 5. Confirmation (Pending) #}
+    <div class="c-step">
+        <div class="c-step-circle {% if active == 5 %}active{% else %}pending{% endif %}">
+            5
+        </div>
+        <span class="c-step-label {% if active == 5 %}active{% else %}pending{% endif %}">Confirmation</span>
+    </div>
+
+</div>

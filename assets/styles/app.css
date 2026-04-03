@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Styles Cateco */
+/* ── Cateco Component Styles ─────────────────────────────────────────────── */
 @import "./components/product-card.css";
 
 .main-header,

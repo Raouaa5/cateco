@@ -1,0 +1,301 @@
+{% extends '@SyliusShop/shared/layout/base.html.twig' %}
+{% import "@SyliusShop/shared/macro/money.html.twig" as money %}
+
+{% set prefixes = ['sylius_shop.order', 'sylius_shop.shared.order.show'] %}
+
+{% block title %}{{ 'sylius.ui.summary_of_your_order'|trans }} | {{ parent() }}{% endblock %}
+
+{% block content %}
+    <style>
+        /* Expand the container width to allow both cards to be wider */
+        @media (min-width: 1200px) {
+            .container { max-width: 1320px !important; }
+        }
+        .c-success-banner {
+            background-color: #E8F5E9;
+            border: 1px solid #C8E6C9;
+            border-radius: 8px;
+            padding: 24px;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+        }
+        .c-success-icon {
+            width: 48px;
+            height: 48px;
+            background: #4CAF50;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            flex-shrink: 0;
+        }
+        .c-success-title {
+            color: #2E7D32;
+            font-size: 18px;
+            font-weight: 800;
+            margin-bottom: 4px;
+        }
+        .c-success-desc {
+            color: #388E3C;
+            font-size: 14px;
+        }
+        
+        .c-order-header-card {
+            background: #ffffff;
+            border: 0.5px solid #F0EDE8;
+            border-radius: 8px;
+            padding: 24px;
+            margin-bottom: 16px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .c-order-title {
+            font-size: 12px;
+            font-weight: 800;
+            color: #E87722;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 4px;
+        }
+        .c-order-number {
+            font-size: 28px;
+            font-weight: 900;
+            color: #1A1A1A;
+            margin-bottom: 6px;
+        }
+        .c-order-meta {
+            font-size: 13px;
+            color: #888;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .c-order-meta span {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .c-order-actions {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+        .c-btn-status {
+            background: #FFF3E0;
+            color: #E87722;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .c-btn-print {
+            background: #ffffff;
+            border: 1px solid #E0DDD5;
+            color: #4A4A4A;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .c-btn-print:hover {
+            background: #F9F8F6;
+        }
+        .c-order-bottom-actions {
+            display: flex;
+            gap: 16px;
+            margin-top: 16px;
+            margin-bottom: 48px;
+        }
+        .c-btn-continue {
+            flex: 1;
+            background: #E87722;
+            color: #fff;
+            padding: 16px;
+            border-radius: 8px;
+            font-weight: 800;
+            font-size: 15px;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: background 0.2s;
+            text-decoration: none;
+        }
+        .c-btn-continue:hover {
+            background: #d66a1a;
+            color: #fff;
+        }
+        .c-btn-account {
+            flex: 1;
+            background: #ffffff;
+            border: 1px solid #E0DDD5;
+            color: #1A1A1A;
+            padding: 16px;
+            border-radius: 8px;
+            font-weight: 800;
+            font-size: 15px;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: background 0.2s;
+            text-decoration: none;
+        }
+        .c-btn-account:hover {
+            background: #F9F8F6;
+            color: #1A1A1A;
+        }
+        
+        /* Mobile fixes for order header */
+        @media (max-width: 768px) {
+            .c-order-header-card {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 24px;
+            }
+            .c-order-actions {
+                width: 100%;
+                justify-content: space-between;
+            }
+            .c-order-bottom-actions {
+                flex-direction: column;
+            }
+        }
+    </style>
+
+    <div class="container mt-4 mb-5">
+        
+        {# Optional Success Banner for newly placed orders #}
+        {% set isNewOrder = (order.checkoutCompletedAt is not null and date().diff(order.checkoutCompletedAt).i < 5 and date().diff(order.checkoutCompletedAt).h == 0 and date().diff(order.checkoutCompletedAt).d == 0) or app.request.query.has('thank_you') %}
+        
+        {% if isNewOrder %}
+        <div class="c-success-banner">
+            <div class="c-success-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" style="width: 24px; height: 24px;">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                </svg>
+            </div>
+            <div>
+                <div class="c-success-title">Commande confirmée — merci {{ order.customer.firstName|default('client(e)') }} !</div>
+                <div class="c-success-desc">Un email de confirmation a été envoyé à {{ order.customer.email }}. Nous traitons votre commande dès maintenant.</div>
+            </div>
+        </div>
+        {% endif %}
+
+        <div class="row">
+            <div class="col-12 col-lg-8 pe-lg-2">
+                
+                {# Custom Header Card #}
+                <div class="c-order-header-card">
+                    <div>
+                        <div class="c-order-title">Commande</div>
+                        <div class="c-order-number">#{{ order.number }}</div>
+                        <div class="c-order-meta">
+                            <span>
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width: 14px; height: 14px;">
+                                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                {{ order.checkoutCompletedAt ? order.checkoutCompletedAt|date('d F Y à H:i') : '' }}
+                            </span>
+                            <span>
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width: 14px; height: 14px;">
+                                  <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
+                                </svg>
+                                {{ order.items|length }} produits
+                            </span>
+                            <span style="font-weight: 700; color: #1A1A1A;">
+                                {{ money.convertAndFormat(order.total) }}
+                            </span>
+                        </div>
+                    </div>
+                    
+                    <div class="c-order-actions">
+                        <div class="c-btn-status">
+                            <span style="font-size: 16px; color: #E87722;">•</span> 
+                            {% if order.paymentState == 'awaiting_payment' %}
+                                En attente de paiement
+                            {% elseif order.shippingState == 'shipped' %}
+                                Expédiée
+                            {% else %}
+                                En cours de traitement
+                            {% endif %}
+                        </div>
+                        <button class="c-btn-print" onclick="window.print()">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width: 16px; height: 16px;">
+                              <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM12.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM18.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
+                              <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5h-15a2.25 2.25 0 00-2.25 2.25v2.25A2.25 2.25 0 004.5 17.25h1.5v3.375A2.25 2.25 0 008.25 22.875h7.5a2.25 2.25 0 002.25-2.25V17.25h1.5A2.25 2.25 0 0021.75 15v-2.25A2.25 2.25 0 0019.5 10.5zM8.25 3.375h7.5A2.25 2.25 0 0118 5.625v4.875H6V5.625A2.25 2.25 0 018.25 3.375z" />
+                            </svg>
+                            Imprimer
+                        </button>
+                    </div>
+                </div>
+                
+                {# Optional: Payment Modification or Warning Box #}
+                <div style="margin-bottom: 24px;">
+                {% if order.paymentState == constant('Sylius\\Component\\Core\\OrderPaymentStates::STATE_AWAITING_PAYMENT') %}
+                    {% form_theme form '@SyliusShop/form/theme.html.twig' %}
+                    {{ form_start(form, {'action': path('sylius_shop_order_show', {'tokenValue': order.tokenValue}), 'attr': {'novalidate': 'novalidate'}}) }}
+                    <input type="hidden" name="_method" value="PUT" />
+                    {{ form_errors(form) }}
+                    
+                    {# Render the payment method choices and pay button #}
+                    {% hook 'form' with { _prefixes: ['sylius_shop.order.show.content'] } %}
+                    
+                    {{ form_row(form._token) }}
+                    {{ form_end(form, {'render_rest': false}) }}
+                {% else %}
+                    {% import '@SyliusShop/shared/messages.html.twig' as messages %}
+                    <div style="background: #FFF3E0; border: 1px solid #FFE0B2; border-radius: 8px; padding: 16px; display: flex; align-items: center; gap: 12px;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="#E87722" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                        </svg>
+                        <span style="color: #E87722; font-size: 14px; font-weight: 600;">{{ 'sylius.ui.you_can_no_longer_change_payment_method_of_this_order'|trans }}</span>
+                    </div>
+                {% endif %}
+                </div>
+                
+                {# Render the perfectly styled modern summary we built during Complete step! #}
+                {% hook 'summary' with { _prefixes: ['sylius_shop.shared.order.show'] } %}
+                
+                {# Bottom Action Buttons #}
+                <div class="c-order-bottom-actions d-print-none" style="position: relative; z-index: 10;">
+                    <a href="{{ path('sylius_shop_homepage') }}" class="c-btn-continue">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="width: 18px; height: 18px;">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007zM8.625 10.5a.375.375 0 11-.75 0 .375.375 0 01.75 0zm7.5 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
+                        </svg>
+                        Continuer mes achats
+                    </a>
+                    <a href="{{ path('sylius_shop_account_dashboard') }}" class="c-btn-account">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="width: 18px; height: 18px;">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+                        </svg>
+                        Voir mon compte
+                    </a>
+                </div>
+                
+            </div>
+            
+            <div class="col-12 col-lg-4 ps-lg-2 mt-4 mt-lg-0 d-print-none">
+                {# Render the sticky sidebar we built #}
+                {{ include('@SyliusShop/checkout/complete/sidebar.html.twig') }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

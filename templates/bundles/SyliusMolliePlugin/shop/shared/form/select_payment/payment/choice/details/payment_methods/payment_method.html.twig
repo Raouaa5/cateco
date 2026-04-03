@@ -1,0 +1,13 @@
+{% for key_choice, choice in hookable_metadata.context.form.vars.choices %}
+{% set is_selected = false %}
+{# Check if this specific radio is selected (the actual value of the form vs this choice value) #}
+{% if hookable_metadata.context.form.vars.data == choice.value %}{% set is_selected = true %}{% endif %}
+
+<label class="cateco-payment-option online-payment__item online-payment__item--{{ choice.value }} {{ is_selected ? 'is-selected' : '' }}" 
+       id="{{ choice.value }}"
+       for="choice-{{ key_choice }}"
+       data-feeurl="{{ path('sylius_mollie_shop_payment_fee_calculate', {gatewayName: hookable_metadata.context.gateway_config.gatewayName, methodId: choice.value }) }}"
+       style="display: flex; width: 100%; border: 2px solid #e8e4de; border-radius: 10px; padding: 14px 18px; margin-bottom: 10px; cursor: pointer; align-items: center; gap: 14px; background: #fff; transition: border-color 0.2s;">
+    {% hook 'payment_method' with { key_choice, choice, form: hookable_metadata.context.form } %}
+</label>
+{% endfor %}

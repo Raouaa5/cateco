@@ -23,7 +23,8 @@
         {# ── STYLES FOR THE RADIO CARDS ──────── #}
         <style>
             .cateco-address-cards { display: flex; flex-wrap: wrap; gap: 1rem; margin-bottom: 1rem; }
-            .cateco-address-card { display: flex; align-items: flex-start; gap: 0.75rem; border: 2px solid #e5e7eb; border-radius: 0.75rem; padding: 1rem 1.25rem; cursor: pointer; min-width: 220px; max-width: 340px; background: #fff; transition: border-color 0.2s, box-shadow 0.2s; }
+            .cateco-address-card { flex: 1 1 0; display: flex; align-items: flex-start; gap: 0.75rem; border: 2px solid #e5e7eb; border-radius: 0.75rem; padding: 1rem 1.25rem; cursor: pointer; min-width: 250px; background: #fff; transition: border-color 0.2s, box-shadow 0.2s; }
+            .cateco-address-card:hover { border-color: #fbd38d; background-color: #fffaf0; }
             .cateco-address-card input[type="radio"] { display: none; }
             .cateco-address-card.selected { border-color: #f97316; box-shadow: 0 0 0 3px rgba(249,115,22,0.15); }
             .cateco-addr-check { width: 22px; height: 22px; min-width: 22px; border-radius: 50%; border: 2px solid #d1d5db; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; color: transparent; margin-top: 3px; transition: all 0.2s; }
@@ -32,6 +33,11 @@
             .cateco-addr-phone { color: #6b7280; font-size: 0.85rem; }
             .cateco-add-address-link { display: inline-block; margin: 0.25rem 0 1rem; color: #f97316; font-weight: 600; text-decoration: none; font-size: 0.95rem; }
             .cateco-add-address-link:hover { text-decoration: underline; }
+
+            /* Mobile responsiveness for the cards */
+            @media (max-width: 576px) {
+                .cateco-address-card { flex: 1 1 100%; max-width: 100%; min-width: unset; }
+            }
         </style>
 
         {# ── Store address data in JS for instant frontend prepopulation ──────── #}
@@ -77,14 +83,6 @@
             {% endfor %}
             <input type="radio" class="d-none" id="addr_{{ field }}_empty" name="addr_dummy_{{ field }}" value="" data-model="addressId">
         </div>
-
-        {# ── "Add new address" link ───────────────────────────── #}
-        <a href="#"
-           class="cateco-add-address-link"
-           id="cateco-add-addr-link-{{ field }}"
-           onclick="window.catecoToggleNewAddress('{{ field }}', event);">
-            + Ajouter une nouvelle adresse
-        </a>
 
         <script>
         if (typeof window.catecoSelectAddressCard !== 'function') {

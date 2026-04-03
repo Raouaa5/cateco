@@ -1,55 +1,27 @@
 {#
-    Override: @SyliusShop/shared/layout/base/header/navbar/menu.html.twig
-    This replaces the default Sylius category bar with the custom Cateco Mega-Menu.
+  menu.html.twig — Categories mega-menu + mobile drawer
+  Desktop (>1024px): Hover mega-menu bar
+  Mobile  (≤1024px): "☰ Catégories" → slide-in accordion drawer
+  JS: assets/shop/js/navbar.js (window.* globals)
 #}
 
-{% set categoryImages = {
-    'anti-insectes': 'assets/shop/images/anti-insectes.jpg',
-    'jardin': 'assets/shop/images/jardinage.jpg',
-    'maison': 'assets/shop/images/meubles2.jpg',
-    'plein-air': 'assets/shop/images/plein-air2.jpg',
-    'tentes-baches': 'assets/shop/images/tentes&baches.jpg',
-    'nouveaute': 'assets/shop/images/Nouveautés.png',
-    'bricolage-auto': 'assets/shop/images/bricolage-roues.jpg',
-    'sport-bien-etre': 'assets/shop/images/Sport-Bien-être.jpg',
-    'noel': 'assets/shop/images/noel.jpg'
-} %}
-
-{# Map slugs to harmonious Cateco brand colors (Teals, Oranges, Greens) #}
-{% set categoryColors = {
-    'nouveaute': '#e0c739ff',           
-    'jardin': '#7ab835',               
-    'maison': '#608531ff',   
-    'plein-air': '#ea580c',            
-    'anti-insectes': '#6b7177ff',        
-    'tentes-baches': '#2c9490ff',        
-    'bricolage-auto': '#4d5672ff', 
-    'sport-bien-etre': '#4463b9ff',      
-    'noel': '#dc2626'                  
-} %}
-
 <style>
-    /* Sticky Wrapper */
+    /* ── Desktop mega-menu wrapper ───────────────────────────────────────── */
     .cateco-megamenu-wrapper {
         background-color: #ffffff;
         border-bottom: 3px solid #e5e7eb;
         font-family: inherit;
         width: 100%;
-        margin-bottom: 0;
     }
-
-    /* Wide unconstrained container to prevent Noel overflow */
     .cateco-nav-container {
-        position: relative; /* Anchor for the absolute mega menu */
+        position: relative;
         width: 100%;
         max-width: 1600px;
         margin: 0 auto;
         padding: 0 1rem;
     }
-
-    /* Main Menu List - STRICTLY ONE LINE */
     .cateco-menu-list {
-        display: flex;
+        display: flex !important;
         align-items: center;
         justify-content: space-evenly;
         list-style: none;
@@ -59,15 +31,9 @@
         flex-wrap: nowrap;
         min-width: max-content;
     }
-
-    /* Top Level Item - Position static so the child panel anchors to the wrapper */
-    .cateco-menu-item {
-        position: static;
-    }
-
-    /* Top Level Link */
+    .cateco-menu-item { position: static; }
     .cateco-menu-link {
-        display: inline-flex;
+        display: inline-flex !important;
         align-items: center;
         gap: 0.25rem;
         padding: 1rem 0.6rem;
@@ -78,253 +44,308 @@
         text-decoration: none;
         letter-spacing: 0.02em;
         transition: all 0.2s;
-        border-bottom: 1px solid transparent; /* Highlight line thinned */
-        margin-bottom: 0;
+        border-bottom: 2px solid var(--cat-color);
         white-space: nowrap;
         border-radius: 8px 8px 0 0;
     }
+    .cateco-menu-item:hover .cateco-menu-link { background-color: var(--cat-color) !important; color: white !important; }
+    .cateco-menu-item:hover .cateco-menu-link svg { color: white !important; }
 
-    /* Hover State for Top Level - uses CSS variable injected on the <li> */
-    .cateco-menu-item:hover .cateco-menu-link {
-        background-color: var(--cat-color) !important;
-        color: white !important;
-    }
-    .cateco-menu-item:hover .cateco-menu-link svg {
-        color: white !important;
-    }
-
-    /* Mega Menu Dropdown Container - FULL WIDTH of site limits */
+    /* ── Mega-menu dropdown panel ────────────────────────────────────────── */
     .cateco-megamenu-panel {
-        visibility: hidden;
-        opacity: 0;
-        position: absolute;
-        top: 100%;
-        left: 0;
-        right: 0;
-        width: 100%;
-        background: #f8f9fa;
-        border-radius: 0 0 12px 12px;
+        visibility: hidden; opacity: 0;
+        position: absolute; top: 100%; left: 0; right: 0; width: 100%;
+        background: #f8f9fa; border-radius: 0 0 12px 12px;
         box-shadow: 0 15px 40px rgba(0,0,0,0.15);
-        padding: 2rem;
-        display: flex;
-        justify-content: space-between;
-        gap: 3rem;
-        /* Delay hiding by 150ms so cursor can travel from tab to panel without it disappearing */
-        transition: opacity 0.2s ease, visibility 0s ease 0.15s;
-        pointer-events: none;
-        z-index: 1000;
-        cursor: default;
+        padding: 2rem; display: flex; justify-content: space-between;
+        gap: 3rem; transition: opacity 0.2s ease, visibility 0s ease 0.15s;
+        pointer-events: none; z-index: 1000; cursor: default;
     }
-
-    /* Show Dropdown on Hover - immediately with no delay */
     .cateco-menu-item:hover .cateco-megamenu-panel {
-        visibility: visible;
-        opacity: 1;
-        transform: translateY(0);
-        pointer-events: auto;
+        visibility: visible; opacity: 1; pointer-events: auto;
         transition: opacity 0.2s ease, visibility 0s ease 0s;
     }
-
-    /* Invisible hover bridge: covers the gap between the tab and the dropdown panel */
     .cateco-menu-item::after {
-        content: '';
-        position: absolute;
-        bottom: -8px;
-        left: 0;
-        width: 100%;
-        height: 8px;
-        display: block;
+        content: ''; position: absolute; bottom: -8px; left: 0;
+        width: 100%; height: 8px; display: block;
     }
-
-    /* Left Side: Subcategories — single vertical column (default: 3 or fewer) */
-    .cateco-megamenu-links {
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        gap: 0.75rem;
-        align-content: start;
-    }
-
-    /* Two-column vertical layout for categories with more than 3 children */
+    .cateco-megamenu-links { flex: 1; display: flex; flex-direction: column; gap: 0.75rem; }
     .cateco-megamenu-links.two-cols {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        grid-auto-flow: column;
-        grid-template-rows: repeat(5, auto); /* max rows before wrapping to second col */
+        display: grid; grid-template-columns: 1fr 1fr;
+        grid-auto-flow: column; grid-template-rows: repeat(5, auto);
         gap: 0.75rem 3rem;
-        align-content: start;
     }
-
-    /* Subcategory Link */
     .cateco-sub-link {
-        display: inline-flex;
-        align-items: flex-start;
-        gap: 0.75rem;
-        color: #374151;
-        font-weight: 700;
-        font-size: 0.85rem;
-        text-decoration: none;
-        transition: color 0.2s;
-        line-height: 1.3;
+        display: inline-flex !important; align-items: flex-start; gap: 0.75rem;
+        color: #374151; font-weight: 700; font-size: 0.85rem; text-decoration: none;
+        transition: color 0.2s; line-height: 1.3;
     }
-
-    .cateco-sub-link:hover {
-        color: #111827;
-    }
-
-    /* Green Square Bullet injected via JS/inline-style per category color */
-    .cateco-sub-bullet {
-        display: inline-block;
-        width: 8px;
-        height: 8px;
-        border-radius: 2px;
-        flex-shrink: 0;
-        margin-top: 5px; /* align with first line of multiline text */
-    }
-
-    /* Right Side: Featured Image Card */
+    .cateco-sub-link:hover { color: #111827; }
+    .cateco-sub-bullet { display: inline-block; width: 8px; height: 8px; border-radius: 2px; flex-shrink: 0; margin-top: 5px; }
     .cateco-megamenu-featured {
-        width: 320px; /* Reduced width to prevent horizontal overflow */
-        height: 180px;
-        border-radius: 12px;
-        overflow: hidden;
-        position: relative;
-        flex-shrink: 0;
-        text-decoration: none;
-        display: block;
+        width: 320px; height: 180px; border-radius: 12px; overflow: hidden;
+        position: relative; flex-shrink: 0; text-decoration: none; display: block;
     }
-
-    .cateco-megamenu-featured img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        transition: transform 0.5s ease;
-    }
-
-    .cateco-megamenu-featured:hover img {
-        transform: scale(1.05);
-    }
-
-    /* Dark Overlay */
+    .cateco-megamenu-featured img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+    .cateco-megamenu-featured:hover img { transform: scale(1.05); }
     .cateco-megamenu-featured-overlay {
-        position: absolute;
-        inset: 0;
+        position: absolute; inset: 0;
         background: linear-gradient(to right, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.2) 100%);
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        padding: 1.5rem;
-        color: white;
+        display: flex !important; flex-direction: column; justify-content: center;
+        align-items: center; padding: 1.5rem; color: white;
+    }
+    .featured-title { font-size: 1.5rem; font-weight: 800; text-transform: uppercase; margin: 0 0 0.5rem 0; text-shadow: 0 2px 4px rgba(0,0,0,0.5); text-align: center; color: #ffffff !important; }
+    .featured-cta { font-size: 0.85rem; font-weight: 700; display: flex; align-items: center; gap: 0.25rem; border-bottom: 2px solid transparent; padding-bottom: 2px; }
+    .chevron-down { width: 12px; height: 12px; transition: transform 0.3s; }
+    .cateco-menu-item:hover .chevron-down { transform: rotate(180deg); }
+
+    /* ── Mobile categories bar (hidden on desktop) ───────────────────────── */
+    .cateco-mobile-categories-bar { display: none !important; }
+
+    @media (max-width: 1024px) {
+        .cateco-megamenu-wrapper { display: none !important; }
+        .cateco-mobile-categories-bar {
+            display: flex !important; align-items: center !important;
+            background: #ffffff !important; border-bottom: 3px solid #e5e7eb !important;
+            padding: 0 1rem !important; width: 100% !important; box-sizing: border-box !important;
+        }
+        .cateco-mobile-categories-btn {
+            display: inline-flex !important; align-items: center !important; gap: 10px !important;
+            padding: 0.75rem 1.25rem !important; background: none !important;
+            border: none !important; cursor: pointer !important; color: #374151 !important;
+            font-weight: 700 !important; font-size: 0.9rem !important;
+            font-family: inherit !important; transition: color 0.2s !important; text-decoration: none !important;
+        }
+        .cateco-mobile-categories-btn:hover { color: #E87722 !important; }
+        .cateco-mobile-categories-btn svg { width: 20px !important; height: 20px !important; flex-shrink: 0 !important; }
     }
 
-    .featured-title {
-        font-size: 1.5rem;
-        font-weight: 800;
-        text-transform: uppercase;
-        margin: 0 0 0.5rem 0;
-        text-shadow: 0 2px 4px rgba(0,0,0,0.5);
-        text-align: center;
-        color: #ffffff !important;
+    /* ── Mobile categories drawer ────────────────────────────────────────── */
+    #cat-drawer-overlay {
+        display: none; position: fixed; inset: 0;
+        background: rgba(0,0,0,0.45); z-index: 110000; backdrop-filter: blur(3px);
     }
+    #cat-drawer-overlay.open { display: block; }
+    #cat-drawer {
+        position: fixed; top: 0; left: -100%;
+        width: min(360px, 90vw); height: 100vh; background: #fff;
+        z-index: 110001; box-shadow: 4px 0 30px rgba(0,0,0,0.18);
+        display: flex !important; flex-direction: column;
+        transition: left 0.32s cubic-bezier(0.4, 0, 0.2, 1); overflow: hidden;
+    }
+    #cat-drawer.open { left: 0; }
+    .cat-drawer-header {
+        display: flex !important; align-items: center; justify-content: space-between;
+        padding: 1rem 1.25rem; border-bottom: 2px solid #f3f4f6;
+        flex-shrink: 0; background: #fff;
+    }
+    .cat-drawer-title { font-size: 1rem; font-weight: 800; color: #111827; text-transform: uppercase; letter-spacing: 0.04em; margin: 0; }
+    .cat-drawer-close {
+        background: #f3f4f6; border: none; border-radius: 50%;
+        width: 36px; height: 36px; display: flex !important; align-items: center;
+        justify-content: center; cursor: pointer; color: #374151; transition: background 0.2s; flex-shrink: 0;
+    }
+    .cat-drawer-close:hover { background: #e5e7eb; }
+    .cat-drawer-body { flex: 1; overflow-y: auto; padding: 0.5rem 0; }
 
-    .featured-cta {
-        font-size: 0.85rem;
-        font-weight: 700;
-        display: flex;
-        align-items: center;
-        gap: 0.25rem;
-        border-bottom: 2px solid transparent;
-        padding-bottom: 2px;
+    /* ── Accordion ───────────────────────────────────────────────────────── */
+    .cat-accordion-item { border-bottom: 1px solid #f3f4f6; }
+    .cat-accordion-trigger {
+        display: flex !important; align-items: center; justify-content: space-between;
+        width: 100%; padding: 0; background: none; border: none;
+        cursor: pointer; font-family: inherit; text-align: left;
+        text-decoration: none; gap: 10px; transition: background 0.15s;
     }
-
-    /* Chevron Icon */
-    .chevron-down {
-        width: 12px;
-        height: 12px;
-        transition: transform 0.3s;
+    .cat-accordion-trigger:hover { background: #f9fafb; }
+    .cat-accordion-label {
+        display: flex !important; align-items: center; gap: 10px;
+        flex: 1; min-width: 0; padding: 0.9rem 0 0.9rem 1.25rem; text-decoration: none;
     }
-    .cateco-menu-item:hover .chevron-down {
-        transform: rotate(180deg);
+    .cat-accordion-dot { width: 10px; height: 10px; border-radius: 3px; flex-shrink: 0; }
+    .cat-accordion-name { font-weight: 700; font-size: 0.9rem; color: #1f2937; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .cat-accordion-chevron { width: 16px; height: 16px; flex-shrink: 0; color: #9ca3af; transition: transform 0.25s ease; }
+    .cat-accordion-item.open .cat-accordion-chevron { transform: rotate(180deg); }
+    .cat-accordion-children { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; background: #f9fafb; }
+    .cat-accordion-item.open .cat-accordion-children { max-height: 600px; }
+    .cat-sub-link {
+        display: flex !important; align-items: center; gap: 10px;
+        padding: 0.65rem 1.25rem 0.65rem 2.5rem; color: #4b5563;
+        font-size: 0.85rem; font-weight: 600; text-decoration: none; transition: color 0.15s, background 0.15s;
     }
+    .cat-sub-link:hover { color: #1f2937; background: #f3f4f6; text-decoration: none; }
+    .cat-sub-bullet-sm { width: 6px; height: 6px; border-radius: 2px; flex-shrink: 0; }
+    .cat-accordion-simple-link {
+        display: flex !important; align-items: center; gap: 10px;
+        padding: 0.9rem 1.25rem; color: #1f2937; font-weight: 700;
+        font-size: 0.9rem; text-decoration: none; border-bottom: 1px solid #f3f4f6; transition: background 0.15s;
+    }
+    .cat-accordion-simple-link:hover { background: #f9fafb; text-decoration: none; }
 </style>
 
+{# ── Category image + colour maps ─────────────────────────────────────────── #}
+{% set categoryImages = {
+    'anti-insectes':  'assets/shop/images/anti-insectes.jpg',
+    'jardin':         'assets/shop/images/jardinage.jpg',
+    'maison':         'assets/shop/images/meubles2.jpg',
+    'plein-air':      'assets/shop/images/plein-air2.jpg',
+    'tentes-baches':  'assets/shop/images/tentes&baches.jpg',
+    'nouveaute':      'assets/shop/images/Nouveautés.png',
+    'bricolage-auto': 'assets/shop/images/bricolage-roues.jpg',
+    'sport-bien-etre':'assets/shop/images/Sport-Bien-être.jpg',
+    'noel':           'assets/shop/images/noel.jpg'
+} %}
+{% set categoryColors = {
+    'nouveaute':      '#e0c739ff',
+    'jardin':         '#7ab835',
+    'maison':         '#608531ff',
+    'plein-air':      '#ea580c',
+    'anti-insectes':  '#6b7177ff',
+    'tentes-baches':  '#2c9490ff',
+    'bricolage-auto': '#4d5672ff',
+    'sport-bien-etre':'#4463b9ff',
+    'noel':           '#dc2626'
+} %}
+
+{# ════════════ DESKTOP MEGA-MENU ════════════════════════════════════════════ #}
 <div class="cateco-megamenu-wrapper">
     <div class="cateco-nav-container">
         <ul class="cateco-menu-list">
-            
             {% for taxon in taxons %}
-                {# Filter out the specific categories not requested in this view #}
                 {% if '1e-2e-3e' not in taxon.slug|lower %}
-                    
-                    {% set slugKey = taxon.slug|split('/')|last|lower %}
+                    {% set slugKey  = taxon.slug|split('/')|last|lower %}
                     {% set catColor = categoryColors[slugKey] ?? '#17716c' %}
-                    {% set imgSrc = categoryImages[slugKey] ?? 'assets/shop/images/jardinage.jpg' %}
+                    {% set imgSrc   = categoryImages[slugKey] ?? 'assets/shop/images/jardinage.jpg' %}
 
                     <li class="cateco-menu-item" style="--cat-color: {{ catColor }};">
-                        <a href="{{ path('sylius_shop_product_index', {'slug': taxon.slug, '_locale': sylius.localeCode}) }}" 
-                           class="cateco-menu-link"
-                           style="border-bottom-color: {{ catColor }};">
+                         <a href="{{ path('sylius_shop_product_index', {'slug': taxon.slug, '_locale': sylius.localeCode}) }}"
+                           class="cateco-menu-link">
                             {{ taxon.name }}
-                            
-                            {# Only show chevron if not Noel and has children #}
                             {% if taxon.code != 'noel' and taxon.enabledChildren|length > 0 %}
                                 <svg class="chevron-down" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M19 9l-7 7-7-7" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M19 9l-7 7-7-7"/>
                                 </svg>
                             {% endif %}
                         </a>
 
-                        {# Mega Menu Panel - Hide for Noel specifically #}
                         {% if taxon.code != 'noel' and taxon.enabledChildren|length > 0 %}
-                            <div class="cateco-megamenu-panel" style="border-top-color: {{ catColor }};">
-                                
-                                {# Left: Subcategories List - 2 cols if > 3 children, else 1 col #}
-                                {% set childCount = taxon.enabledChildren|length %}
-                                <div class="cateco-megamenu-links{% if childCount > 3 %} two-cols{% endif %}" {% if childCount > 3 %}style="grid-template-rows: repeat({{ (childCount / 2)|round(0, 'ceil') }}, auto);"{% endif %}>
+                            {% set childCount = taxon.enabledChildren|length %}
+                            <div class="cateco-megamenu-panel">
+                                <div class="cateco-megamenu-links{% if childCount > 3 %} two-cols{% endif %}"
+                                     {% if childCount > 3 %}style="grid-template-rows: repeat({{ (childCount / 2)|round(0, 'ceil') }}, auto);"{% endif %}>
                                     {% for child in taxon.enabledChildren %}
-                                        <a href="{{ path('sylius_shop_product_index', {'slug': child.slug, '_locale': sylius.localeCode}) }}" class="cateco-sub-link" onmouseover="this.style.color='{{ catColor }}'" onmouseout="this.style.color='#374151'">
+                                        <a href="{{ path('sylius_shop_product_index', {'slug': child.slug, '_locale': sylius.localeCode}) }}"
+                                           class="cateco-sub-link"
+                                           onmouseover="this.style.color='{{ catColor }}'"
+                                           onmouseout="this.style.color='#374151'">
                                             <span class="cateco-sub-bullet" style="background-color: {{ catColor }};"></span>
                                             <span>{{ child.name }}</span>
                                         </a>
                                     {% endfor %}
                                 </div>
-
-                                {# Right: Featured Image #}
-                                <a href="{{ path('sylius_shop_product_index', {'slug': taxon.slug, '_locale': sylius.localeCode}) }}" class="cateco-megamenu-featured">
-                                    
-                                    {# Use Sylius image if exists, else fallback to mapped static image #}
+                                <a href="{{ path('sylius_shop_product_index', {'slug': taxon.slug, '_locale': sylius.localeCode}) }}"
+                                   class="cateco-megamenu-featured">
                                     {% if taxon.images|length > 0 %}
-                                        <img src="{{ asset('media/image/' ~ taxon.images.first.path) }}" alt="{{ taxon.name }}" onerror="this.onerror=null; this.src='{{ asset(imgSrc) }}'">
+                                        <img src="{{ asset('media/image/' ~ taxon.images.first.path) }}" alt="{{ taxon.name }}"
+                                             onerror="this.onerror=null;this.src='{{ asset(imgSrc) }}'">
                                     {% else %}
                                         <img src="{{ asset(imgSrc) }}" alt="{{ taxon.name }}">
                                     {% endif %}
-
                                     <div class="cateco-megamenu-featured-overlay">
                                         <h3 class="featured-title">{{ taxon.name }}</h3>
                                         <div class="featured-cta" style="border-bottom-color: {{ catColor }};">
                                             Voir toute la catégorie
-                                            <svg style="width:12px; height:12px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M9 5l7 7-7 7"/></svg>
+                                            <svg style="width:12px;height:12px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M9 5l7 7-7 7"/>
+                                            </svg>
                                         </div>
                                     </div>
                                 </a>
-
                             </div>
                         {% endif %}
                     </li>
 
                     {% if taxon.code == 'nouveaute' %}
-                        {# Special static link for Club Catéco - Moved after Nouveauté #}
-                        <li class="cateco-menu-item" style="--cat-color: #2b2b2cff;">
-                            <a href="{{ path('app_club_cateco_index', {'_locale': sylius.localeCode}) }}" class="cateco-menu-link" style="border-bottom-color: #2b2b2bff;">
-                                Club Catéco
-                            </a>
+                        <li class="cateco-menu-item" style="--cat-color: #2b2b2c;">
+                             <a href="{{ path('app_club_cateco_index', {'_locale': sylius.localeCode}) }}"
+                               class="cateco-menu-link">Club Catéco</a>
                         </li>
                     {% endif %}
-
                 {% endif %}
             {% endfor %}
-
         </ul>
+    </div>
+</div>
+
+{# ════════════ MOBILE CATEGORIES BAR ════════════════════════════════════════ #}
+<div class="cateco-mobile-categories-bar">
+    <button class="cateco-mobile-categories-btn" onclick="openCatDrawer()" aria-label="Afficher les catégories">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+        Catégories
+    </button>
+</div>
+
+{# ════════════ MOBILE CATEGORIES DRAWER ═════════════════════════════════════ #}
+<div id="cat-drawer-overlay" onclick="closeCatDrawer()"></div>
+<div id="cat-drawer" role="dialog" aria-modal="true" aria-label="Catégories">
+    <div class="cat-drawer-header">
+        <p class="cat-drawer-title">Catégories</p>
+        <button class="cat-drawer-close" onclick="closeCatDrawer()" aria-label="Fermer">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/>
+            </svg>
+        </button>
+    </div>
+    <div class="cat-drawer-body">
+        {% for taxon in taxons %}
+            {% if '1e-2e-3e' not in taxon.slug|lower %}
+                {% set slugKey  = taxon.slug|split('/')|last|lower %}
+                {% set catColor = categoryColors[slugKey] ?? '#17716c' %}
+
+                {% if taxon.code != 'noel' and taxon.enabledChildren|length > 0 %}
+                    <div class="cat-accordion-item" id="acc-{{ taxon.code }}">
+                        <div class="cat-accordion-trigger">
+                            <a href="{{ path('sylius_shop_product_index', {'slug': taxon.slug, '_locale': sylius.localeCode}) }}"
+                               class="cat-accordion-label" onclick="closeCatDrawer()">
+                                <span class="cat-accordion-dot" style="background-color: {{ catColor }};"></span>
+                                <span class="cat-accordion-name">{{ taxon.name }}</span>
+                            </a>
+                            <button type="button"
+                                    onclick="toggleCatAccordion('acc-{{ taxon.code }}')"
+                                    aria-label="Afficher sous-catégories"
+                                    style="background:none;border:none;cursor:pointer;padding:0.9rem 1.25rem 0.9rem 0.5rem;display:flex;align-items:center;">
+                                <svg class="cat-accordion-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/>
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="cat-accordion-children">
+                            {% for child in taxon.enabledChildren %}
+                                <a href="{{ path('sylius_shop_product_index', {'slug': child.slug, '_locale': sylius.localeCode}) }}"
+                                   class="cat-sub-link" onclick="closeCatDrawer()">
+                                    <span class="cat-sub-bullet-sm" style="background-color: {{ catColor }};"></span>
+                                    {{ child.name }}
+                                </a>
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% else %}
+                    <a href="{{ path('sylius_shop_product_index', {'slug': taxon.slug, '_locale': sylius.localeCode}) }}"
+                       class="cat-accordion-simple-link" onclick="closeCatDrawer()">
+                        <span class="cat-accordion-dot" style="background-color: {{ catColor }};"></span>
+                        {{ taxon.name }}
+                    </a>
+                {% endif %}
+
+                {% if taxon.code == 'nouveaute' %}
+                    <a href="{{ path('app_club_cateco_index', {'_locale': sylius.localeCode}) }}"
+                       class="cat-accordion-simple-link" onclick="closeCatDrawer()">
+                        <span class="cat-accordion-dot" style="background-color: #2b2b2c;"></span>
+                        Club Catéco
+                    </a>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
     </div>
 </div>
