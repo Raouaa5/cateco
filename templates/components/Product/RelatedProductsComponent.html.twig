@@ -1,4 +1,4 @@
-<div class="container mb-6" role="region" aria-labelledby="related-products-heading">
+<div class="container mb-1" role="region" aria-labelledby="related-products-heading">
     <div style="margin-bottom: 2.5rem; display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 1.5rem;">
         <h2 id="related-products-heading" style="font-size: 2rem; font-weight: 700; color: #111827;">{{ this.title }}</h2>
         
@@ -18,7 +18,7 @@
     </div>
 
     {% if related_products is not empty %}
-        <div id="related-products-carousel" style="display: flex; gap: 1.5rem; overflow-x: auto; scroll-snap-type: x mandatory; scroll-behavior: smooth; padding: 1rem 0 2rem; scrollbar-width: none; -ms-overflow-style: none;">
+        <div id="related-products-carousel" style="display: flex; gap: 1.5rem; overflow-x: auto; scroll-snap-type: x mandatory; scroll-behavior: smooth; padding: 1rem 0 0rem; scrollbar-width: none; -ms-overflow-style: none;">
             <style>
                 #related-products-carousel::-webkit-scrollbar { display: none; }
             </style>

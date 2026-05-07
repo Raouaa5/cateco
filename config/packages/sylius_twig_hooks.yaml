@@ -16,10 +16,13 @@ sylius_twig_hooks:
                 enabled: false
             content:
                 enabled: false
-        # Disable generic suggested products on cart page
+        # Cart page: disable Sylius default suggestions + inject CATECO recommendations
         'sylius_shop.cart.index.content':
             suggested_products:
                 enabled: false
+            cateco_cart_recommendations:
+                template: '@SyliusShop/Cart/_recommendations.html.twig'
+                priority: -50
         # Disable Mollie Cart Subscription Columns
         'sylius_shop.cart.index.content.form.sections.general.items.head':
             recurring:
@@ -59,3 +62,11 @@ sylius_twig_hooks:
             summary:
                 template: '@SyliusShop/checkout/address/sidebar.html.twig'
                 priority: 100
+
+        # ── CATECO ML Recommendations ─────────────────────────────────────────
+        # Injected below the product content on the product show page
+        'sylius.shop.product.show.content':
+            cateco_recommendations:
+                template: '@SyliusShop/product/show/_recommendations.html.twig'
+                priority: -100   # always after the main product block
+

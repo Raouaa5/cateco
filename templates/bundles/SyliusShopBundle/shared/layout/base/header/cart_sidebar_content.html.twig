@@ -36,18 +36,23 @@
                     </div>
                 </div>
 
-                {# Remove button - posts to cart page then reloads sidebar #}
-                <button
-                    type="button"
-                    class="cart-remove-btn"
-                    title="Supprimer"
-                    data-remove-item-id="{{ item.id }}"
-                    onclick="removeCartItem({{ item.id }}, this)"
+                {# Remove button - standard form POST to our custom endpoint #}
+                <form
+                    action="{{ path('app_cart_item_remove', {'id': item.id}) }}"
+                    method="POST"
+                    class="cart-remove-form"
+                    onsubmit="this.querySelector('button').disabled=true;"
                 >
-                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                </button>
+                    <button
+                        type="submit"
+                        class="cart-remove-btn"
+                        title="Supprimer"
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </form>
             </div>
         {% endfor %}
     </div>

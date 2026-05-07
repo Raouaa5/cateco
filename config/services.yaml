@@ -28,3 +28,60 @@ services:
     App\Controller\:
         resource: '../src/Controller'
         tags: ['controller.service_arguments']
+
+    App\Controller\Shop\ProductReviewController:
+        arguments:
+            $productReviewRepository: '@sylius.repository.product_review'
+            $channelContext: '@sylius.context.channel'
+            $localeContext: '@sylius.context.locale'
+        tags: ['controller.service_arguments']
+
+    App\EventListener\UserRegisteredListener:
+        tags:
+            - { name: kernel.event_listener, event: sylius.customer.post_register, method: onUserRegister }
+
+    App\EventListener\OrderPlacedListener:
+        tags:
+            - { name: kernel.event_listener, event: sylius.order.post_complete, method: __invoke }
+
+    App\EventListener\AccountMenuListener:
+        tags:
+            - { name: kernel.event_listener, event: sylius.menu.shop.account, method: addWishlistItem }
+
+    App\EventListener\CartRestorationListener:
+        arguments:
+            $cartStorage: '@sylius_shop.storage.cart_session'
+            $channelContext: '@sylius.context.channel'
+        tags:
+            - { name: kernel.event_listener, event: security.interactive_login, method: onSecurityInteractiveLogin, priority: -10 }
+
+    App\Controller\CartItemRemoveController:
+        arguments:
+            $orderProcessor: '@sylius.order_processing.order_processor'
+        tags: ['controller.service_arguments']
+
+    sylius_admin.controller.dashboard:
+        class: App\Controller\Admin\DashboardController
+        public: true
+        arguments:
+            - '@sylius.repository.channel'
+            - '@twig'
+            - '@router'
+        tags: ['controller.service_arguments']
+
+    # ── Session storage (PDO — persists across PHP-FPM workers) ─────────────
+    session.handler.pdo:
+        class: Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler
+        arguments:
+            - '%env(DATABASE_URL)%'
+            - { db_table: 'sessions', db_id_col: 'sess_id', db_data_col: 'sess_data', db_time_col: 'sess_time', db_lifetime_col: 'sess_lifetime', lock_mode: 1 }
+
+    # ── ML Recommendation Services ──────────────────────────────────────────
+    App\Service\RecommendationService:
+        arguments:
+            $httpClient: '@http_client'
+            $productRepository: '@sylius.repository.product'
+            $cache: '@cateco.cache.recommendations'
+            $logger: '@logger'
+    # RecommendationExtension and ProductRecommendationsContextProvider
+    # are auto-wired via the App\ resource scan above.

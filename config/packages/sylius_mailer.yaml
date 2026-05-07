@@ -1,0 +1,4 @@
+sylius_mailer:
+    sender:
+        name: 'Boutique Catéco'
+        address: 'catecofr@gmail.com'

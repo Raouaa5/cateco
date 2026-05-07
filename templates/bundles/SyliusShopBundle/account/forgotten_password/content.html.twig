@@ -1,0 +1,412 @@
+{% set form = hookable_metadata.context.form %}
+
+<style>
+/* ── Page ── */
+body { background: #F5F4F0 !important; }
+
+/* ── Wrapper ── */
+.cateco-login-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px 16px 12px;
+}
+
+/* ── Card ── */
+.cateco-login-card {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 520px;
+    border-radius: 16px;
+    overflow: hidden;
+    border: 0.5px solid #E0DDD5;
+    width: 100%;
+    max-width: 900px;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.08);
+}
+
+/* ── Left panel ── */
+.cateco-login-left {
+    background: #1A1A1A;
+    padding: 48px 44px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    overflow: hidden;
+}
+
+.cateco-login-left .deco-circle-1 {
+    position: absolute;
+    width: 260px; height: 260px;
+    border-radius: 50%;
+    background: #E87722;
+    opacity: 0.08;
+    top: -60px; right: -70px;
+    pointer-events: none;
+}
+.cateco-login-left .deco-circle-2 {
+    position: absolute;
+    width: 180px; height: 180px;
+    border-radius: 50%;
+    background: #E87722;
+    opacity: 0.06;
+    bottom: -50px; left: -50px;
+    pointer-events: none;
+}
+
+.login-logo {
+    font-size: 22px;
+    font-weight: 900;
+    color: #fff;
+    letter-spacing: -0.5px;
+    text-decoration: none;
+}
+.login-logo span { color: #E87722; }
+
+.login-left-icon-container {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    background: rgba(232, 119, 34, 0.1);
+    border: 1px solid rgba(232, 119, 34, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #E87722;
+    margin-top: 32px;
+}
+
+.login-left-title {
+    font-size: 28px;
+    font-weight: 800;
+    color: #fff;
+    line-height: 1.2;
+    margin: 20px 0 10px;
+}
+.login-left-title em { color: #E87722; font-style: normal; }
+
+.login-left-sub {
+    font-size: 13px;
+    color: rgba(255,255,255,0.5);
+    line-height: 1.6;
+    margin: 0 0 28px;
+}
+
+.login-perks { list-style: none; padding: 0; margin: 0 0 32px; }
+.login-perks li {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 13px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.55);
+    margin-bottom: 12px;
+}
+.login-perks li .step-number {
+    flex-shrink: 0;
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    background: rgba(232, 119, 34, 0.2);
+    color: #E87722;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 800;
+}
+
+/* ── Frosted signup card ── */
+.login-signup-card {
+    background: rgba(255,255,255,0.05);
+    border: 0.5px solid rgba(255,255,255,0.1);
+    border-radius: 12px;
+    padding: 16px 18px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+}
+.login-signup-card-text { font-size: 13px; color: rgba(255,255,255,0.55); font-weight: 500; }
+.login-signup-card-text strong { display: block; color: #fff; font-size: 13px; font-weight: 700; margin-bottom: 2px; }
+.btn-signup-small {
+    flex-shrink: 0;
+    background: #E87722;
+    color: #fff !important;
+    font-size: 11px;
+    font-weight: 800;
+    border-radius: 8px;
+    padding: 9px 16px;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.2s;
+}
+.btn-signup-small:hover { background: #C85F00; color: #fff !important; }
+
+/* ── Right panel ── */
+.cateco-login-right {
+    background: #fff;
+    padding: 48px 44px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.login-eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #E87722;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+}
+.login-eyebrow::before {
+    content: '';
+    display: block;
+    width: 24px; height: 2px;
+    background: #E87722;
+    border-radius: 2px;
+}
+
+.login-right-title {
+    font-size: 26px;
+    font-weight: 800;
+    color: #1A1A1A;
+    margin: 0 0 6px;
+}
+.login-right-sub {
+    font-size: 13px;
+    color: #9CA3AF;
+    margin: 0 0 28px;
+    line-height: 1.5;
+}
+
+/* ── Alert Warning ── */
+.login-alert-warning {
+    background: #FFF7ED;
+    border: 1px solid #FED7AA;
+    border-radius: 8px;
+    padding: 12px 14px;
+    font-size: 12px;
+    color: #9A3412;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    line-height: 1.5;
+}
+.login-alert-warning svg {
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+/* ── Input groups ── */
+.login-field { margin-bottom: 20px; }
+.login-field > label {
+    display: block;
+    font-size: 12px;
+    font-weight: 700;
+    color: #374151;
+    margin-bottom: 6px;
+}
+.login-field > label .req { color: #E87722; margin-left: 2px; }
+
+.input-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-wrap .field-icon {
+    position: absolute;
+    left: 13px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    color: #9CA3AF;
+    transition: color 0.2s;
+    display: flex;
+    z-index: 1;
+}
+
+.input-wrap input[type="email"] {
+    width: 100%;
+    height: 44px;
+    border: 1.5px solid #E0DDD5;
+    border-radius: 9px;
+    padding: 0 16px 0 40px;
+    font-size: 13px;
+    color: #1A1A1A;
+    background: #fff !important;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    box-sizing: border-box;
+    -webkit-box-shadow: 0 0 0 1000px #fff inset !important;
+    -webkit-text-fill-color: #1A1A1A !important;
+    box-shadow: none;
+    appearance: none;
+    -webkit-appearance: none;
+}
+.input-wrap input::placeholder { color: #9CA3AF !important; font-weight: 400; }
+.input-wrap input::-webkit-input-placeholder { color: #9CA3AF !important; }
+.cateco-login-right .form-control::placeholder { color: #9CA3AF !important; }
+.input-wrap input:focus {
+    border-color: #E87722 !important;
+    box-shadow: 0 0 0 3px rgba(232,119,34,0.1) !important;
+    -webkit-box-shadow: 0 0 0 3px rgba(232,119,34,0.1), 0 0 0 1000px #fff inset !important;
+    outline: none;
+}
+.input-wrap:focus-within .field-icon { color: #E87722; }
+
+/* ── Buttons ── */
+.btn-login-primary {
+    width: 100%;
+    background: #E87722;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 800;
+    border-radius: 10px;
+    padding: 14px;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: background 0.2s;
+    margin-bottom: 16px;
+}
+.btn-login-primary:hover { background: #C85F00; }
+
+.login-back-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #9CA3AF;
+    text-decoration: none;
+    margin-bottom: 24px;
+    transition: color 0.2s;
+}
+.login-back-link:hover { color: #E87722; text-decoration: none; }
+
+/* ── Security note ── */
+.login-security-note {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    font-size: 10px;
+    color: #C0BBB4;
+}
+
+/* ── Responsive ── */
+@media (max-width: 680px) {
+    .cateco-login-card { grid-template-columns: 1fr; }
+    .cateco-login-left { display: none; }
+    .cateco-login-right { padding: 36px 24px; }
+}
+</style>
+
+<div class="cateco-login-wrap">
+    <div class="cateco-login-card">
+
+        {# ── LEFT PANEL ── #}
+        <div class="cateco-login-left">
+            <div class="deco-circle-1"></div>
+            <div class="deco-circle-2"></div>
+
+            <div class="login-left-top">
+                <a href="{{ path('sylius_shop_homepage') }}" class="login-logo">
+                    <img src="{{ asset('assets/shop/images/logo2.png') }}" alt="Catéco" style="height: 60px; width: auto; object-fit: contain;">
+                </a>
+
+                <div class="login-left-icon-container">
+                    <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+                </div>
+
+                <p class="login-left-title">
+                    Réinitialiser<br>votre <em>mot de passe</em>
+                </p>
+                <p class="login-left-sub">
+                    Pas de panique — ça arrive à tout le monde.<br>
+                    Entrez votre email et nous vous enverrons un lien de réinitialisation.
+                </p>
+
+                <ul class="login-perks">
+                    <li><span class="step-number">1</span> Entrez votre email ci-contre</li>
+                    <li><span class="step-number">2</span> Vérifiez votre boîte mail <span style="opacity: 0.6; font-size: 11px; margin-left:4px;">- lien valable 24h</span></li>
+                    <li><span class="step-number">3</span> Créez un nouveau mot de passe sécurisé</li>
+                </ul>
+            </div>
+
+            <div class="login-signup-card">
+                <div class="login-signup-card-text">
+                    <strong>Pas encore de compte ?</strong>
+                    Créez votre espace en quelques secondes
+                </div>
+                <a href="{{ path('sylius_shop_register') }}" class="btn-signup-small">S'inscrire</a>
+            </div>
+        </div>
+
+        {# ── RIGHT PANEL ── #}
+        <div class="cateco-login-right">
+            <div class="login-eyebrow">MOT DE PASSE OUBLIÉ</div>
+            <h1 class="login-right-title">Réinitialisation<br>du mot de passe</h1>
+            <p class="login-right-sub">Réinitialisez le mot de passe de votre compte Catéco. Un email vous sera envoyé avec les instructions.</p>
+
+            <div class="login-alert-warning">
+                <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                <span>Le lien de réinitialisation sera valable pendant <strong>24 heures</strong>. Pensez à vérifier vos spams si vous ne recevez rien.</span>
+            </div>
+
+            {{ form_start(form, {'action': path('sylius_shop_request_password_reset_token'), 'attr': {'novalidate': 'novalidate', 'id': 'cateco-reset-form'}}) }}
+
+                {# Email #}
+                <div class="login-field">
+                    <label for="cateco_reset_email">Courriel <span class="req">*</span></label>
+                    <div class="input-wrap">
+                        <span class="field-icon">
+                            <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                        </span>
+                        {{ form_widget(form.email, {
+                            'id': 'cateco_reset_email',
+                            'attr': {
+                                'placeholder': 'votre@email.com',
+                                'autocomplete': 'email',
+                                'class': 'cateco-input'
+                            }
+                        }) }}
+                    </div>
+                </div>
+
+                {{ form_row(form._token) }}
+
+                {# Submit #}
+                <button type="submit" class="btn-login-primary" id="cateco-reset-submit">
+                    <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
+                    Envoyer le lien de réinitialisation
+                </button>
+
+            {{ form_end(form, {'render_rest': false}) }}
+
+            <a href="{{ path('sylius_shop_login') }}" class="login-back-link">
+                <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+                Retour à la connexion
+            </a>
+
+            <div class="login-security-note">
+                <svg width="11" height="11" fill="none" viewBox="0 0 24 24" stroke="#C0BBB4" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 11c0-1.1.9-2 2-2s2 .9 2 2v2H10v-2c0-1.1.9-2 2-2zm-4 0V9a4 4 0 018 0v2m-9 4h14a2 2 0 01-2 2H7a2 2 0 01-2-2v-4z"/></svg>
+                Vos données sont protégées par SSL 256-bit
+            </div>
+        </div>
+
+    </div>
+</div>

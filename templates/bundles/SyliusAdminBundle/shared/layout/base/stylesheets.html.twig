@@ -1,0 +1,54 @@
+{{ encore_entry_link_tags('admin-entry', null, 'admin') }}
+
+<style>
+    /* Cateco Orange Theme for Admin */
+    :root {
+        --tblr-primary: #f27a22;
+        --tblr-primary-rgb: 242, 122, 34;
+        --tblr-primary-fg: #ffffff;
+        --tblr-primary-darken: #d96d1e;
+    }
+
+    /* Force link hovers to be orange */
+    a:hover {
+        color: var(--tblr-primary) !important;
+    }
+    
+    /* Active sidebar elements */
+    .nav-link:hover, .nav-item.active > .nav-link {
+        color: var(--tblr-primary) !important;
+    }
+    
+    .nav-link:hover .nav-link-icon, .nav-item.active > .nav-link .nav-link-icon {
+        color: var(--tblr-primary) !important;
+    }
+
+    /* Primary buttons */
+    .btn-primary {
+        background-color: var(--tblr-primary) !important;
+        border-color: var(--tblr-primary) !important;
+        color: white !important;
+    }
+    
+    .btn-primary:hover {
+        background-color: var(--tblr-primary-darken) !important;
+        border-color: var(--tblr-primary-darken) !important;
+    }
+    
+    /* Outline primary buttons */
+    .btn-outline-primary {
+        color: var(--tblr-primary) !important;
+        border-color: var(--tblr-primary) !important;
+    }
+    
+    .btn-outline-primary:hover {
+        background-color: var(--tblr-primary) !important;
+        color: white !important;
+    }
+
+    /* Charts lines and dots (if they use the primary color variable) */
+    .apexcharts-series path {
+        /* This might need more specificity depending on the chart rendering,
+           but standard CSS vars should cover most of it. */
+    }
+</style>

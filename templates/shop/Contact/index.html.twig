@@ -1,0 +1,625 @@
+{% extends '@SyliusShop/shared/layout/base.html.twig' %}
+
+{% block title %}Contactez-nous | Catéco{% endblock %}
+
+{% block content %}
+<style>
+    /* Contact Page Specific Styles */
+    :root {
+        --contact-primary: #ea580c; /* Orange */
+        --contact-primary-hover: #c2410bc2;
+        --contact-dark: #1F1F1F;
+        --contact-light: #FAFAFA;
+        --contact-border: #E5E7EB;
+        --contact-text-dark: #111827;
+        --contact-text-muted: #6B7280;
+    }
+
+    .contact-hero {
+        background-color: var(--contact-dark);
+        color: white;
+        padding: 1.25rem 2rem;
+        position: relative;
+        overflow: hidden;
+        border-radius: 0 0 1.5rem 1.5rem;
+        margin-bottom: 2rem;
+    }
+
+    .contact-hero::after {
+        content: '';
+        position: absolute;
+        top: -50%;
+        right: -10%;
+        width: 600px;
+        height: 600px;
+        background: radial-gradient(circle, rgba(234, 88, 12, 0.15) 0%, rgba(234, 88, 12, 0) 70%);
+        border-radius: 50%;
+        pointer-events: none;
+    }
+
+    .contact-hero-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+
+    @media (min-width: 1024px) {
+        .contact-hero-container {
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+        }
+    }
+
+    .contact-breadcrumb {
+        color: var(--contact-text-muted);
+        font-size: 0.875rem;
+        margin-bottom: 1rem;
+    }
+
+    .contact-breadcrumb .active {
+        color: var(--contact-primary);
+        font-weight: 600;
+    }
+
+    .contact-subtitle {
+        color: var(--contact-primary);
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        font-size: 0.875rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .contact-subtitle::before {
+        content: '';
+        display: inline-block;
+        width: 2rem;
+        height: 2px;
+        background-color: var(--contact-primary);
+    }
+
+    .contact-title {
+        font-size: 2rem;
+        font-weight: 800;
+        line-height: 1.2;
+        margin: 0.5rem 0;
+        color: #ffffff !important;
+    }
+
+    .contact-title span {
+        color: var(--contact-primary);
+    }
+
+    .contact-description {
+        color: #D1D5DB;
+        font-size: 1.125rem;
+        max-width: 600px;
+    }
+
+    .contact-stats {
+        display: flex;
+        gap: 1rem;
+    }
+
+    .contact-stat-card {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 1rem;
+        padding: 1.5rem;
+        text-align: center;
+        min-width: 140px;
+        backdrop-filter: blur(10px);
+        transition: transform 0.3s ease;
+    }
+
+    .contact-stat-card:hover {
+        transform: translateY(-5px);
+        border-color: rgba(234, 88, 12, 0.3);
+    }
+
+    .contact-stat-value {
+        font-size: 2rem;
+        font-weight: 800;
+        color: var(--contact-primary);
+        margin-bottom: 0.25rem;
+    }
+
+    .contact-stat-label {
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: #9CA3AF;
+        font-weight: 600;
+    }
+
+    .contact-main {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 1rem 0.5rem;
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+
+    @media (min-width: 1024px) {
+        .contact-main {
+            grid-template-columns: 1fr 1fr;
+        }
+    }
+
+    .contact-card {
+        background: white;
+        border-radius: 1rem;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+        border: 1px solid var(--contact-border);
+        padding: 2rem;
+        transition: box-shadow 0.3s ease;
+    }
+
+    .contact-card:hover {
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.025);
+    }
+
+    .contact-form-header {
+        margin-bottom: 2rem;
+    }
+
+    .contact-form-title {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--contact-text-dark);
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .contact-form-title svg {
+        color: var(--contact-primary);
+    }
+
+    .contact-form-subtitle {
+        color: var(--contact-text-muted);
+        font-size: 0.95rem;
+    }
+
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+
+    .form-label {
+        display: block;
+        font-weight: 600;
+        color: var(--contact-text-dark);
+        margin-bottom: 0.5rem;
+        font-size: 0.95rem;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 0.75rem 1rem;
+        border: 1px solid var(--contact-border);
+        border-radius: 0.5rem;
+        background-color: var(--contact-light);
+        color: var(--contact-text-dark);
+        font-family: inherit;
+        transition: all 0.2s;
+        box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.02);
+    }
+
+    .form-control:focus {
+        outline: none;
+        border-color: var(--contact-primary);
+        box-shadow: 0 0 0 3px rgba(234, 88, 12, 0.1);
+        background-color: white;
+    }
+
+    .form-file-area {
+        border: 2px dashed var(--contact-border);
+        border-radius: 0.5rem;
+        padding: 0.75rem;
+        text-align: center;
+        background-color: var(--contact-light);
+        cursor: pointer;
+        transition: all 0.2s;
+        position: relative;
+    }
+
+    .form-file-area:hover {
+        border-color: var(--contact-primary);
+        background-color: rgba(234, 88, 12, 0.02);
+    }
+
+    .form-file-input {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        cursor: pointer;
+    }
+
+    .form-checkbox-label {
+        display: flex;
+        gap: 0.75rem;
+        align-items: flex-start;
+        font-size: 0.9rem;
+        color: var(--contact-text-muted);
+        cursor: pointer;
+    }
+    
+    .form-checkbox-label input[type="checkbox"] {
+        margin-top: 0.2rem;
+        accent-color: var(--contact-primary);
+        width: 1rem;
+        height: 1rem;
+    }
+
+    .btn-submit {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.75rem;
+        background-color: var(--contact-primary);
+        color: white;
+        font-weight: 600;
+        padding: 1rem 2rem;
+        border-radius: 0.5rem;
+        border: none;
+        width: 100%;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        font-size: 1rem;
+    }
+
+    .btn-submit:hover {
+        background-color: #d04d08;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(234, 88, 12, 0.3);
+    }
+
+    /* Right Column Map & Info */
+    .map-container {
+        border-radius: 1rem;
+        overflow: hidden;
+        border: 1px solid var(--contact-border);
+        height: 300px;
+        margin-bottom: 2rem;
+        position: relative;
+    }
+    
+    .map-header {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        background: white;
+        padding: 1rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        z-index: 10;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+
+    .map-title {
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .map-link {
+        color: var(--contact-primary);
+        font-weight: 600;
+        font-size: 0.875rem;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        gap: 0.25rem;
+    }
+
+    .map-link:hover {
+        text-decoration: underline;
+    }
+
+    .info-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+        margin-bottom: 2rem;
+    }
+
+    .info-card {
+        background: var(--contact-light);
+        padding: 1.25rem;
+        border-radius: 0.75rem;
+        border: 1px solid var(--contact-border);
+        display: flex;
+        align-items: flex-start;
+        gap: 1rem;
+        transition: transform 0.2s;
+    }
+
+    .info-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    }
+
+    .info-icon {
+        background: rgba(234, 88, 12, 0.1);
+        color: var(--contact-primary);
+        padding: 0.75rem;
+        border-radius: 0.5rem;
+        display: flex;
+    }
+
+    .info-content-title {
+        font-size: 0.65rem;
+        text-transform: uppercase;
+        font-weight: 700;
+        color: var(--contact-text-muted);
+        letter-spacing: 0.05em;
+        margin-bottom: 0.25rem;
+    }
+
+    .info-content-value {
+        font-weight: 700;
+        color: var(--contact-primary);
+        font-size: 0.95rem;
+    }
+    
+    .info-content-value.dark {
+        color: var(--contact-text-dark);
+    }
+
+    .hours-card {
+        background: var(--contact-light);
+        border-radius: 0.75rem;
+        padding: 1.5rem;
+        border: 1px solid #f3e8dd;
+    }
+
+    .hours-title {
+        font-weight: 700;
+        color: var(--contact-text-dark);
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .hours-title svg {
+        color: var(--contact-primary);
+    }
+
+    .hours-row {
+        display: flex;
+        justify-content: space-between;
+        padding: 0.75rem 0;
+        border-bottom: 1px solid rgba(0,0,0,0.05);
+        font-size: 0.95rem;
+    }
+
+    .hours-row:last-child {
+        border-bottom: none;
+        padding-bottom: 0;
+    }
+
+    .hours-day {
+        color: var(--contact-text-muted);
+        font-weight: 500;
+    }
+
+    .hours-time {
+        font-weight: 700;
+        color: #047857; /* Green for open */
+    }
+
+    .hours-time.closed {
+        color: #DC2626; /* Red for closed */
+        font-weight: 700;
+    }
+
+    
+    /* form errors */
+    .form-error {
+        color: #DC2626;
+        font-size: 0.85rem;
+        margin-top: 0.5rem;
+        display: block;
+    }
+</style>
+
+<div class="contact-hero">
+    <div class="contact-hero-container">
+        <div class="contact-hero-content">
+            <div class="contact-breadcrumb">
+                <a href="{{ path('sylius_shop_homepage') }}" style="color: inherit; text-decoration: none;">Accueil</a> > <span class="active">Contact</span>
+            </div>
+            <div class="contact-subtitle">Nous vous écouterons</div>
+            <h1 class="contact-title">Une question ?<br>On est là pour <span>vous</span></h1>
+            <p class="contact-description">Notre équipe est disponible pour vous aider. Remplissez le formulaire ou retrouvez-nous en magasin.</p>
+        </div>
+        <div class="contact-stats">
+            <div class="contact-stat-card">
+                <div class="contact-stat-value">2</div>
+                <div class="contact-stat-label">Magasins<br>en Guyane</div>
+            </div>
+            <div class="contact-stat-card">
+                <div class="contact-stat-value">24h</div>
+                <div class="contact-stat-label">Délai de<br>réponse</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="contact-main">
+
+
+
+    <!-- Left Column: Form -->
+    <div class="contact-card">
+        <div class="contact-form-header">
+            <h2 class="contact-form-title">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                Contactez-nous
+            </h2>
+            <p class="contact-form-subtitle">Nous vous répondrons dans les 24 heures.</p>
+        </div>
+
+        {% if app.request.query.get('success') %}
+            <div style="background: #ECFDF5; border: 1px solid #10B981; color: #065F46; padding: 1.25rem 1.5rem; border-radius: 0.75rem; margin-bottom: 2rem; display: flex; align-items: flex-start; gap: 1rem; box-shadow: 0 4px 6px -1px rgba(16, 185, 129, 0.1);">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0; margin-top: 0.1rem;"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                <div>
+                    <h3 style="font-weight: 700; margin: 0 0 0.25rem 0; font-size: 1rem; color: #065F46;">Message envoyé !</h3>
+                    <p style="margin: 0; font-size: 0.95rem; opacity: 0.9;">Votre message a été envoyé avec succès. Notre équipe vous répondra dans les plus brefs délais.</p>
+                </div>
+            </div>
+        {% endif %}
+
+        {{ form_start(form, {'attr': {'class': 'needs-validation'}}) }}
+            
+            <div class="form-group">
+                {{ form_label(form.subject, null, {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(form.subject, {'attr': {'class': 'form-control'}}) }}
+                <div class="form-error">{{ form_errors(form.subject) }}</div>
+            </div>
+
+            <div class="form-group">
+                {{ form_label(form.email, null, {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(form.email, {'attr': {'class': 'form-control'}}) }}
+                <div class="form-error">{{ form_errors(form.email) }}</div>
+            </div>
+
+            <div class="form-group">
+                {{ form_label(form.message, null, {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(form.message, {'attr': {'class': 'form-control'}}) }}
+                <div class="form-error">{{ form_errors(form.message) }}</div>
+            </div>
+
+            <div class="form-group">
+                {{ form_label(form.attachment, null, {'label_attr': {'class': 'form-label'}}) }}
+                <div class="form-file-area">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--contact-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom: 0.5rem; display: inline-block;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                    <div style="color: var(--contact-primary); font-weight: 600;">Choisir un fichier <span style="color: var(--contact-text-muted); font-weight: normal;">ou glisser-déposer ici</span></div>
+                    {{ form_widget(form.attachment, {'attr': {'class': 'form-file-input'}}) }}
+                </div>
+                <div class="form-error">{{ form_errors(form.attachment) }}</div>
+                <div id="file-name-display" style="font-size: 0.85rem; color: var(--contact-text-muted); margin-top: 0.5rem; display: none;"></div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-checkbox-label">
+                    {{ form_widget(form.consent) }}
+                    <span>J'accepte les conditions générales et la <a href="{{ path('app_privacy_policy') }}" style="color: var(--contact-primary); text-decoration: none;">politique de confidentialité</a></span>
+                </label>
+                <div class="form-error">{{ form_errors(form.consent) }}</div>
+            </div>
+
+            <button type="submit" class="btn-submit">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+                Envoyer le message
+            </button>
+            <div style="display:none">{{ form_rest(form) }}</div>
+        {{ form_end(form) }}
+        
+        <script>
+            // simple script to show file name on select
+            document.querySelector('.form-file-input').addEventListener('change', function(e) {
+                var fileName = e.target.files[0] ? e.target.files[0].name : '';
+                var display = document.getElementById('file-name-display');
+                if (fileName) {
+                    display.textContent = 'Fichier sélectionné : ' + fileName;
+                    display.style.display = 'block';
+                } else {
+                    display.style.display = 'none';
+                }
+            });
+        </script>
+    </div>
+
+    <!-- Right Column: Info & Map -->
+    <div>
+        <!-- Map -->
+        <div class="map-container">
+            <div class="map-header">
+                <div class="map-title">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--contact-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                    Cateco Cayenne
+                </div>
+                <a href="https://maps.app.goo.gl/..." target="_blank" class="map-link">Ouvrir dans Maps <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg></a>
+            </div>
+            <!-- Google map embed iframe placeholder, replacing with actual embed link if you have one, or static map-->
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15886.680076045155!2d-52.33649695!3d4.9317578!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8d123e7127e7d69d%3A0xe677dbfc5e8d91f4!2sCateco%20Cayenne!5e0!3m2!1sfr!2sfr!4v1703248883737!5m2!1sfr!2sfr" width="100%" height="100%" style="border:0; padding-top: 60px;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+
+        <!-- Info Grid -->
+        <div class="info-grid">
+            <div class="info-card">
+                <div class="info-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+                </div>
+                <div>
+                    <div class="info-content-title">Téléphone</div>
+                    <div class="info-content-value">0594 38 38 58</div>
+                </div>
+            </div>
+            <div class="info-card">
+                <div class="info-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                </div>
+                <div>
+                    <div class="info-content-title">Email</div>
+                    <div class="info-content-value">contact@cateco.fr</div>
+                </div>
+            </div>
+            <div class="info-card">
+                <div class="info-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                </div>
+                <div>
+                    <div class="info-content-title">Adresse</div>
+                    <div class="info-content-value dark">Cayenne<br><span style="font-size:0.8rem;font-weight:500;">Guyane française</span></div>
+                </div>
+            </div>
+            <div class="info-card">
+                <div class="info-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                </div>
+                <div>
+                    <div class="info-content-title">Nos magasins</div>
+                    <div class="info-content-value dark">Cayenne - Kourou</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Hours -->
+        <div class="hours-card">
+            <h3 class="hours-title">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                Horaires d'ouverture
+            </h3>
+            
+            <div class="hours-row">
+                <span class="hours-day">Lundi – Vendredi</span>
+                <span class="hours-time">08h00 – 18h00</span>
+            </div>
+            <div class="hours-row">
+                <span class="hours-day">Samedi</span>
+                <span class="hours-time">08h00 – 13h00</span>
+            </div>
+            <div class="hours-row">
+                <span class="hours-day">Dimanche</span>
+                <span class="hours-time closed">Fermé</span>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

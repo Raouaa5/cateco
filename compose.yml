@@ -10,7 +10,8 @@ services:
       mysql:
         condition: service_healthy
     environment:
-      APP_ENV: dev
+      APP_ENV: prod
+      APP_DEBUG: '0'
       SYLIUS_TIMEZONE: Europe/Paris
       DATABASE_URL: "mysql://sylius:sylius@mysql:3306/sylius?serverVersion=8.0"
 
@@ -63,6 +64,50 @@ services:
      ports:
       - "1025:1025"
       - "8025:8025"
+
+  # ── FastAPI recommender (CATECO V4) ───────────────────────────────────────
+  recommender:
+    build:
+      context: .
+      dockerfile: api/Dockerfile
+    ports:
+      - "8000:8000"
+    volumes:
+      # Share the full project so api/ and ml/ are both visible inside the container
+      - .:/srv/sylius:delegated
+    environment:
+      # Must match ML_REFRESH_TOKEN in the php service
+      REFRESH_TOKEN: ${ML_REFRESH_TOKEN:-changeme}
+      TOP_K_DEFAULT: "5"
+      MODEL_PATH: /srv/sylius/ml/svd_model_v4.pkl
+      HYBRID_CSV:  /srv/sylius/ml/interactions_hybrid.csv
+    depends_on:
+      - mysql
+    restart: unless-stopped
+
+  # ── Nightly ML cron (runs every night at 02:00) ───────────────────────────
+  ml-cron:
+    image: ghcr.io/sylius/sylius-php:8.3-alpine
+    volumes:
+      - .:/srv/sylius:delegated
+    working_dir: /srv/sylius
+    environment:
+      APP_ENV: prod
+      APP_DEBUG: '0'
+      DATABASE_URL: "mysql://sylius:sylius@mysql:3306/sylius?serverVersion=8.0"
+      ML_REFRESH_TOKEN: ${ML_REFRESH_TOKEN:-changeme}
+    depends_on:
+      mysql:
+        condition: service_healthy
+      recommender:
+        condition: service_started
+    # Run cron daemon: every night at 02:00 UTC, trigger the Symfony command
+    command: >
+      sh -c "
+        echo '0 2 * * * cd /srv/sylius && php bin/console app:ml:retrain >> /var/log/ml-retrain.log 2>&1' | crontab - &&
+        crond -f -l 2
+      "
+    restart: unless-stopped
 
 volumes:
   db_data:

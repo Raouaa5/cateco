@@ -12,8 +12,10 @@
     {# Trust Badges (Custom) #}
     {% include '@SyliusShop/product/show/custom_blocks/trust_badges.html.twig' ignore missing %}
 
-    {# Accordions moved from left column to right column #}
-    <div class="cateco-pdp-accordions mt-5">
+    {# Accordion — data-live-ignore + id required: morphdom needs the id to match
+       this element during ProductSummaryComponent re-renders and skip updating it.
+       Without this, morphdom resets all Bootstrap accordion state after ~2s. #}
+    <div id="cateco-pdp-accordions" class="cateco-pdp-accordions mt-5" data-live-ignore>
         {% include '@SyliusShop/product/show/custom_blocks/accordions.html.twig' ignore missing %}
     </div>
 </div>

@@ -1,0 +1,14 @@
+{#
+    Product Page — "Vous aimerez aussi"
+    Rendered via Sylius Twig Hook: sylius.shop.product.show.content (priority -100)
+    Uses cateco_recommendations() Twig function — excludes current product.
+#}
+{% set recs = cateco_recommendations(6, [product.id]) %}
+{% include '@SyliusShop/shared/_recommendations.html.twig' with {
+    recommendations:  recs,
+    section_title:    'Vous aimerez aussi',
+    section_id:       'product-recommendations',
+    badge_label:      'Recommandé',
+    show_add_to_cart: true
+} %}
+

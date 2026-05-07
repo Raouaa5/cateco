@@ -1,59 +1,127 @@
-<div class="accordion cateco-product-accordion" id="pdpAccordion">
-  {# Détails #}
-  <div class="accordion-item" style="border: none; border-bottom: 0.5px solid #F0EDE8; background: transparent;">
-    <h2 class="accordion-header" id="headingDetails">
-      <button class="accordion-button shadow-none px-0" type="button" data-bs-toggle="collapse" data-bs-target="#collapseDetails" aria-expanded="true" aria-controls="collapseDetails" style="background: transparent; font-weight: 800; font-size: 1.1rem; color: #1A1A1A;">
-        Détails du produit
-      </button>
-    </h2>
-    <div id="collapseDetails" class="accordion-collapse collapse show" aria-labelledby="headingDetails" data-bs-parent="#pdpAccordion">
-      <div class="accordion-body px-0 pt-0 pb-4 text-muted" style="line-height: 1.6;">
-        {{ product.description|raw|default('Aucune description disponible pour ce produit.') }}
-      </div>
+{# Pure CSS accordion using <details>/<summary> — no Bootstrap JS, no state lost on morphdom re-render #}
+<div class="cateco-css-accordion mt-5">
+
+  {# Détails du produit #}
+  <details class="cateco-acc-item" name="pdp-accordion" open>
+    <summary class="cateco-acc-header">
+      <span>Détails du produit</span>
+      <span class="cateco-acc-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" width="14" height="14">
+          <path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/>
+        </svg>
+      </span>
+    </summary>
+    <div class="cateco-acc-body text-muted" style="line-height: 1.6;">
+      {{ product.description|raw|default('Aucune description disponible pour ce produit.') }}
     </div>
-  </div>
+  </details>
 
   {# Livraison & retours #}
-  <div class="accordion-item" style="border: none; border-bottom: 0.5px solid #F0EDE8; background: transparent;">
-    <h2 class="accordion-header" id="headingLivraison">
-      <button class="accordion-button collapsed shadow-none px-0" type="button" data-bs-toggle="collapse" data-bs-target="#collapseLivraison" aria-expanded="false" aria-controls="collapseLivraison" style="background: transparent; font-weight: 800; font-size: 1.1rem; color: #1A1A1A;">
-        Livraison & retours
-      </button>
-    </h2>
-    <div id="collapseLivraison" class="accordion-collapse collapse" aria-labelledby="headingLivraison" data-bs-parent="#pdpAccordion">
-      <div class="accordion-body px-0 pt-0 pb-4 text-muted">
-        Retrait gratuit en magasin Catéco Cayenne. Livraison standard en Guyane sous 2 à 4 jours ouvrés. Retour possible sous 30 jours, dans l'emballage d'origine.
-      </div>
+  <details class="cateco-acc-item" name="pdp-accordion">
+    <summary class="cateco-acc-header">
+      <span>Livraison &amp; retours</span>
+      <span class="cateco-acc-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" width="14" height="14">
+          <path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/>
+        </svg>
+      </span>
+    </summary>
+    <div class="cateco-acc-body text-muted">
+      Retrait gratuit en magasin Catéco Cayenne. Livraison standard en Guyane sous 2 à 4 jours ouvrés. Retour possible sous 30 jours, dans l'emballage d'origine.
     </div>
-  </div>
+  </details>
 
   {# Avis clients #}
-  <div class="accordion-item" style="border: none; border-bottom: 0.5px solid #F0EDE8; background: transparent;">
-    <h2 class="accordion-header" id="headingAvis">
-      <button class="accordion-button collapsed shadow-none px-0" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAvis" aria-expanded="false" aria-controls="collapseAvis" style="background: transparent; font-weight: 800; font-size: 1.1rem; color: #1A1A1A;">
-        Avis clients ({{ product.acceptedReviews|length }})
-      </button>
-    </h2>
-    <div id="collapseAvis" class="accordion-collapse collapse" aria-labelledby="headingAvis" data-bs-parent="#pdpAccordion">
-      <div class="accordion-body px-0 pt-0 pb-4">
-        {# Instead of rebuilding reviews, we hook the reviews list natively #}
-        {% hook 'sylius_shop.product.show.content.info.overview.accordion.reviews.content' %}
-      </div>
+  <details class="cateco-acc-item" name="pdp-accordion">
+    <summary class="cateco-acc-header">
+      <span>Avis clients ({{ product.acceptedReviews|length }})</span>
+      <span class="cateco-acc-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" width="14" height="14">
+          <path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/>
+        </svg>
+      </span>
+    </summary>
+    <div class="cateco-acc-body">
+      {% include 'shop/ProductReview/_list.html.twig' with {
+          reviews: product.acceptedReviews
+      } only %}
     </div>
-  </div>
+  </details>
+
 </div>
 
 <style>
-.cateco-product-accordion .accordion-button::after {
-    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%231a1a1a'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
-    background-color: #F5F4F0;
-    border-radius: 50%;
-    padding: 0.6rem;
-    background-size: 50%;
-    background-position: center;
+/* ── Pure-CSS Accordion (details/summary) ──────────────────────── */
+.cateco-css-accordion {
+  display: flex;
+  flex-direction: column;
 }
-.cateco-product-accordion .accordion-button:not(.collapsed)::after {
-    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23E87722'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
-    transform: rotate(-180deg);
+
+.cateco-acc-item {
+  border-bottom: 0.5px solid #F0EDE8;
+  background: transparent;
+}
+
+/* Remove default disclosure triangle */
+.cateco-acc-item > summary {
+  list-style: none;
+}
+.cateco-acc-item > summary::-webkit-details-marker {
+  display: none;
+}
+
+.cateco-acc-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 0;
+  cursor: pointer;
+  font-weight: 800;
+  font-size: 1.1rem;
+  color: #1A1A1A;
+  user-select: none;
+  background: transparent;
+  border: none;
+  outline: none;
+}
+
+.cateco-acc-header:focus-visible {
+  outline: 2px solid #E87722;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Icon circle */
+.cateco-acc-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  background-color: #F5F4F0;
+  border-radius: 50%;
+  flex-shrink: 0;
+  color: #1A1A1A;
+  transition: transform 0.25s ease, color 0.25s ease;
+}
+
+/* Rotate icon when open */
+.cateco-acc-item[open] .cateco-acc-icon {
+  transform: rotate(-180deg);
+  color: #E87722;
+}
+
+/* Body content */
+.cateco-acc-body {
+  padding: 0 0 1.25rem 0;
+}
+
+/* Smooth open animation */
+@keyframes cateco-acc-open {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.cateco-acc-item[open] .cateco-acc-body {
+  animation: cateco-acc-open 0.2s ease forwards;
 }
 </style>

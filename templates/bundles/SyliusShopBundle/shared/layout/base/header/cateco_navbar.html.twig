@@ -328,6 +328,10 @@
                             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
                             Mon compte
                         </a>
+                        <a href="{{ path('app_wishlist_index') }}">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+                            Ma Wishlist
+                        </a>
                         <a href="{{ path('sylius_shop_account_address_book_index') }}">
                             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
                             Adresses
@@ -441,6 +445,10 @@
                 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
                 Mon compte
             </a>
+            <a href="{{ path('app_wishlist_index') }}" class="mobile-nav-link">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+                Ma Wishlist
+            </a>
             <a href="{{ path('sylius_shop_account_order_index') }}" class="mobile-nav-link">
                 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/></svg>
                 Historique de commandes
@@ -504,7 +512,7 @@
         document.body.style.overflow = sidebar.classList.contains('open') ? 'hidden' : '';
     }
 
-    /* ── Wishlist modal ────────────────────────────────────── */
+    /* ── Wishlist AJAX toggle ──────────────────────── */
     function showLoginModal() {
         var m = document.getElementById('wishlist-login-modal');
         if (m) m.classList.add('active');
@@ -514,6 +522,45 @@
         if (m) m.classList.remove('active');
     }
 
+    document.addEventListener('click', function (e) {
+        var btn = e.target.closest('.wishlist-heart-btn');
+        if (!btn) return;
+
+        var toggleUrl = btn.dataset.toggleUrl;
+        var loginUrl  = btn.dataset.loginUrl;
+
+        if (!toggleUrl) return; // no URL = not wired yet
+
+        fetch(toggleUrl, {
+            method: 'POST',
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'Content-Type': 'application/json'
+            },
+            credentials: 'same-origin'
+        })
+        .then(function (res) {
+            if (res.status === 401) {
+                // Not logged in → redirect to login
+                if (loginUrl) window.location.href = loginUrl;
+                return null;
+            }
+            return res.json();
+        })
+        .then(function (data) {
+            if (!data) return;
+            var svg = btn.querySelector('svg');
+            if (data.in_wishlist) {
+                btn.classList.add('wl-active');
+                if (svg) svg.setAttribute('fill', '#E87722');
+            } else {
+                btn.classList.remove('wl-active');
+                if (svg) svg.setAttribute('fill', 'none');
+            }
+        })
+        .catch(function (err) { console.error('Wishlist error:', err); });
+    });
+
     /* ── Registration email pre-fill ──────────────────────── */
     document.addEventListener('DOMContentLoaded', function () {
         var params = new URLSearchParams(window.location.search);
@@ -522,6 +569,44 @@
         if (email && (path.indexOf('/register') !== -1 || path.indexOf('/inscription') !== -1)) {
             var input = document.querySelector('input[type="email"][name$="[email]"]');
             if (input) input.value = email;
+        }
+    });
+
+    /* ── Instant cart item removal animation ──────────────── */
+    document.addEventListener('submit', function (e) {
+        var form = e.target.closest('.cart-remove-form');
+        if (!form) return;
+
+        /* 1 – Animate the row out */
+        var row = form.closest('.cart-item-row');
+        if (row) {
+            row.style.transition = 'opacity 0.18s ease, transform 0.18s ease, max-height 0.25s ease';
+            row.style.opacity    = '0';
+            row.style.transform  = 'translateX(24px)';
+            row.style.maxHeight  = row.offsetHeight + 'px';
+            setTimeout(function () {
+                row.style.maxHeight    = '0';
+                row.style.overflow     = 'hidden';
+                row.style.marginBottom = '0';
+                row.style.paddingTop   = '0';
+                row.style.paddingBottom = '0';
+            }, 180);
+        }
+
+        /* 2 – Decrement the navbar badge instantly */
+        var badge = document.querySelector('#cart-toggle-btn span');
+        if (badge) {
+            var current = parseInt(badge.textContent) || 0;
+            var next    = Math.max(0, current - 1);
+            badge.textContent = next;
+            if (next === 0) badge.style.display = 'none';
+        }
+
+        /* 3 – Update the "N articles — €X.XX" footer in the sidebar instantly */
+        var totalLabel = document.querySelector('.cart-total-label');
+        if (totalLabel) {
+            var remaining = document.querySelectorAll('#cart-sidebar .cart-item-row').length - 1;
+            totalLabel.textContent = remaining + ' article' + (remaining > 1 ? 's' : '');
         }
     });
 </script>

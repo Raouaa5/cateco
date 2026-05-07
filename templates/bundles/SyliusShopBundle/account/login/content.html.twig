@@ -1,0 +1,552 @@
+{% set form = hookable_metadata.context.form %}
+{% set last_error = hookable_metadata.context.last_error|default(null) %}
+
+<style>
+/* ── Page ── */
+body { background: #F5F4F0 !important; }
+
+/* ── Wrapper ── */
+.cateco-login-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px 16px 12px;
+}
+
+/* ── Card ── */
+.cateco-login-card {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 520px;
+    border-radius: 16px;
+    overflow: hidden;
+    border: 0.5px solid #E0DDD5;
+    width: 100%;
+    max-width: 900px;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.08);
+}
+
+/* ── Left panel ── */
+.cateco-login-left {
+    background: #1A1A1A;
+    padding: 48px 44px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    overflow: hidden;
+}
+
+.cateco-login-left .deco-circle-1 {
+    position: absolute;
+    width: 260px; height: 260px;
+    border-radius: 50%;
+    background: #E87722;
+    opacity: 0.08;
+    top: -60px; right: -70px;
+    pointer-events: none;
+}
+.cateco-login-left .deco-circle-2 {
+    position: absolute;
+    width: 180px; height: 180px;
+    border-radius: 50%;
+    background: #E87722;
+    opacity: 0.06;
+    bottom: -50px; left: -50px;
+    pointer-events: none;
+}
+
+.login-logo {
+    font-size: 22px;
+    font-weight: 900;
+    color: #fff;
+    letter-spacing: -0.5px;
+    text-decoration: none;
+}
+.login-logo span { color: #E87722; }
+
+.login-left-title {
+    font-size: 28px;
+    font-weight: 800;
+    color: #fff;
+    line-height: 1.2;
+    margin: 28px 0 10px;
+}
+.login-left-title em { color: #E87722; font-style: normal; }
+
+.login-left-sub {
+    font-size: 13px;
+    color: rgba(255,255,255,0.5);
+    line-height: 1.6;
+    margin: 0 0 28px;
+}
+
+.login-perks { list-style: none; padding: 0; margin: 0 0 32px; }
+.login-perks li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.55);
+    margin-bottom: 12px;
+}
+.login-perks li::before {
+    content: '';
+    flex-shrink: 0;
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: #E87722;
+}
+
+/* ── Frosted signup card ── */
+.login-signup-card {
+    background: rgba(255,255,255,0.05);
+    border: 0.5px solid rgba(255,255,255,0.1);
+    border-radius: 12px;
+    padding: 16px 18px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+}
+.login-signup-card-text { font-size: 13px; color: rgba(255,255,255,0.55); font-weight: 500; }
+.login-signup-card-text strong { display: block; color: #fff; font-size: 13px; font-weight: 700; margin-bottom: 2px; }
+.btn-signup-small {
+    flex-shrink: 0;
+    background: #E87722;
+    color: #fff !important;
+    font-size: 11px;
+    font-weight: 800;
+    border-radius: 8px;
+    padding: 9px 16px;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.2s;
+}
+.btn-signup-small:hover { background: #C85F00; color: #fff !important; }
+
+/* ── Right panel ── */
+.cateco-login-right {
+    background: #fff;
+    padding: 48px 44px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.login-eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #E87722;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+}
+.login-eyebrow::before {
+    content: '';
+    display: block;
+    width: 24px; height: 2px;
+    background: #E87722;
+    border-radius: 2px;
+}
+
+.login-right-title {
+    font-size: 26px;
+    font-weight: 800;
+    color: #1A1A1A;
+    margin: 0 0 6px;
+}
+.login-right-sub {
+    font-size: 13px;
+    color: #9CA3AF;
+    margin: 0 0 28px;
+}
+
+/* ── Error ── */
+.login-error-box {
+    background: #FEF2F2;
+    border: 1px solid #FECACA;
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 12px;
+    color: #DC2626;
+    margin-bottom: 18px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* ── Input groups ── */
+.login-field { margin-bottom: 16px; }
+.login-field > label {
+    display: block;
+    font-size: 12px;
+    font-weight: 700;
+    color: #374151;
+    margin-bottom: 6px;
+}
+.login-field > label .req { color: #E87722; margin-left: 2px; }
+
+.input-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-wrap .field-icon {
+    position: absolute;
+    left: 13px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    color: #9CA3AF;
+    transition: color 0.2s;
+    display: flex;
+    z-index: 1;
+}
+
+.input-wrap input[type="text"],
+.input-wrap input[type="email"],
+.input-wrap input[type="password"] {
+    width: 100%;
+    height: 44px;
+    border: 1.5px solid #E0DDD5;
+    border-radius: 9px;
+    padding: 0 42px 0 40px;
+    font-size: 13px;
+    color: #1A1A1A;
+    background: #fff !important;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    box-sizing: border-box;
+    -webkit-box-shadow: 0 0 0 1000px #fff inset !important;
+    -webkit-text-fill-color: #1A1A1A !important;
+    /* Kill Bootstrap/browser defaults */
+    box-shadow: none;
+    appearance: none;
+    -webkit-appearance: none;
+}
+.input-wrap input::placeholder { color: #9CA3AF !important; font-weight: 400; }
+.input-wrap input::-webkit-input-placeholder { color: #9CA3AF !important; }
+.input-wrap input::-moz-placeholder { color: #9CA3AF !important; opacity: 1; }
+.input-wrap input:-ms-input-placeholder { color: #9CA3AF !important; }
+.input-wrap input:-moz-placeholder { color: #9CA3AF !important; }
+/* Override Bootstrap .form-control placeholder */
+.cateco-login-right .form-control::placeholder { color: #9CA3AF !important; }
+.cateco-login-right .form-control::-webkit-input-placeholder { color: #9CA3AF !important; }
+.input-wrap input:focus {
+    border-color: #E87722 !important;
+    box-shadow: 0 0 0 3px rgba(232,119,34,0.1) !important;
+    -webkit-box-shadow: 0 0 0 3px rgba(232,119,34,0.1), 0 0 0 1000px #fff inset !important;
+    outline: none;
+}
+.input-wrap:focus-within .field-icon { color: #E87722; }
+
+.input-wrap .eye-toggle {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #9CA3AF;
+    padding: 0;
+    display: flex;
+    transition: color 0.2s;
+    z-index: 1;
+}
+.input-wrap .eye-toggle:hover { color: #E87722; }
+
+/* ── Checkbox row ── */
+.login-checkbox-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 22px;
+}
+.login-remember {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    font-size: 13px;
+    color: #555;
+    font-weight: 500;
+    user-select: none;
+}
+.login-remember input[type="checkbox"] {
+    position: absolute;
+    opacity: 0;
+    width: 16px;
+    height: 16px;
+    margin: 0;
+    cursor: pointer;
+}
+.login-remember .cb-box {
+    width: 16px; height: 16px;
+    border: 1.5px solid #E0DDD5;
+    border-radius: 4px;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: background 0.15s, border-color 0.15s;
+}
+.login-remember input[type="checkbox"]:checked + .cb-box {
+    background: #E87722;
+    border-color: #E87722;
+}
+.login-remember input[type="checkbox"]:checked + .cb-box svg { display: block; }
+.login-remember .cb-box svg { display: none; }
+
+.login-forgot {
+    font-size: 12px;
+    font-weight: 700;
+    color: #E87722 !important;
+    text-decoration: none;
+}
+.login-forgot:hover { text-decoration: underline; color: #C85F00 !important; }
+
+/* ── Buttons ── */
+.btn-login-primary {
+    width: 100%;
+    background: #E87722;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 800;
+    border-radius: 10px;
+    padding: 14px;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: background 0.2s;
+    margin-bottom: 16px;
+}
+.btn-login-primary:hover { background: #C85F00; }
+
+/* ── Divider ── */
+.login-divider {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+.login-divider::before, .login-divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: #E0DDD5;
+}
+.login-divider span { font-size: 12px; color: #C0BBB4; font-weight: 500; }
+
+.btn-login-guest {
+    width: 100%;
+    background: #F5F4F0;
+    border: 1.5px solid #E0DDD5;
+    color: #555;
+    border-radius: 10px;
+    padding: 12px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    text-decoration: none;
+    transition: border-color 0.2s, color 0.2s;
+    margin-bottom: 18px;
+}
+.btn-login-guest:hover { border-color: #E87722; color: #E87722; }
+
+/* ── Security note ── */
+.login-security-note {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    font-size: 10px;
+    color: #C0BBB4;
+}
+
+/* ── Responsive ── */
+@media (max-width: 680px) {
+    .cateco-login-card { grid-template-columns: 1fr; }
+    .cateco-login-left { display: none; }
+    .cateco-login-right { padding: 36px 24px; }
+}
+
+/* ── Override any teal/green links on this page ── */
+.cateco-login-right a:not(.btn-signup-small):not(.login-forgot):not(.btn-login-guest) {
+    color: #E87722 !important;
+}
+</style>
+
+<div class="cateco-login-wrap">
+    <div class="cateco-login-card">
+
+        {# ── LEFT PANEL ── #}
+        <div class="cateco-login-left">
+            <div class="deco-circle-1"></div>
+            <div class="deco-circle-2"></div>
+
+            <div class="login-left-top">
+                <a href="{{ path('sylius_shop_homepage') }}" class="login-logo">
+                    <img src="{{ asset('assets/shop/images/logo2.png') }}" alt="Catéco" style="height: 60px; width: auto; object-fit: contain;">
+                </a>
+
+                <p class="login-left-title" style="margin-top: 40px;">
+                    Bienvenue sur votre<br>espace <em>client</em>
+                </p>
+                <p class="login-left-sub">
+                    Connectez-vous pour accéder à vos commandes,<br>
+                    suivre vos livraisons et profiter de vos avantages Club Catéco.
+                </p>
+
+                <ul class="login-perks">
+                    <li>Suivez vos commandes en temps réel</li>
+                    <li>Accédez à vos factures et historique</li>
+                    <li>Profitez de -10% avec le Club Catéco</li>
+                    <li>Gérez vos adresses de livraison</li>
+                </ul>
+            </div>
+
+            <div class="login-signup-card">
+                <div class="login-signup-card-text">
+                    <strong>Pas encore de compte ?</strong>
+                    Créez votre espace en quelques secondes
+                </div>
+                <a href="{{ path('sylius_shop_register') }}" class="btn-signup-small">S'inscrire</a>
+            </div>
+        </div>
+
+        {# ── RIGHT PANEL ── #}
+        <div class="cateco-login-right">
+            <div class="login-eyebrow">Mon compte</div>
+            <h1 class="login-right-title">Connexion</h1>
+            <p class="login-right-sub">Entrez vos identifiants pour accéder à votre espace</p>
+            {# Error #}
+            {% if last_error %}
+                <div class="login-error-box">
+                    <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01M12 3a9 9 0 100 18A9 9 0 0012 3z"/></svg>
+                    {{ last_error.messageKey|trans(last_error.messageData, 'security') }}
+                </div>
+            {% endif %}
+
+            {{ form_start(form, {'action': path('sylius_shop_login_check'), 'attr': {'novalidate': 'novalidate', 'id': 'cateco-login-form'}}) }}
+
+                {# Username #}
+                <div class="login-field">
+                    <label for="cateco_username">Identifiant <span class="req">*</span></label>
+                    <div class="input-wrap">
+                        <span class="field-icon">
+                            <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                        </span>
+                        {{ form_widget(form._username, {
+                            'id': 'cateco_username',
+                            'attr': {
+                                'placeholder': 'votre@email.com',
+                                'autocomplete': 'email',
+                                'class': 'cateco-input'
+                            }
+                        }) }}
+                    </div>
+                </div>
+
+                {# Password #}
+                <div class="login-field">
+                    <label for="cateco_password">Mot de passe <span class="req">*</span></label>
+                    <div class="input-wrap">
+                        <span class="field-icon">
+                            <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+                        </span>
+                        {{ form_widget(form._password, {
+                            'id': 'cateco_password',
+                            'attr': {
+                                'placeholder': 'Votre mot de passe',
+                                'autocomplete': 'current-password',
+                                'class': 'cateco-input'
+                            }
+                        }) }}
+                        <button type="button" class="eye-toggle" onclick="togglePassword()" aria-label="Afficher/masquer le mot de passe">
+                            <svg id="eye-icon" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-1.274 4.057-5.065 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                        </button>
+                    </div>
+                </div>
+
+                {# Remember me + forgot password #}
+                <div class="login-checkbox-row">
+                    <label class="login-remember" for="cateco_remember_me">
+                        <input type="checkbox" id="cateco_remember_me" name="_remember_me" value="on">
+                        <span class="cb-box">
+                            <svg width="10" height="10" fill="none" viewBox="0 0 24 24" stroke="#fff" stroke-width="3.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                        </span>
+                        Rester connecté
+                    </label>
+                    <a href="{{ path('sylius_shop_request_password_reset_token') }}" class="login-forgot">Mot de passe oublié ?</a>
+                </div>
+
+                {# CSRF Token — inlined directly to ensure it always renders #}
+                <input type="hidden" name="_csrf_shop_security_token" value="{{ csrf_token('shop_authenticate') }}">
+
+                {# Submit #}
+                <button type="submit" class="btn-login-primary" id="cateco-login-submit">
+                    <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2"><path stroke-linecap="round" stroke-linejoin="round" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"/></svg>
+                    Se connecter
+                </button>
+
+            {{ form_end(form, {'render_rest': false}) }}
+
+            <div class="login-divider"><span>ou</span></div>
+
+            <a href="{{ path('sylius_shop_homepage') }}" class="btn-login-guest">
+                <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+                Continuer en tant que visiteur
+            </a>
+
+            <div class="login-security-note">
+                <svg width="11" height="11" fill="none" viewBox="0 0 24 24" stroke="#C0BBB4" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 11c0-1.1.9-2 2-2s2 .9 2 2v2H10v-2c0-1.1.9-2 2-2zm-4 0V9a4 4 0 018 0v2m-9 4h14a2 2 0 01-2 2H7a2 2 0 01-2-2v-4z"/></svg>
+                Connexion 100% sécurisée — SSL 256-bit
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+function togglePassword() {
+    var input = document.getElementById('cateco_password');
+    var icon = document.getElementById('eye-icon');
+    if (input.type === 'password') {
+        input.type = 'text';
+        icon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.477 0-8.268-2.943-9.542-7a9.956 9.956 0 012.293-3.95M9.88 9.88A3 3 0 0015 12m0 0a3 3 0 01-5.12 2.12M15 12L9 18M3 3l18 18"/>';
+    } else {
+        input.type = 'password';
+        icon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-1.274 4.057-5.065 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>';
+    }
+}
+
+/* Move eye toggle inside the password field wrapper */
+document.addEventListener('DOMContentLoaded', function() {
+    var btn = document.getElementById('eye-toggle-btn');
+    var wrap = document.getElementById('password-field-wrap');
+    if (btn && wrap) wrap.appendChild(btn);
+
+    /* Custom checkbox sync */
+    var rememberInput = document.getElementById('cateco_remember_me');
+    if (rememberInput) {
+        rememberInput.parentNode.insertBefore(rememberInput, rememberInput.parentNode.firstChild);
+    }
+});
+</script>

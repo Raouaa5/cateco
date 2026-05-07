@@ -41,30 +41,70 @@ class RelatedProductsComponent
     #[ExposeInTemplate(name: 'related_products')]
     public function getRelatedProducts(): array
     {
-        $mainTaxon = $this->product->getMainTaxon();
-
-        if (null === $mainTaxon) {
-            return [];
-        }
-
+        $relatedProducts = [];
         /** @var ChannelInterface $channel */
         $channel = $this->channelContext->getChannel();
-        $localeCode = $this->localeContext->getLocaleCode();
 
-        $queryBuilder = $this->productRepository->createShopListQueryBuilder(
-            $channel,
-            $mainTaxon,
-            $localeCode
-        );
+        foreach ($this->product->getAssociations() as $association) {
+            foreach ($association->getAssociatedProducts() as $associatedProduct) {
+                if ($associatedProduct->isEnabled() && $associatedProduct->hasChannel($channel)) {
+                    $relatedProducts[$associatedProduct->getId()] = $associatedProduct;
+                }
+            }
+        }
 
-        $queryBuilder
-            ->andWhere('o.id != :excludedProductId')
-            ->setParameter('excludedProductId', $this->product->getId())
-            ->setMaxResults($this->limit)
-        ;
+        if (count($relatedProducts) >= $this->limit) {
+            return array_slice(array_values($relatedProducts), 0, $this->limit);
+        }
 
-        /** @var array<ProductInterface> $result */
-        $result = $queryBuilder->getQuery()->getResult();
-        return $result;
+        $mainTaxon = $this->product->getMainTaxon();
+        if (null === $mainTaxon) {
+            $mainTaxon = $this->product->getTaxons()->first() ?: null;
+        }
+
+        if (null !== $mainTaxon) {
+            $localeCode = $this->localeContext->getLocaleCode();
+            $queryBuilder = $this->productRepository->createShopListQueryBuilder(
+                $channel,
+                $mainTaxon,
+                $localeCode
+            );
+
+            $excludedIds = array_keys($relatedProducts);
+            $excludedIds[] = $this->product->getId();
+
+            $queryBuilder
+                ->andWhere('o.id NOT IN (:excludedIds)')
+                ->setParameter('excludedIds', $excludedIds)
+                ->setMaxResults($this->limit - count($relatedProducts))
+            ;
+
+            /** @var array<ProductInterface> $categoryProducts */
+            $categoryProducts = $queryBuilder->getQuery()->getResult();
+            foreach ($categoryProducts as $cp) {
+                $relatedProducts[$cp->getId()] = $cp;
+            }
+        }
+
+        // 3. Ultimate Fallback: if no associated or category products exist, fetch the latest catalog products.
+        if (empty($relatedProducts)) {
+            $localeCode = $this->localeContext->getLocaleCode();
+            $fallbackQb = $this->productRepository->createQueryBuilder('o')
+                ->addSelect('translation')
+                ->innerJoin('o.translations', 'translation', 'WITH', 'translation.locale = :locale')
+                ->andWhere(':channel MEMBER OF o.channels')
+                ->andWhere('o.enabled = :enabled')
+                ->andWhere('o.id != :excludedId')
+                ->addOrderBy('o.createdAt', 'DESC')
+                ->setParameter('channel', $channel)
+                ->setParameter('locale', $localeCode)
+                ->setParameter('enabled', true)
+                ->setParameter('excludedId', $this->product->getId())
+                ->setMaxResults($this->limit);
+                
+            $relatedProducts = $fallbackQb->getQuery()->getResult();
+        }
+
+        return array_values($relatedProducts);
     }
 }

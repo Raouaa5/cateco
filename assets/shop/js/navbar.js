@@ -69,7 +69,7 @@ window.toggleCartSidebar = function () {
 };
 
 /**
- * Optimistic cart item removal — animates row out immediately, then POSTs to Sylius.
+ * Optimistic cart item removal — animates row out immediately, then POSTs to our custom Sylius endpoint.
  * @param {string|number} itemId
  * @param {HTMLElement}   btn     the remove button (used to find the row)
  */
@@ -85,32 +85,19 @@ window.removeCartItem = function (itemId, btn) {
     }
 
     const locale  = document.documentElement.lang || 'fr';
-    const cartUrl = '/' + locale + '/cart/';
+    const cartUrl = '/' + locale + '/cart/remove-item/' + itemId;
 
     fetch(cartUrl, {
         method  : 'POST',
-        body    : (() => {
-            const fd = new FormData();
-            fd.append('_method', 'PATCH');
-            fd.append('sylius_cart[items][' + itemId + '][quantity]', '0');
-            return fd;
-        })(),
         headers : { 'X-Requested-With': 'XMLHttpRequest' },
         redirect: 'follow',
-    }).catch(() => {});
-
-    setTimeout(() => {
-        if (row) row.remove();
-
-        const badge = document.querySelector('#cart-toggle-btn span');
-        if (badge) {
-            const current = parseInt(badge.textContent) || 0;
-            badge.textContent = Math.max(0, current - 1);
-        }
-
-        const remaining = document.querySelectorAll('#cart-sidebar .cart-item-row');
-        if (remaining.length === 0) window.location.reload();
-    }, 220);
+    })
+    .finally(() => {
+        // ALWAYS reload the page so the cart totals, mini-badge, and sidebar synchronize fully.
+        setTimeout(() => {
+            window.location.reload();
+        }, 150);
+    });
 };
 
 /* ═══════════════════════════════════════════════════════════════════════════════

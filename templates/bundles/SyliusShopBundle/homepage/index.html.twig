@@ -8,7 +8,15 @@
 {% block content %}
     {# Hero Banner Section #}
     {% include '@SyliusShop/homepage/_hero.html.twig' %}
-    
+
+    {# ── Personalized Recommendations ── #}
+    {% include '@SyliusShop/shared/_recommendations.html.twig' with {
+        recommendations:  recommendations,
+        section_title:    app.user ? 'Sélectionné pour vous' : 'Les tendances du moment',
+        section_id:       'home-recommendations',
+        badge_label:      app.user ? 'Recommandé' : 'Tendance'
+    } %}
+
     {# Latest Products Section (Nouveautés) #}
     {% include '@SyliusShop/homepage/_products.html.twig' %}
 

@@ -54,6 +54,20 @@
                         {# Unique class name and forced width to avoid conflicts #}
                         <div class="cateco-home-product-card" style="flex: 0 0 260px; width: 260px !important; display: flex; flex-direction: column; vertical-align: top; background: transparent;">
                             <div style="background-color: var(--color-bg-card); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: 1.5rem; margin-bottom: 1rem; position: relative; width: 100%; aspect-ratio: 1/1; display: flex; align-items: center; justify-content: center; overflow: hidden; box-shadow: var(--shadow-card);">
+
+                                {# ❤️ Wishlist Heart Button #}
+                                {% set _in_wl = app.user ? is_in_wishlist(product.id) : false %}
+                                <button type="button"
+                                        class="wishlist-heart-btn {% if _in_wl %}wl-active{% endif %}"
+                                        data-product-id="{{ product.id }}"
+                                        data-toggle-url="{{ path('app_wishlist_toggle', {productId: product.id, _locale: sylius.localeCode}) }}"
+                                        data-login-url="{{ path('sylius_shop_login') }}"
+                                        style="position: absolute; top: 10px; right: 10px; background: #fff; width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 8px rgba(0,0,0,0.12); border: none; color: #E87722; cursor: pointer; z-index: 2; transition: transform 0.15s;">
+                                    <svg width="16" height="16" fill="{{ _in_wl ? '#E87722' : 'none' }}" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+                                    </svg>
+                                </button>
+
                                 {% if product.images|length > 0 %}
                                     {% set image_path = product.images.first.path %}
                                     <img src="{{ image_path[0:4] == 'http' ? image_path : asset('media/image/' ~ image_path) }}" alt="{{ product.name }}" style="width: 100%; height: 100%; object-fit: contain; mix-blend-mode: multiply;" />

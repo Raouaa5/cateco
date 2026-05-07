@@ -1,0 +1,31 @@
+monolog:
+    channels:
+        - odoo
+
+when@prod:
+    monolog:
+        handlers:
+            odoo_success:
+                type: stream
+                path: "%kernel.logs_dir%/odoo.log"
+                level: info
+                channels: ["odoo"]
+            odoo_error:
+                type: stream
+                path: "%kernel.logs_dir%/odoo_error.log"
+                level: error
+                channels: ["odoo"]
+
+when@dev:
+    monolog:
+        handlers:
+            odoo_success:
+                type: stream
+                path: "%kernel.logs_dir%/odoo.log"
+                level: info
+                channels: ["odoo"]
+            odoo_error:
+                type: stream
+                path: "%kernel.logs_dir%/odoo_error.log"
+                level: error
+                channels: ["odoo"]

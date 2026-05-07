@@ -1,0 +1,228 @@
+{#
+    _recommendations.html.twig
+    Reusable recommendation section — used on Homepage, Product page, Cart.
+
+    Variables:
+      recommendations  : ProductInterface[]  (from RecommendationService)
+      section_title    : string              (e.g. "Sélectionné pour vous")
+      section_id       : string              (unique HTML id for the section)
+      badge_label      : string|null         (e.g. "Recommandé" — optional)
+      show_add_to_cart : bool                (default true)
+#}
+
+{% set section_title    = section_title    ?? 'Sélectionné pour vous' %}
+{% set section_id       = section_id       ?? 'cateco-recommendations' %}
+{% set badge_label      = badge_label      ?? 'Recommandé' %}
+{% set show_add_to_cart = show_add_to_cart ?? true %}
+
+{% if recommendations is defined and recommendations is not empty %}
+<section id="{{ section_id }}" class="cateco-recs-section">
+    <div class="cateco-recs-container">
+
+        {# ── Header ─────────────────────────────────────────── #}
+        <div class="cateco-recs-header">
+            <h2 class="cateco-recs-title">{{ section_title }}</h2>
+        </div>
+
+        {# ── Product Grid ────────────────────────────────────── #}
+        <div class="cateco-recs-grid">
+            {% for product in recommendations %}
+                <div class="cateco-recs-card">
+
+                    {# Image Container #}
+                    <div class="cateco-recs-img-wrap">
+                        {# Wishlist Button #}
+                        {% set _in_wl = app.user ? is_in_wishlist(product.id) : false %}
+                        <button type="button"
+                                class="wishlist-heart-btn {% if _in_wl %}wl-active{% endif %}"
+                                data-product-id="{{ product.id }}"
+                                data-toggle-url="{{ path('app_wishlist_toggle', {productId: product.id, _locale: sylius.localeCode}) }}"
+                                data-login-url="{{ path('sylius_shop_login') }}"
+                                style="position: absolute; top: 12px; right: 12px; background: #fff; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border: none; color: #E87722; cursor: pointer; z-index: 2; padding: 0;">
+                            <svg width="16" height="16" fill="{{ _in_wl ? '#E87722' : 'none' }}" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+                            </svg>
+                        </button>
+
+                        <a href="{{ path('sylius_shop_product_show', {'slug': product.slug}) }}"
+                           class="cateco-recs-img-link" style="display:block;width:100%;height:100%;">
+                            {% if product.images|length > 0 %}
+                                {% set img = product.images.first %}
+                                <img
+                                    src="{{ img.path[0:4] == 'http' ? img.path : img.path|imagine_filter('sylius_medium') }}"
+                                    alt="{{ product.name }}"
+                                    class="cateco-recs-img"
+                                    loading="lazy"
+                                />
+                            {% else %}
+                                <div class="cateco-recs-img-placeholder">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1"
+                                              d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                                    </svg>
+                                </div>
+                            {% endif %}
+
+                            {# Badge "Recommandé" #}
+                            {% if badge_label %}
+                                <span class="cateco-recs-badge">{{ badge_label }}</span>
+                            {% endif %}
+                        </a>
+                    </div>
+
+                    {# Content #}
+                    <div class="cateco-recs-body">
+                        <h3 class="cateco-recs-name">
+                            <a href="{{ path('sylius_shop_product_show', {'slug': product.slug}) }}">
+                                {{ product.name }}
+                            </a>
+                        </h3>
+
+                        {# Price #}
+                        {% set variant = product|sylius_resolve_variant %}
+                        {% if variant is null and product.variants is not empty %}
+                            {% set variant = product.variants.first %}
+                        {% endif %}
+
+                        {% if variant is not null %}
+                            {% set price = variant|sylius_calculate_price({'channel': sylius.channel}) %}
+                            <p class="cateco-recs-price">
+                                {{ price|sylius_format_money(sylius.currencyCode) }}
+                            </p>
+                        {% endif %}
+
+                        {# Add to cart #}
+                        {% if show_add_to_cart and variant is not null %}
+                            {{ component('sylius_shop:product:add_to_cart_form', {
+                                'product': product,
+                                'variant': variant,
+                                'template': '@SyliusShop/product/common/add_to_cart_form.html.twig',
+                                'key': 'rec_' ~ product.id
+                            }) }}
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>{# /.cateco-recs-grid #}
+    </div>{# /.cateco-recs-container #}
+</section>
+
+<style>
+/* ── CATECO Recommendation Section ───────────────────────────── */
+.cateco-recs-section {
+    background: #F5F4F0;
+    padding: 3.5rem 0;
+}
+.cateco-recs-container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+}
+
+/* Header */
+.cateco-recs-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 2rem;
+}
+.cateco-recs-tag {
+    display: inline-block;
+    background: #E87722;
+    color: #fff;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    padding: 0.2rem 0.55rem;
+    border-radius: 4px;
+    text-transform: uppercase;
+}
+.cateco-recs-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin: 0;
+}
+
+/* Grid — horizontal carousel for all screens */
+.cateco-recs-grid {
+    display: flex;
+    gap: 1.25rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 1rem; /* Space for scrollbar */
+}
+
+/* Custom Scrollbar for the carousel */
+.cateco-recs-grid::-webkit-scrollbar {
+    height: 6px;
+}
+.cateco-recs-grid::-webkit-scrollbar-track {
+    background: #e0ded8;
+    border-radius: 10px;
+}
+.cateco-recs-grid::-webkit-scrollbar-thumb {
+    background: #E87722;
+    border-radius: 10px;
+}
+
+/* Card */
+.cateco-recs-card {
+    flex: 0 0 calc(25% - 0.9375rem); /* Show 4 cards by default */
+    min-width: 240px; /* Minimum width so they don't squish */
+    background: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,.06);
+    transition: box-shadow .2s, transform .2s;
+    scroll-snap-align: start;
+}
+
+@media (max-width: 1024px) { 
+    .cateco-recs-card { flex: 0 0 calc(33.333% - 0.833rem); } 
+}
+@media (max-width: 768px)  {
+    .cateco-recs-card { flex: 0 0 calc(50% - 0.625rem); } 
+}
+@media (max-width: 480px)  { 
+    .cateco-recs-card { flex: 0 0 80%; } 
+}
+
+.cateco-recs-card:hover {
+    box-shadow: 0 6px 20px rgba(0,0,0,.12);
+    transform: translateY(-3px);
+}
+
+/* Image */
+.cateco-recs-img-link  { display: block; }
+.cateco-recs-img-wrap  { position: relative; height: 200px; background: #f0ede8; overflow: hidden; }
+.cateco-recs-img       { width: 100%; height: 100%; object-fit: cover; transition: transform .3s; }
+.cateco-recs-card:hover .cateco-recs-img { transform: scale(1.04); }
+.cateco-recs-img-placeholder {
+    display: flex; align-items: center; justify-content: center; height: 100%; color: #bbb;
+}
+.cateco-recs-img-placeholder svg { width: 3.5rem; height: 3.5rem; }
+
+/* Badge */
+.cateco-recs-badge {
+    position: absolute;
+    top: 0.5rem; left: 0.5rem;
+    background: #E87722;
+    color: #fff;
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 0.2rem 0.6rem;
+    border-radius: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* Body */
+.cateco-recs-body  { padding: 1rem; }
+.cateco-recs-name  { font-size: 0.875rem; font-weight: 600; color: #1a1a1a; margin: 0 0 0.5rem; line-height: 1.3; }
+.cateco-recs-name a { color: inherit; text-decoration: none; }
+.cateco-recs-name a:hover { color: #E87722; }
+.cateco-recs-price { font-size: 1rem; font-weight: 700; color: #E87722; margin: 0 0 0.75rem; }
+</style>
+{% endif %}

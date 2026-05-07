@@ -103,8 +103,14 @@
                     {% endif %}
                     
                     {# Wishlist Heart Button #}
-                    <button type="button" class="btn d-flex align-items-center justify-content-center cateco-wishlist-btn" onclick="this.classList.toggle('active')" style="border: 1px solid #E0DDD5; border-radius: 8px; min-width: 30px; height: 50px; background: #fff; color: #1A1A1A; transition: all 0.2s;">
-                        <svg width="24" height="24" fill="transparent" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="transition: fill 0.2s;"><path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
+                    {% set _in_wl_pdp = app.user and product is not null ? is_in_wishlist(product.id) : false %}
+                    <button type="button"
+                            class="btn d-flex align-items-center justify-content-center cateco-wishlist-btn wishlist-heart-btn {% if _in_wl_pdp %}wl-active{% endif %}"
+                            data-product-id="{{ product.id }}"
+                            data-toggle-url="{{ path('app_wishlist_toggle', {productId: product.id, _locale: sylius.localeCode}) }}"
+                            data-login-url="{{ path('sylius_shop_login') }}"
+                            style="border: 1px solid #E0DDD5; border-radius: 8px; min-width: 50px; height: 50px; background: #fff; color: #1A1A1A; transition: all 0.2s; padding: 0;">
+                        <svg width="24" height="24" fill="{{ _in_wl_pdp ? '#E87722' : 'transparent' }}" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="transition: fill 0.2s;"><path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
                     </button>
                 </div>
 
@@ -144,7 +150,6 @@
     background-color: #D66B1E !important;
     border-color: #D66B1E !important;
     color: #fff !important;
-}
 .cateco-wishlist-btn svg {
     fill: transparent;
 }
@@ -152,12 +157,12 @@
     border-color: #E87722 !important;
     color: #E87722 !important;
 }
-.cateco-wishlist-btn.active {
+.cateco-wishlist-btn.wl-active {
     border-color: #E87722 !important;
     color: #E87722 !important;
     background-color: #FFF9F5 !important;
 }
-.cateco-wishlist-btn.active svg {
+.cateco-wishlist-btn.wl-active svg {
     fill: #E87722;
 }
 input[type=number]::-webkit-inner-spin-button, 

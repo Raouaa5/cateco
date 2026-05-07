@@ -1,5 +1,6 @@
 {# Custom Add Review Link / Star Rating #}
 {% set product = hookable_metadata.context.product|default(product|default(null)) %}
+{% if product %}
 <div class="cateco-product-rating d-flex align-items-center gap-3 mb-4" style="font-size: 0.95rem; color: #4a5568;">
     <div class="d-flex text-warning">
         {# Default static stars for now #}
@@ -11,10 +12,12 @@
     {% set reviews_count = product.acceptedReviews|length %}
     <span class="fw-semibold">{{ reviews_count }} avis</span>
     
-    <a href="{{ path('sylius_shop_product_review_create', {'slug': product.slug, '_locale': sylius.localeCode}) }}" 
+    <a href="{{ path('sylius_shop_product_review_create', {'slug': product.slug}) }}" 
        style="color: #E87722; font-weight: 600; text-decoration: none; border-bottom: 1px solid #E87722; padding-bottom: 1px;">
        + Ajouter votre avis
     </a>
 </div>
 
 <hr style="border: none; border-top: 1px solid #E0DDD5; margin: 2rem 0; opacity: 0.6;">
+{% endif %}
+

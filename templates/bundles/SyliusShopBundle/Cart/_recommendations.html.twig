@@ -1,0 +1,15 @@
+{#
+    Cart Page — "Complétez votre commande"
+    Rendered via Sylius Twig Hook: sylius_shop.cart.index.content (priority -50)
+    Uses cateco_recommendations() Twig function.
+    No add-to-cart button to avoid nested form conflicts with the main cart form.
+#}
+{% set recs = cateco_recommendations(12) %}
+{% include '@SyliusShop/shared/_recommendations.html.twig' with {
+    recommendations:  recs,
+    section_title:    'Complétez votre commande',
+    section_id:       'cart-recommendations',
+    badge_label:      null,
+    show_add_to_cart: false
+} %}
+

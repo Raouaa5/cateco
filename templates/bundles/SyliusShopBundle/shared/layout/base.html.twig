@@ -186,8 +186,24 @@
                         body[data-route^="sylius_shop_checkout"] #main {
                             padding-top: 2.5rem !important;
                         }
-                </style>
 
+                        /* ── Global breadcrumb & link hover ── */
+                        .breadcrumb a,
+                        .breadcrumb-item a,
+                        nav.breadcrumb a {
+                            color: #555 !important;
+                            text-decoration: none !important;
+                            transition: color 0.18s;
+                        }
+                        .breadcrumb a:hover,
+                        .breadcrumb-item a:hover,
+                        nav.breadcrumb a:hover {
+                            color: #E87722 !important;
+                        }
+                        .breadcrumb-item.active {
+                            color: #E87722 !important;
+                        }
+                </style>
         {% block metatags %}
             <meta name="description" content="Cateco - Équipements pour la maison">
             <meta name="keywords" content="Cateco, Équipements, Maison">
@@ -198,6 +214,43 @@
                         {{ encore_entry_link_tags('shop-entry', null, 'shop') }}
                         {{ encore_entry_link_tags('app-shop-entry', null, 'app.shop') }}
                 {% endblock %}
+
+                {# Absolute Priority Rules (Forced last load sequence) #}
+                <style>
+                        /* ── Category Sidebar & Account Menu link overrides ── */
+                        [data-test-vertical-menu] a:hover,
+                        a[data-test-vertical-menu-item]:hover,
+                        a[data-test-vertical-menu-go-level-up]:hover,
+                        a.link-reset:hover {
+                            color: #E87722 !important;
+                            text-decoration: none !important;
+                        }
+                        /* Reset 'Monter au niveau supérieur' default color to match siblings (not teal) */
+                        a[data-test-vertical-menu-go-level-up] {
+                            color: #555 !important;
+                        }
+
+                        /* ── Bootstrap Pagination overrides ── */
+                        .pagination .page-link:hover {
+                            color: #E87722 !important;
+                            background-color: #fff8f3 !important;
+                            border-color: #E87722 !important;
+                        }
+                        .pagination .page-item.active .page-link {
+                            color: #fff !important;
+                            background-color: #E87722 !important;
+                            border-color: #E87722 !important;
+                        }
+                        .pagination .page-link {
+                            color: #555 !important;
+                        }
+
+                        /* ── Bootstrap primary badge override ── */
+                        .badge.text-bg-primary {
+                            background-color: #E87722 !important;
+                            color: #fff !important;
+                        }
+                </style>
 
                 {% hook 'sylius.shop.layout.head' %}
         </head>

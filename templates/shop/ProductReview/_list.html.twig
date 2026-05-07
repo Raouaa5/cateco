@@ -1,0 +1,59 @@
+{# templates/shop/ProductReview/_list.html.twig
+   Partial rendered by App\Controller\Shop\ProductReviewController::listAction
+   Displays accepted (approved) customer reviews for a product. #}
+
+{% if reviews is empty %}
+    <p class="text-muted" style="font-size: 0.9rem; padding: 0.5rem 0;">
+        Aucun avis client pour ce produit pour le moment.
+    </p>
+{% else %}
+    <div class="cateco-reviews-list" style="display: flex; flex-direction: column; gap: 1rem; padding-top: 0.5rem;">
+        {% for review in reviews %}
+            <div class="cateco-review-item" style="background: #FAFAF8; border: 1px solid #EDE9E0; border-radius: 10px; padding: 1rem 1.25rem;">
+                {# Header: author + date + stars #}
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.4rem; flex-wrap: wrap; gap: 0.5rem;">
+                    <div style="display: flex; align-items: center; gap: 0.6rem;">
+                        {# Avatar initials #}
+                        <div style="width: 36px; height: 36px; border-radius: 50%; background: #E87722; color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.85rem; flex-shrink: 0;">
+                            {{ review.author ? review.author.firstName|slice(0,1)|upper ~ review.author.lastName|slice(0,1)|upper : '?' }}
+                        </div>
+                        <div>
+                            <div style="font-weight: 700; font-size: 0.9rem; color: #1A1A1A;">
+                                {{ review.author ? review.author.firstName ~ ' ' ~ review.author.lastName|slice(0,1) ~ '.' : 'Client anonyme' }}
+                            </div>
+                            {% if review.createdAt %}
+                                <div style="font-size: 0.75rem; color: #888;">
+                                    {{ review.createdAt|date('d/m/Y') }}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    {# Star rating #}
+                    <div style="display: flex; gap: 2px;">
+                        {% for i in 1..5 %}
+                            <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"
+                                 style="color: {% if review.rating >= i %}#E87722{% else %}#E0DDD5{% endif %};">
+                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                            </svg>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                {# Review title #}
+                {% if review.title %}
+                    <p style="font-weight: 700; font-size: 0.9rem; color: #1A1A1A; margin: 0 0 0.25rem;">
+                        {{ review.title }}
+                    </p>
+                {% endif %}
+
+                {# Review comment #}
+                {% if review.comment %}
+                    <p style="font-size: 0.88rem; color: #555; margin: 0; line-height: 1.55;">
+                        {{ review.comment }}
+                    </p>
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+{% endif %}

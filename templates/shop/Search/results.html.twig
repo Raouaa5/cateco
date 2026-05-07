@@ -134,7 +134,7 @@
     .search-layout {
         max-width: 1320px;
         margin: 0 auto;
-        padding: 0 32px 64px 32px;
+        padding: 0 32px 8px 32px;
         display: grid;
         grid-template-columns: 220px 1fr;
         gap: 20px;
@@ -556,6 +556,16 @@
         color: #fff;
     }
 
+    /* Hidden products (pagination) */
+    .product-card-modern.page-hidden {
+        display: none;
+    }
+
+    /* Voir plus button */
+    .voir-plus-btn.hidden {
+        display: none;
+    }
+
     /* Empty state */
     .no-results-modern {
         text-align: center;
@@ -712,9 +722,9 @@
         </div>
 
         {% if products|length > 0 %}
-            <div class="products-grid-modern">
+            <div class="products-grid-modern" id="products-grid">
                 {% for product in products %}
-                    <div class="product-card-modern">
+                    <div class="product-card-modern" data-index="{{ loop.index0 }}">
                         <div class="product-image-container">
                             {# Badges Logic #}
                             {% if product.createdAt and product.createdAt > date('-30 days') %}
@@ -776,15 +786,58 @@
                 {% endfor %}
             </div>
 
-            <div class="pagination-modern">
-                <a href="#" class="page-btn"><svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><polyline points="15 18 9 12 15 6"></polyline></svg></a>
-                <a href="#" class="page-btn active">1</a>
-                <a href="#" class="page-btn">2</a>
-                <a href="#" class="page-btn">3</a>
-                <span style="display: flex; align-items: center; color: #ccc; padding: 0 4px;">...</span>
-                <a href="#" class="page-btn">8</a>
-                <a href="#" class="page-btn"><svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg></a>
-            </div>
+            <div class="pagination-modern" id="pagination-container"></div>
+
+            <script>
+            (function() {
+                var PER_PAGE = 9;
+                var cards    = Array.from(document.querySelectorAll('#products-grid .product-card-modern'));
+                var total    = cards.length;
+                var pages    = Math.ceil(total / PER_PAGE);
+                var current  = 1;
+
+                function showPage(page) {
+                    current = page;
+                    cards.forEach(function(card, i) {
+                        var inPage = i >= (page - 1) * PER_PAGE && i < page * PER_PAGE;
+                        card.style.display = inPage ? 'flex' : 'none';
+                    });
+                    buildPagination();
+                    window.scrollTo({ top: document.getElementById('products-grid').offsetTop - 120, behavior: 'smooth' });
+                }
+
+                function buildPagination() {
+                    var container = document.getElementById('pagination-container');
+                    if (pages <= 1) { container.innerHTML = ''; return; }
+                    var html = '';
+                    // Prev
+                    html += '<a href="#" class="page-btn" onclick="goPage(' + (current - 1) + ');return false;"' + (current === 1 ? ' style="opacity:.4;pointer-events:none"' : '') + '>' +
+                        '<svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><polyline points="15 18 9 12 15 6"></polyline></svg></a>';
+
+                    for (var p = 1; p <= pages; p++) {
+                        if (pages > 6 && p > 3 && p < pages - 1 && Math.abs(p - current) > 1) {
+                            if (p === 4) html += '<span style="display:flex;align-items:center;color:#ccc;padding:0 4px;">...</span>';
+                            continue;
+                        }
+                        html += '<a href="#" class="page-btn' + (p === current ? ' active' : '') + '" onclick="goPage(' + p + ');return false;">' + p + '</a>';
+                    }
+
+                    // Next
+                    html += '<a href="#" class="page-btn" onclick="goPage(' + (current + 1) + ');return false;"' + (current === pages ? ' style="opacity:.4;pointer-events:none"' : '') + '>' +
+                        '<svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg></a>';
+
+                    container.innerHTML = html;
+                }
+
+                window.goPage = function(p) {
+                    if (p < 1 || p > pages) return;
+                    showPage(p);
+                };
+
+                // Init
+                showPage(1);
+            })();
+            </script>
         {% else %}
             <div class="no-results-modern">
                 <div class="no-results-icon">

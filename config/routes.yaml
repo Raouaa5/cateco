@@ -13,12 +13,87 @@ app_club_cateco_index:
     requirements:
         _locale: ^[A-Za-z]{2,4}(_([A-Za-z]{4}|[0-9]{3}))?(_([A-Za-z]{2}|[0-9]{3}))?$
 
+app_wishlist_index:
+    path: /{_locale}/mon-compte/wishlist
+    methods: [GET]
+    controller: App\Controller\WishlistController::index
+    defaults:
+        _locale: fr_FR
+    requirements:
+        _locale: ^[A-Za-z]{2,4}(_([A-Za-z]{4}|[0-9]{3}))?(_([A-Za-z]{2}|[0-9]{3}))?$
+
+app_wishlist_toggle:
+    path: /{_locale}/wishlist/toggle/{productId}
+    methods: [POST]
+    controller: App\Controller\WishlistController::toggle
+    defaults:
+        _locale: fr_FR
+    requirements:
+        _locale: ^[A-Za-z]{2,4}(_([A-Za-z]{4}|[0-9]{3}))?(_([A-Za-z]{2}|[0-9]{3}))?$
+        productId: \d+
+
+app_wishlist_remove:
+    path: /{_locale}/wishlist/remove/{id}
+    methods: [POST]
+    controller: App\Controller\WishlistController::remove
+    defaults:
+        _locale: fr_FR
+    requirements:
+        _locale: ^[A-Za-z]{2,4}(_([A-Za-z]{4}|[0-9]{3}))?(_([A-Za-z]{2}|[0-9]{3}))?$
+        id: \d+
+
+app_wishlist_clear:
+    path: /{_locale}/wishlist/clear
+    methods: [POST]
+    controller: App\Controller\WishlistController::clear
+    defaults:
+        _locale: fr_FR
+    requirements:
+        _locale: ^[A-Za-z]{2,4}(_([A-Za-z]{4}|[0-9]{3}))?(_([A-Za-z]{2}|[0-9]{3}))?$
+
+app_wishlist_add_to_cart:
+    path: /{_locale}/wishlist/add/{id}
+    methods: [POST]
+    controller: App\Controller\WishlistController::addToCart
+    defaults:
+        _locale: fr_FR
+    requirements:
+        _locale: ^[A-Za-z]{2,4}(_([A-Za-z]{4}|[0-9]{3}))?(_([A-Za-z]{2}|[0-9]{3}))?$
+        id: \d+
+
+app_wishlist_add_all_to_cart:
+    path: /{_locale}/wishlist/add-all
+    methods: [POST]
+    controller: App\Controller\WishlistController::addAllToCart
+    defaults:
+        _locale: fr_FR
+    requirements:
+        _locale: ^[A-Za-z]{2,4}(_([A-Za-z]{4}|[0-9]{3}))?(_([A-Za-z]{2}|[0-9]{3}))?$
+
+
+app_cart_item_remove:
+    path: /{_locale}/cart/remove-item/{id}
+    methods: [POST]
+    controller: App\Controller\CartItemRemoveController
+    defaults:
+        _locale: fr_FR
+    requirements:
+        _locale: ^[A-Za-z]{2,4}(_([A-Za-z]{4}|[0-9]{3}))?(_([A-Za-z]{2}|[0-9]{3}))?$
+        id: \d+
+
 sylius_shop_homepage:
     path: /{_locale}/
     methods: [GET]
     controller: App\Controller\HomepageController::index
     requirements:
         _locale: ^[A-Za-z]{2,4}(_([A-Za-z]{4}|[0-9]{3}))?(_([A-Za-z]{2}|[0-9]{3}))?$
+
+sylius_shop_product_review:
+    resource: "@SyliusShopBundle/Resources/config/routing/product_review.yml"
+    prefix: /{_locale}/products/{slug}/reviews
+    requirements:
+        _locale: ^[A-Za-z]{2,4}(_([A-Za-z]{4}|[0-9]{3}))?(_([A-Za-z]{2}|[0-9]{3}))?$
+        slug: .+
 
 sylius_shop_product_show:
     path: /{_locale}/products/{slug}
@@ -33,13 +108,6 @@ sylius_shop_product_show:
                     - "expr:service('sylius.context.channel').getChannel()"
                     - "expr:service('sylius.context.locale').getLocaleCode()"
                     - $slug
-    requirements:
-        _locale: ^[A-Za-z]{2,4}(_([A-Za-z]{4}|[0-9]{3}))?(_([A-Za-z]{2}|[0-9]{3}))?$
-        slug: .+
-
-sylius_shop_product_review:
-    resource: "@SyliusShopBundle/Resources/config/routing/product_review.yml"
-    prefix: /{_locale}/products/{slug}/reviews
     requirements:
         _locale: ^[A-Za-z]{2,4}(_([A-Za-z]{4}|[0-9]{3}))?(_([A-Za-z]{2}|[0-9]{3}))?$
         slug: .+
